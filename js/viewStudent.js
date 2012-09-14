@@ -13,9 +13,13 @@
 
 		var student_id = $.urlParam('id');
 		var visit_id = 0;
+
+		var reminder_count = 0;
 		
 		var data_studentID = {"studentId": student_id};
 		var new_reminder_date ='';
+
+		var today_date = new Date();
 
 		//gets general information from the database 
 
@@ -89,38 +93,44 @@
 				data:data_studentID,
 				success:function(resp) {
 					$('#viewReminders').empty();
-					var today_date = new Date();
 					var ONE_DAY = 1000 * 60 * 60 * 24;
 
 					$('#viewReminders').append("<table class='table' id='remindTable'><thead><tr><td>Days left</td><td>Reason</td><td> Follow up by </td> <td>Followed up </td> <td> Mark follow up</td></tr></thead><tbody>");
 
+					reminder_count = resp.length;
 
-					for (i=0;i!=resp.length ;i++ )
+					if (resp.length > 0)
 					{
-						var encode_row = $.toJSON(resp[i]);
-						var reminderIndex = $.toJSON(encode_row).reminderIndex;
-						var remindDate_str = $.evalJSON(encode_row).remindDate;
-						var remindReason = $.evalJSON(encode_row).remindReason;
-						var follow_up_ind = $.evalJSON(encode_row).follow_up_ind;
-						var remindDate = $.evalJSON(encode_row).remindDate;
+						for (i=0;i!=resp.length ;i++ )
+						{
+							var encode_row = $.toJSON(resp[i]);
+							var remindDate_str = $.evalJSON(encode_row).remindDate;
+							var remindReason = $.evalJSON(encode_row).remindReason;
+							var follow_up_ind = $.evalJSON(encode_row).follow_up_ind;
+							var remindDate = $.evalJSON(encode_row).remindDate;
 
-						var remind_year = remindDate_str.substring(0,4);
+							var remind_year = remindDate_str.substring(0,4);
 
-						var remind_month = parseInt(remindDate_str.substring(5,7),10) - 1;
-						var remind_day = parseInt(remindDate_str.substring(8),10);
+							var remind_month = parseInt(remindDate_str.substring(5,7),10) - 1;
+							var remind_day = parseInt(remindDate_str.substring(8),10);
 						
 						
-						var remind_date_obj=new Date(remind_year, remind_month, remind_day);
+							var remind_date_obj=new Date(remind_year, remind_month, remind_day);
 						
-						var today_ms = today_date.getTime();
-						var remind_ms = remind_date_obj.getTime();
+							var today_ms = today_date.getTime();
+							var remind_ms = remind_date_obj.getTime();
 						
-						var diff_ms = Math.abs(remind_ms - today_ms);
+							var diff_ms = Math.abs(remind_ms - today_ms);
 
-						var diff_days = Math.round(diff_ms / ONE_DAY);
-
-						$('#remindTable tbody').append("<tr><td>"+ diff_days + "</td><td>" + remindReason+ "</td><td>" +remindDate+ "</td><td>"+follow_up_ind+"</td><td><button class='follow_up' value ='"+reminderIndex+"'>Followed up</button> </td></tr>"); 
+							var diff_days = Math.round(diff_ms / ONE_DAY);
+						
+							$('#remindTable tbody').append("<tr><td>"+ diff_days + "</td><td>" + remindReason+ "</td><td>" +remindDate+ "</td><td>"+follow_up_ind+"</td><td><input type='button' value='followed up' class='follow_up' id='"+resp[i].reminderIndex+"'></td></tr>"); 
+						}
+					} else {
+						$('#remindTable tbody').append("<tr><td colspan='5'><center><h3>There is no reminder for this student</h3></center></td></tr>");
 					}
+
+					
 					$('#viewReminders').append("</tbody></table>");
 
 				}
@@ -128,8 +138,36 @@
 
 		});
 
-		$('.follow_up').bind('click',function() {
-			alert('test');
+		$('.follow_up').live('click',function() {
+			var remindId = this.id;
+			$(this).parent().parent().remove();
+			var today_year = today_date.getFullYear();
+			var today_month = today_date.getMonth()+1;
+			var today_day = today_date.getDate();
+
+			if (today_month >= 10)
+			{
+				var today_str = today_year + "-"+today_month+ "-"+today_day;
+			} else {
+				var today_str = today_year + "-0"+today_month + "-"+today_day;
+
+			}
+			
+
+			$.ajax({
+				type:"POST",
+				url:"bin/update_reminder_record.php",
+				data:{"reminderIndex": remindId, "follow_up_date": today_str},
+				success:function(resp) {
+						alert(resp);
+						$(this).parent().parent().remove(); 
+						reminder_count --;
+						if (reminder_count == 0)
+						{			
+							$('#remindTable tbody').append("<tr><td colspan='5'><center><h3>There is no reminder for this student</h3></center></td></tr>");
+						}
+				}
+			});
 
 		});
 

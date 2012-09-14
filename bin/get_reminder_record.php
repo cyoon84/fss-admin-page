@@ -5,7 +5,7 @@
 	$id = $_GET['studentId'];
 	
 	//show the most up-to-date record only
-	$query="select * from studentreminder where studentId='$id' order by remindDate asc";
+	$query="select * from studentreminder where studentId='$id' and follow_up_ind = 'N' order by remindDate asc";
 	
 	$result = mysql_query($query, $con);
 
