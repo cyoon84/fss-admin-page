@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<script src="http://code.jquery.com/jquery-1.8.0.js"></script>
+<script src="js/bootstrap-dropdown.js"></script>
+<script src="js/updateStudent.js"></script>
+<script src="js/jquery.maskedinput-1.3.js"></script>
+</head>
+
+<body>
+<div class="span12" style="margin-top:10px">
+<h3>FSS Toronto</h3>
+</div>
+
+<div class="span12">
+	<div class="row">
+	<div class="span3" style="margin-top:10px">
+		<div class="dropdown clearfix">
+			 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display: block; position: static; margin-bottom: 5px; *width: 180px;">
+                <li><a tabindex="-1" href="index.html">Home</a></li>
+                <li class="divider"></li>
+				<li><a tabindex="-1" href="addStudent.html">Add a new student</a></li>
+				<li><a tabindex="-1" href="searchStudent.html">Search students</a></li>
+				<li class="divider"></li>
+				<li><a tabindex="-1" href="#">Metropass sale</a></li>
+              </ul>
+		</div>
+	</div>
+
+	<div class="span8">
+		<h2>Update student record</h2><br>
+
+		<div class="span8" style="margin-top:10px" id="viewArea">
+					<table class="table">
+		<tr>
+		<td style="width:25%"> Name (English)
+		<td>
+			<div id="existingNameEng"></div>
+			<br>
+			<div id="newNameEng" class="newValue">Enter new name <br>
+			<input id="newNameEngText" type="text">
+			</div>
+		</td>
+		</tr>
+		<tr>
+		<td style="width:25%"> Name (Korean)
+		<br>
+		</td>
+		<td>
+			<div id="existingNameKor"></div>
+			<br>
+			<div id="newNameKor" class="newValue">Enter new name <br>
+			<input id="newNameKorText" type="text"></div>
+		</td>
+		</tr>
+		<tr>
+		<td> Gender </td>
+		<td> 
+			<div id="existingGender">
+			
+			</div><br>
+			<div id="newGender"> Select new gender<br>
+					<select id="genderSelect" class="span2" name="gender">
+						<option>Male</option>
+						<option>Female</option>
+					</select>
+			</div>
+		</td>
+		</tr>
+		<tr>
+		<td> Date of Birth</td>
+		<td>
+			<div id="existingDOB"></div><br>
+			<div id="newDOB"> Enter new date of birth  <br>
+				<select class="span2" id="new_dobMonth" name="dobMonth"></select>
+				<select class="span2" id="new_dobDay" name="dobDay"></select>
+				<input class="span2" id="new_dobYear" placeholder="year (yyyy)" name="dobYear">
+			</div>
+		</td>
+		</tr>
+		<tr>
+		<td> Email address</td>
+		<td> <div id="existingEmail"></div><br>
+			<div id="newEmail" class="newValue"> Enter new email address<br>
+			<input id="newEmailText" type="text"></div>
+		</td>
+		</tr>
+		<tr>
+		<td> Phone Number </td>
+		<td > <div id="existingPhone"></div><br>
+			<div id="newPhone" class="newValue">Enter new phone<br>
+			<input id="newPhoneText" type="text"></div>
+		</td>
+		</tr>
+		<tr>
+		<td> Address</td>
+		<td ><div id="existingAddress">
+		</div>
+		<br>
+		<div id="newAddress" class="newValue">Enter new address<br>
+			<textarea id="newAddressText" rows="3" class="span5"></textarea>
+		</div>
+		</td>
+		</tr>
+		<tr>
+		<td> Date of Arrival</td>
+		<td> 
+			<div id="existingDOA">
+			</div>
+			<br>
+			<div id="newDOA"> Enter new date of arrival  <br>
+				<select class="span2" id="new_doaMonth" name="doaMonth"></select>
+				<select class="span2" id="new_doaDay" name="doaDay"></select>
+				<input class="span2" id="new_doaYear" placeholder="year (yyyy)" name="doaYear">
+			</div>
+		</td>
+		</tr>
+		<tr>
+		<td> Visa Type </td>
+		<td>
+			<div id="existingVisaType">
+
+			</div>
+			<br>
+			<div id="newvisatype" class="newValue">Select new visa type<br>
+				<select id="newVisaTypeVal" class="span2" name="newVisaType">
+					<option>Study</option>
+					<option>Working Holiday</option>
+					<option>Visitor</option>
+					<option>Co-op</option>
+				</select>
+			</div>
+
+					
+		</td>
+		</tr>
+		<tr>
+		<td> Visa Issue Date</td>
+		<td> 
+			<div id="existingVisaIssue"></div>
+			<br>
+			<div id="newVisaIssueDT" class="newValue">Enter new visa issue date<br>
+					<select class="span2" id="new_visaIssueMonth" name="visaIssueMonth"></select>
+					<select class="span2" id="new_visaIssueDay" name="visaIssueDay"></select>
+					<input class="span2" id="new_visaIssueYear" name="visaIssueYear" placeholder="year (yyyy)">
+			</div>
+		</td>
+		</tr>
+		<tr>
+		<td> Visa Expiry Date</td>
+		<td> 
+			<div id="existingVisaExpiry"></div>
+			<br>
+			<div id="newVisaExpDT" class="newValue">Enter new visa expiry date<br>
+				<select class="span2" id="new_vedMonth" name="vedMonth"></select>
+				<select class="span2" id="new_vedDay" name="vedDay"></select>
+				<input class="span2" id="new_vedYear" name="vedYear" placeholder="year (yyyy)">
+
+
+			</div>
+		</td>
+		</tr>
+		<tr>
+		<td> Name of Agency in Korea</td>
+		<td ><div id="existingKoreaAgency"></div>
+		<br>
+		<div id="newKoreaAgency" class="newValue"> Enter new agency in Korea name<br>
+			<input id="newKoreaAgencyText" type="text"></div>
+		</td>
+		</tr>
+		<tr>
+		<td> Current School Name</td>
+		<td ><div id="existingSchoolName"></div>
+		<br>
+		<div id="newSchool" class="newValue"> Enter new school name<br>
+			<input id="newSchoolText" type="text"></div>
+		</td>
+		</tr>
+		<tr>
+		<td> Current School Start Date</td>
+		<td> 
+			<div id="existingSchoolStart"></div>
+			<br>
+			<div id="newSchoolStartDT" class="newValue">Enter new school start date<br>
+				<select class="span2" id="new_schoolStartMonth" name="schoolStartMonth"></select>
+				<select class="span2" id="new_schoolStartDay" name="schoolStartDay"></select>
+				<input class="span2" id="new_schoolStartYear" name="schoolStartYear" placeholder="year (yyyy)">
+			</div>
+		</td>
+		</tr>
+		<tr>
+		<td> Current School End Date</td>
+		<td> 
+			<div id="existingSchoolEnd"></div>
+			<br>
+			<div id="newSchoolEndDT" class="newValue">Enter new school end date (YYYY-MM-DD)<br>
+				<select class="span2" id="new_schoolEndMonth" name="schoolEndMonth"></select>
+				<select class="span2" id="new_schoolEndDay" name="schoolEndDay"></select>
+				<input class="span2" id="new_schoolEndYear" name="schoolEndYear" placeholder="year (yyyy)">
+			
+			</div>
+		</td>
+		<tr>
+		<td> Notes </td>
+		<td>
+			<textarea id="update_comment" class="span5" rows="3"></textarea>
+		</tr>
+		
+		</table>
+		<button type="submit" class="btn btn-primary btn-large" id="updButton">Update </button>
+		<button type="submit" class="btn btn-primary btn-large" id="backButton">Back </button>
+		</div>
+		
+	</div>
+</div>
+
+
+</body>
+
+</html>
