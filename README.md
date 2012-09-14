@@ -22,7 +22,11 @@
 - Add / edit/ delete new visit record for each students
 - Add a reminder and follow up on a reminder
 
+## Working in Progress - as of September 14 ##
 
+- Logic for deleting a student
+
+---
 
 ## Working lists - as of September 12 ##
 
