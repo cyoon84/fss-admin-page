@@ -13,6 +13,8 @@
 
 		var months = new Array("January","February","March","April","May","June","July","August","September","October","November","December");
 
+		$('#newPhoneText').mask("999-999-9999",{placeholder:"9"});		
+
 		//initialize month / day selector fields
 		for (i=0; i!= months.length ; i++ )
 		{

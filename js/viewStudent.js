@@ -81,7 +81,7 @@
 
 						$('#viewVisitRecord').append('</tbody></table>');
 					} else {
-						$('#viewVisitRecord').append('No visit record found for this student');
+						$('#viewVisitRecord').append('<center><h3>No visit record found for this student</h3></center>');
 					}
 				}
 		});

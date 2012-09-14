@@ -7,6 +7,9 @@
 		$('.error').hide();
 		var months = new Array("January","February","March","April","May","June","July","August","September","October","November","December");
 
+		
+		$('#phoneNo').mask("999-999-9999",{placeholder:"9"});		
+
 		//initialize month / day selector boxes
 		for (i=0; i!= months.length ; i++ )
 		{
@@ -151,21 +154,13 @@
 				doa = doaYear +"-"+doaMonth+"-"+doaDay;
 			}
 
-			if (visaIssueYear == "")
+			if (visaIssueYear != "")
 			{
-				$('label#visaIssueYear_error').show();
-				$('input#visaIssueYear').focus();
-				return false;
-			} else {
 				visaIssueDate = visaIssueYear +"-"+visaIssueMonth+"-"+visaIssueDay;
 			}
 
-			if (vedYear == "")
+			if (vedYear != "")
 			{
-				$('label#vedYear_error').show();
-				$('input#vedYear').focus();
-				return false;
-			} else {
 				visaExpiryDate = vedYear +"-"+vedMonth+"-"+vedDay;
 			}
 

@@ -6,6 +6,8 @@
 
 $(function() {
 
+	$('#phone').mask("999-999-9999",{placeholder:"9"});	
+
 	$('#searchButton').click(function(){
 		$('#result').empty();
 		var nameEntered = new Boolean();
