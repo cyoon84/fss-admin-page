@@ -178,6 +178,44 @@
 			window.location = url;
 		});
 
+		$('#delButton').click(function() {
+			$('#deleteModal').modal('toggle');
+		});
+
+
+		$('#deletePermanent').click(function() {
+			var delId = {"student_id": student_id};
+			$.ajax({
+				type:"POST",
+				url:"bin/delete_user.php",
+				data:delId,
+				success:function(resp) {
+					$('#modal-body2').empty();
+					$('#modal-body2').append(resp);
+					$('#deletechoice').hide();
+					$('#afterdelete').show();
+				}
+
+			});
+			
+		});
+
+		$('#recInactive').click(function() {
+			var delId = {"student_id": student_id};
+			$.ajax({
+				type:"POST",
+				url:"bin/hide_user.php",
+				data:delId,
+				success:function(resp) {
+					$('#modal-body2').empty();
+					$('#modal-body2').append(resp);
+					$('#deletechoice').hide();
+					$('#afterdelete').show();
+				}
+
+			});
+		});
+
 		$('#addVisit').click(function() {
 			var url = "studentVisit.html?id="+student_id;
 			window.location = url;

@@ -22,10 +22,10 @@
 	<div class="span3" style="margin-top:10px">
 		<div class="dropdown clearfix">
 			 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display: block; position: static; margin-bottom: 5px; *width: 180px;">
-                <li><a tabindex="-1" href="index.html">Home</a></li>
+                <li><a tabindex="-1" href="index.html"><i class="icon-home"></i>&nbsp;Home</a></li>
                 <li class="divider"></li>
-				<li><a tabindex="-1" href="addStudent.html">Add a new student</a></li>
-				<li><a tabindex="-1" href="searchStudent.html">Search students</a></li>
+				<li><a tabindex="-1" href="addStudent.html"><i class="icon-user"></i>&nbsp;Add a new student</a></li>
+				<li><a tabindex="-1" href="searchStudent.html"><i class="icon-search"></i>&nbsp;Search students</a></li>
 				<li class="divider"></li>
 				<li><a tabindex="-1" href="#">Metropass sale</a></li>
               </ul>
@@ -70,6 +70,29 @@
 					</div>
 			</div>
 
+
+			<div class="modal hide fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+				  <div class="modal-header">
+					 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+					    <h3 id="myModalLabel2">Delete this student record</h3>
+					 </div>
+					<div class="modal-body" id="modal-body2">
+					WARNING: If you choose '<b>Delete this student's record</b>', all records for this student (including visit records, reminders) will be removed from the database.
+					<br><br> Select '<b>Hide this student's record</b>' if you want to keep it in the database and re-use it later.
+					</div>
+					<div class="modal-footer">
+						<div id="deletechoice">
+							<button class="btn btn-warning" id="recInactive">Hide this student's record</button>
+							<button class="btn btn-danger" id="deletePermanent">Delete this student's record</button>
+							<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+						</div>
+						<div id="afterdelete" class="hide">
+							<a class="btn btn-primary" href="addStudent.html">Add new student</a>
+							<a class="btn btn-primary" href="searchStudent.html">Go back to search</a>
+						</div>
+					  
+					</div>
+			</div>			
 		<br>
 
 		<div class="accordion span8" id="accordion2">
