@@ -138,13 +138,6 @@
 				return false;
 			}
 
-			if (korAgencyName == "")
-			{
-				$('label#korAgencyName_error').show();
-				$('input#korAgencyName').focus();
-				return false;
-			}
-
 			if (doaYear == "")
 			{
 				$('label#doaYear_error').show();
