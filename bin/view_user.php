@@ -3,9 +3,17 @@
 	include 'connection.php';
 	
 	$id = $_GET['studentId'];
+	$is_hidden = $_GET['is_hidden'];
 	
 	//show the most up-to-date record only
-	$query="select * from studentinfo where studentId='$id' and active_indicator = 'Y'";
+	if ($is_hidden == 'N') {
+		$query="select * from studentinfo where studentId='$id' and active_indicator = 'Y'";
+	} else {
+		$last_ver = mysql_query("select max(version) from studentinfo where studentId = '$id'");
+		$last_ver = mysql_fetch_array($last_id,MYSQL_BOTH);
+		$last_ver = $last_id[0];
+		$query="select * from studentinfo where studentId='$id' and version = '$last_ver'";
+	}
 	
 	$result = mysql_query($query, $con);
 

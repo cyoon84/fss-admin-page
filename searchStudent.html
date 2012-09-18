@@ -56,12 +56,25 @@
 			<td> Search by phone # </td>
 			<td> <input type="text" id="phone">
 			</tr>
+			<tr>
+			<td> Search within
+			</td>
+			<td> 
+			<label class="radio">
+				<input type="radio" name="searchOpt" id="activeOnly" value="active" checked> Active students only
+			</label>
+			<label class="radio">
+				<input type="radio" name="searchOpt" id="inactiveOnly" value="inactive"> Hidden students only 
+			</label>
+			</td>
+			</tr>
 			</table>
 		
 			<button type="submit" class="btn btn-primary btn-large" id="searchButton">Search</button>
 
 		</div>
 
+		<div class="span8" id="resultcount"> </div>
 		<div class="span8" id="result" style="margin-top:10px">
 		</div>
 	</div>

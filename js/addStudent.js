@@ -107,43 +107,15 @@
 			var korAgencyName = $('#korAgencyName').val();
 			
 			//do field validation
-			
-			if (engName == "")
-			{
-				$('label#nameEng_error').show();
-				$('input#nameEng').focus();
-				return false;
-			}
+		
 
-			if (korName == "")
+			if (dobYear != "")
 			{
-				$('label#nameKor_error').show();
-				$('input#nameKor').focus();
-				return false;
-			}
-
-			if (dobYear == "")
-			{
-				$('label#dobYear_error').show();
-				$('input#dobYear').focus();
-				return false;
-			} else {
 				dob = dobYear +"-"+dobMonth+"-"+dobDay; 
 			}
 
-			if (email == "")
+			if (doaYear != "")
 			{
-				$('label#email_error').show();
-				$('input#email').focus();
-				return false;
-			}
-
-			if (doaYear == "")
-			{
-				$('label#doaYear_error').show();
-				$('input#doaYear').focus();
-				return false;
-			} else {
 				doa = doaYear +"-"+doaMonth+"-"+doaDay;
 			}
 

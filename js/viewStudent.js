@@ -11,12 +11,16 @@
 			return results[1] || 0;
 		}
 
+
 		var student_id = $.urlParam('id');
+
+		var is_hidden = $.urlParam('hidden');
+
 		var visit_id = 0;
 
 		var reminder_count = 0;
 		
-		var data_studentID = {"studentId": student_id};
+		var data_studentID = {"studentId": student_id, "is_hidden": is_hidden};
 		var new_reminder_date ='';
 
 		var today_date = new Date();
