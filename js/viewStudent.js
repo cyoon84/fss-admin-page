@@ -18,12 +18,27 @@
 
 		var visit_id = 0;
 
+		var version_latest = 0;
+
 		var reminder_count = 0;
 		
 		var data_studentID = {"studentId": student_id, "is_hidden": is_hidden};
 		var new_reminder_date ='';
 
 		var today_date = new Date();
+
+
+		if (is_hidden == 'Y')
+		{
+			$('#updButton').hide();
+			$('#addVisit').hide();
+			$('#addReminder').hide();
+			$('#delButton').hide();
+		} else {
+			$('#toActive').hide();
+			$('#delPermanently').hide();
+
+		}
 
 		//gets general information from the database 
 
@@ -49,7 +64,8 @@
 										+"<tr><td> Current School Start Date</td><td>"+resp[0].current_school_strt_dt+"</td></tr>"
 										+"<tr><td> Current School End Date</td><td>"+resp[0].current_school_end_dt+"</td></tr>"
 										+"<tr><td> Note</td><td>"+resp[0].updt_reason+"</td></tr></table>");
-						var version_latest = resp[0].version;
+						
+						version_latest = resp[0].version;
 						for (i=version_latest; i!= -1 ; i-- )
 						{
 							if (i == version_latest)
@@ -279,7 +295,7 @@
 				data: data_reminder,
 				success: function(resp) {
 					alert(resp);
-					var url = "viewStudent.html?id="+student_id;
+					var url = "viewStudent.html?id="+student_id+"&hidden=N";
 					window.location = url;
 				}
 			});
@@ -323,6 +339,20 @@
 
 		});
 
+		$('#toActive').click(function() {
+			var to_active_info = {"studentId": student_id, "version_latest" : version_latest};
+			
+			$.ajax({
+				type: "POST",
+				url: "bin/to_active.php",
+				data: to_active_info,
+				success: function(resp) {
+					alert(resp);
+					var url = "viewStudent.html?id="+student_id+"&hidden=N";
+					window.location = url;
+				}
+			});
+		});
 
 
 	});
