@@ -53,7 +53,7 @@
 		});
 
 		$('#backButton').click(function() {
-			var url = "viewStudent.html?id="+student_id;
+			var url = "viewStudent.html?id="+student_id+"&hidden=N";
 			window.location = url;
 		});
 
