@@ -92,9 +92,32 @@
 							<a class="btn btn-primary" href="addStudent.html">Add new student</a>
 							<a class="btn btn-primary" href="searchStudent.html">Go back to search</a>
 						</div>
+						<div id="afterHide" class="hide">
+							<button class="btn btn-primary" id="hideConfirm">Close</button>
+						</div>
 					  
 					</div>
-			</div>			
+			</div>
+			
+			<div class="modal hide fade" id="makeActive" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
+				  <div class="modal-header">
+					 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+					    <h3 id="myModalLabel3">Make this student record active</h3>
+					 </div>
+					<div class="modal-body" id="modal-body3">
+					This student record will become active. 
+					</div>
+					<div class="modal-footer">
+						<div id="activeChoice">
+							<button class="btn btn-warning" id="activeProceed">Proceed</button>
+							<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+						</div>
+						<div id="afterActive" class="hide">
+							<button class="btn btn-primary" id="activeConfirm">Close</button>
+						</div>		
+						
+					</div>
+			</div>	
 		<br>
 
 		<div class="accordion span8" id="accordion2">

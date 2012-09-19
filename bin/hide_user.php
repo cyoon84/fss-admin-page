@@ -16,7 +16,7 @@
 		die('Error 2: ' . mysql_error());
 	}
 	
-	echo "Hide record successfully, searching for hidden record feature coming soon";
+	echo "This student record is now inactive";
 	
 
 	mysql_close($con);

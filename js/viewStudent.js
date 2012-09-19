@@ -230,10 +230,16 @@
 					$('#modal-body2').empty();
 					$('#modal-body2').append(resp);
 					$('#deletechoice').hide();
-					$('#afterdelete').show();
+					$('#afterHide').show();
 				}
 
 			});
+		});
+
+		$('#hideConfirm').click(function() {
+			var url = "viewStudent.html?id="+student_id+"&hidden=Y";
+			window.location = url;	
+
 		});
 
 		$('#addVisit').click(function() {
@@ -339,7 +345,14 @@
 
 		});
 
+
+
 		$('#toActive').click(function() {
+			$('#makeActive').modal('toggle');
+		
+		});
+
+		$('#activeProceed').click(function() {
 			var to_active_info = {"studentId": student_id, "version_latest" : version_latest};
 			
 			$.ajax({
@@ -347,12 +360,29 @@
 				url: "bin/to_active.php",
 				data: to_active_info,
 				success: function(resp) {
-					alert(resp);
-					var url = "viewStudent.html?id="+student_id+"&hidden=N";
-					window.location = url;
+					$('#modal-body3').empty();
+					$('#modal-body3').append(resp);
+					$('#activeChoice').hide();
+					$('#afterActive').show();
+										
 				}
 			});
+
 		});
+
+		$('#activeConfirm').click(function() {
+			var url = "viewStudent.html?id="+student_id+"&hidden=N";
+			window.location = url;
+		});
+
+		$('#delPermanently').click(function() {
+			$('#modal-body2').empty();
+			$('#recInactive').hide();
+			$('#modal-body2').append("Do you want to remove this student record permanently? <br> WARNING : You can't restore this student after this operation");
+			$('#deleteModal').modal('toggle');
+
+		});
+
 
 
 	});
