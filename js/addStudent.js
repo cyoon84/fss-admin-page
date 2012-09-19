@@ -108,7 +108,12 @@
 			var korAgencyName = $('#korAgencyName').val();
 			
 			//do field validation
-		
+			if (korName == "") {
+				$('label#nameKor_error').show();
+				$('input#nameKor').focus();
+ 				 return false;
+ 			}
+			
 
 			if (dobYear != "")
 			{
