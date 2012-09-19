@@ -45,13 +45,13 @@ $(function() {
 								}
 						}
 						
-						$('#result').append("<table class='table' id='resultTable'><thead><tr><td> Name (English)</td><td> Name (Korean)</td><td> E-mail address</td><td>Phone</td><td></td></tr></thead><tbody>");
+						$('#result').append("<table class='table' id='resultTable'><thead><tr><td> Name (Korean)</td><td> Name (English)</td><td> E-mail address</td><td>Phone</td><td></td></tr></thead><tbody>");
 							
 						if (resp.length > 0)
 						{
 							
 							for(i=0;i!=resp.length;i++){
-								$('#resultTable tbody').append("<tr><td>"+resp[i].name_eng+"</a></td><td>"+resp[i].name_kor+"</td><td>"+resp[i].email+"</td><td>"+resp[i].phone_no+"</td><td><a href=viewStudent.html?id="+resp[i].student_id+"&hidden=N>[view]</a></td></tr>");
+								$('#resultTable tbody').append("<tr><td>"+resp[i].name_kor+"</td><td>"+resp[i].name_eng+"</a></td><td>"+resp[i].email+"</td><td>"+resp[i].phone_no+"</td><td><a href=viewStudent.html?id="+resp[i].student_id+"&hidden=N>[view]</a></td></tr>");
 							}
 							$('#result').append("</tbody></table>");
 						} else {
@@ -82,14 +82,14 @@ $(function() {
 								}
 						}
 						
-						$('#result').append("<table class='table' id='resultTable'><thead><tr><td> Name (English)</td><td> Name (Korean)</td><td> E-mail address</td><td>Phone</td><td></td></tr></thead><tbody>");
+						$('#result').append("<table class='table' id='resultTable'><thead><tr><td> Name (Korean)</td><td> Name (English)</td><td> E-mail address</td><td>Phone</td><td></td></tr></thead><tbody>");
 							
 						if (resp.length > 0)
 						{
 							
 							for(i=0;i!=resp.length;i++){
 								
-								$('#resultTable tbody').append("<tr><td>"+resp[i].name_eng+"</a></td><td>"+resp[i].name_kor+"</td><td>"+resp[i].email+"</td><td>"+resp[i].phone_no+"</td><td><a href=viewStudent.html?id="+resp[i].student_id+"&hidden=Y>[view]</a></td></tr>");
+								$('#resultTable tbody').append("<tr><td>"+resp[i].name_kor+"</td><td>"+resp[i].name_eng+"</a></td><td>"+resp[i].email+"</td><td>"+resp[i].phone_no+"</td><td><a href=viewStudent.html?id="+resp[i].student_id+"&hidden=Y>[view]</a></td></tr>");
 							}
 							$('#result').append("</tbody></table>");
 						} else {
