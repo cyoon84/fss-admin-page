@@ -83,7 +83,7 @@
 		die('Error: ' . mysql_error());
 	}
 	
-	echo "Record added successfully";
+	echo $new_id;
 	
 
 	mysql_close($con);

@@ -6,7 +6,8 @@
 		//hide error message fields for 'required' fields
 		$('.error').hide();
 		var months = new Array("January","February","March","April","May","June","July","August","September","October","November","December");
-
+		
+		var newId = 0;
 		
 		$('#phoneNo').mask("999-999-9999",{placeholder:"9"});		
 
@@ -154,7 +155,8 @@
 				url: "bin/add_user.php",
 				data:dataInsert,
 				success: function(resp) {
-					alert(resp);
+					newId = resp;
+					$('#addSuccess').modal('toggle');
 				}
 			});
 
@@ -162,5 +164,12 @@
 
 			
 		});
+
+		$('#viewStudent').click(function() {
+			var url = "viewStudent.html?id="+newId+"&hidden=N";
+			window.location = url;
+		});
+
+	
 
 	});
