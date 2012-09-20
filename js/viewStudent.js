@@ -26,7 +26,7 @@
 		var new_reminder_date ='';
 
 		var today_date = new Date();
-
+		var status = '';
 
 		if (is_hidden == 'Y')
 		{
@@ -34,10 +34,11 @@
 			$('#addVisit').hide();
 			$('#addReminder').hide();
 			$('#delButton').hide();
+			status = 'Inactive';
 		} else {
 			$('#toActive').hide();
 			$('#delPermanently').hide();
-
+			status = 'Active';
 		}
 
 		//gets general information from the database 
@@ -48,8 +49,8 @@
 				dataType: "json",
 				data:data_studentID,
 				success: function(resp) {
-						$('#viewArea').append("<table class='table'><tr><td style='width:25%'> Name (English)</td><td>"+resp[0].name_eng+"</td></tr>"
-										+"<tr><td> Name (Korean) </td><td>"+resp[0].name_kor+"</td></tr>"
+						$('#viewArea').append("<table class='table'><tr><td style='width:25%'>Name (Korean) </td><td>"+resp[0].name_kor+"</td></tr>" 
+										+"<tr><td> Name (English)</td><td>"+resp[0].name_eng+"</td></tr>"
 										+"<tr><td> Gender </td><td>"+resp[0].gender+"</td></tr>"
 										+"<tr><td> Date of birth</td><td>"+resp[0].birthdate+"</td></tr>"
 										+"<tr><td> E-mail address</td><td>"+resp[0].email+"</td></tr>"
@@ -63,6 +64,7 @@
 										+"<tr><td> Current School</td><td>"+resp[0].current_school+"</td></tr>"
 										+"<tr><td> Current School Start Date</td><td>"+resp[0].current_school_strt_dt+"</td></tr>"
 										+"<tr><td> Current School End Date</td><td>"+resp[0].current_school_end_dt+"</td></tr>"
+										+"<tr><td> Active status</td><td>"+status+"</td></tr>"
 										+"<tr><td> Note</td><td>"+resp[0].updt_reason+"</td></tr></table>");
 						
 						version_latest = resp[0].version;
@@ -322,8 +324,8 @@
 				data:data_studentID,
 				success: function(resp) {
 					$('#viewArea').empty();
-					$('#viewArea').append("<table class='table'><tr><td style='width:25%'> Name (English)</td><td>"+resp[0].name_eng+"</td></tr>"
-										+"<tr><td> Name (Korean) </td><td>"+resp[0].name_kor+"</td></tr>"
+					$('#viewArea').append("<table class='table'><tr><td style='width:25%'>Name (Korean) </td><td>"+resp[0].name_kor+"</td></tr>" 
+										+"<tr><td> Name (English)</td><td>"+resp[0].name_eng+"</td></tr>"
 										+"<tr><td> Gender </td><td>"+resp[0].gender+"</td></tr>"
 										+"<tr><td> Date of birth</td><td>"+resp[0].birthdate+"</td></tr>"
 										+"<tr><td> E-mail address</td><td>"+resp[0].email+"</td></tr>"
@@ -337,6 +339,7 @@
 										+"<tr><td> Current School</td><td>"+resp[0].current_school+"</td></tr>"
 										+"<tr><td> Current School Start Date</td><td>"+resp[0].current_school_strt_dt+"</td></tr>"
 										+"<tr><td> Current School End Date</td><td>"+resp[0].current_school_end_dt+"</td></tr>"
+										+"<tr><td> Active status</td><td>"+status+"</td></tr>"
 										+"<tr><td> Note</td><td>"+resp[0].updt_reason+"</td></tr></table>");
 
 				}
