@@ -412,9 +412,10 @@
 		});
 
 		$('#saveVisit').click(function() {
+			$('.error').hide();
 
 			var visit_purpose = $('#visit_purpose').val();
-			var visit_note = $('#note').val();
+			var visit_note = $('#visit_note').val();
 
 			var visit_Day = $('#visitDay').val();
 			var visit_Month = $('#visitMonth').val();
@@ -429,6 +430,20 @@
 				return false;
 			} else {
 				visit_date = visit_Year +"-"+visit_Month +"-"+visit_Day; 
+			}
+
+			if (visit_purpose == "")
+			{
+				$('label#visit_purpose_error').show();
+				$('input#visit_purpose').focus();
+				return false;
+			}
+
+			if (($.trim(visit_note).length) == 0)
+			{
+				$('label#visit_note_error').show();
+				$('textarea#visit_note').focus();
+				return false;
 			}
 
 
