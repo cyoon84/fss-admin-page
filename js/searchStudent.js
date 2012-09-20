@@ -40,6 +40,7 @@ $(function() {
 					type:"GET",
 					url: "bin/search_user.php",
 					dataType: "json",
+					cache: false,
 					data:searchKeys,
 					success: function(resp) {
 						$('#resultcount').empty();
@@ -77,6 +78,7 @@ $(function() {
 					type:"GET",
 					url: "bin/search_inactive_user.php",
 					dataType: "json",
+					cache: false,
 					data:searchKeys,
 					success: function(resp) {
 						$('#resultcount').empty();

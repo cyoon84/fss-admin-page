@@ -72,6 +72,7 @@
 				type:"GET",
 				url: "bin/view_user.php",
 				dataType: "json",
+				cache: false,
 				data:data_studentID,
 				success: function(resp) {
 					$('#existingNameEng').append(resp[0].name_eng);
@@ -232,6 +233,7 @@
 				type: "POST",
 				url: "bin/update_user.php",
 				data: updateRecord,
+				cache: false,
 				success: function(resp) {
 					alert(resp);
 					var url = "viewStudent.html?id="+student_id+"&hidden=N";

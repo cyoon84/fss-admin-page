@@ -40,6 +40,7 @@
 		$.ajax({
 				type:"GET",
 				url: "bin/get_visit_record_one.php",
+				cache: false,
 				dataType: "json",
 				data:data_getVisit_Parm,
 				success: function(resp) {
@@ -80,6 +81,7 @@
 				$.ajax({
 					type: "POST",
 					url: "bin/edit_visit_date.php",
+					cache: false,
 					data:data_visit,
 					success: function(resp) {
 						alert(resp);
@@ -110,6 +112,7 @@
 				$.ajax({
 					type: "POST",
 					url: "bin/edit_visit_purpose.php",
+					cache: false,
 					data:data_visit,
 					success: function(resp) {
 						alert(resp);
@@ -140,6 +143,7 @@
 				$.ajax({
 					type: "POST",
 					url: "bin/edit_visit_note.php",
+					cache: false,
 					data:data_visit,
 					success: function(resp) {
 						alert(resp);
@@ -161,6 +165,7 @@
 			$.ajax( {
 				type: "POST",
 				url: "bin/del_visit.php",
+				cache: false,
 				data: data_getVisit_Parm,
 				success: function(resp) {
 					$('#delVisitConfirm').modal('hide');

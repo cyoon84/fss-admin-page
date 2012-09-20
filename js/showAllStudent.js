@@ -16,6 +16,7 @@ $(function() {
 	$.ajax({
 		url:"bin/getAllUser.php",
 		dataType:"json",
+		cache: false,
 		success:function(resp) {
 			for (i=0;i!= resp.length ;i++ )
 			{

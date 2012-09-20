@@ -72,6 +72,7 @@
 		$.ajax({
 				type:"GET",
 				url: "bin/view_user.php",
+				cache: false,
 				dataType: "json",
 				data:data_studentID,
 				success: function(resp) {
@@ -91,7 +92,7 @@
 										+"<tr><td> Current School Start Date</td><td>"+resp[0].current_school_strt_dt+"</td></tr>"
 										+"<tr><td> Current School End Date</td><td>"+resp[0].current_school_end_dt+"</td></tr>"
 										+"<tr><td> Active status</td><td>"+status+"</td></tr>"
-										+"<tr><td> Note</td><td>"+resp[0].updt_reason+"</td></tr></table>");
+										+"<tr><td> Update reason </td><td>"+resp[0].updt_reason+"</td></tr></table>");
 						
 						version_latest = resp[0].version;
 						for (i=version_latest; i!= -1 ; i-- )
@@ -113,6 +114,7 @@
 				type:"GET",
 				url:"bin/get_visit_record.php",
 				dataType:"json",
+				cache: false,
 				data:data_studentID,
 				success: function(resp) {
 					if (resp.length > 0) {
@@ -138,6 +140,7 @@
 				type:"GET",
 				url:"bin/get_reminder_record.php",
 				dataType: "json",
+				cache: false,
 				data:data_studentID,
 				success:function(resp) {
 					$('#viewReminders').empty();
@@ -205,6 +208,7 @@
 			$.ajax({
 				type:"POST",
 				url:"bin/update_reminder_record.php",
+				cache: false,
 				data:{"reminderIndex": remindId, "follow_up_date": today_str},
 				success:function(resp) {
 						alert(resp);
@@ -236,6 +240,7 @@
 			$.ajax({
 				type:"POST",
 				url:"bin/delete_user.php",
+				cache: false,
 				data:delId,
 				success:function(resp) {
 					$('#modal-body2').empty();
@@ -253,6 +258,7 @@
 			$.ajax({
 				type:"POST",
 				url:"bin/hide_user.php",
+				cache: false,
 				data:delId,
 				success:function(resp) {
 					$('#modal-body2').empty();
@@ -324,6 +330,7 @@
 
 			$.ajax({
 				type: "POST",
+				cache: false,
 				url: "bin/add_reminder.php",
 				data: data_reminder,
 				success: function(resp) {
@@ -345,6 +352,7 @@
 			$.ajax({
 				type:"GET",
 				url: "bin/view_user_prev.php",
+				cache: false,
 				dataType: "json",
 				data:data_studentID,
 				success: function(resp) {
@@ -365,7 +373,7 @@
 										+"<tr><td> Current School Start Date</td><td>"+resp[0].current_school_strt_dt+"</td></tr>"
 										+"<tr><td> Current School End Date</td><td>"+resp[0].current_school_end_dt+"</td></tr>"
 										+"<tr><td> Active status</td><td>"+status+"</td></tr>"
-										+"<tr><td> Note</td><td>"+resp[0].updt_reason+"</td></tr></table>");
+										+"<tr><td> Update reason</td><td>"+resp[0].updt_reason+"</td></tr></table>");
 
 				}
 			});
@@ -385,6 +393,7 @@
 			
 			$.ajax({
 				type: "POST",
+				cache: false,
 				url: "bin/to_active.php",
 				data: to_active_info,
 				success: function(resp) {
@@ -451,6 +460,7 @@
 
 			$.ajax({
 				type: "POST",
+				cache: false,
 				url: "bin/add_new_visit.php",
 				data:data_visit,
 				success: function(resp) {

@@ -159,6 +159,7 @@
 				type: "POST",
 				url: "bin/add_user.php",
 				data:dataInsert,
+				cache: false,	
 				success: function(resp) {
 					newId = resp;
 					$('#addSuccess').modal('toggle');

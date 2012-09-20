@@ -44,6 +44,7 @@
 				type:"GET",
 				url: "bin/view_user.php",
 				dataType: "json",
+				cache: false,
 				data:data_studentID,
 				success: function(resp) {
 					var nameText = resp[0].name_eng+ " ( " + resp[0].name_kor + " ) ";
@@ -84,6 +85,7 @@
 				type: "POST",
 				url: "bin/add_new_visit.php",
 				data:data_visit,
+				cache: false,
 				success: function(resp) {
 					alert(resp);
 					var url = "viewStudent.html?id="+student_id;
