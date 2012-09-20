@@ -6,8 +6,7 @@
 <link href="css/DT_bootstrap.css" rel="stylesheet">
 
 <script src="http://code.jquery.com/jquery-1.8.0.js"></script>
-<script src="js/jquery.dataTables.js"></script>
-<script src="js/DT_bootstrap.js"></script>
+<script src="js/jquery.maskedinput-1.3.js"></script>
 <script src="js/bootstrap-dropdown.js"></script>
 <script src="js/jquery.json-2.3.js"></script>
 <script src="js/viewStudent.js"></script>
@@ -79,6 +78,43 @@
 					</div>
 			</div>
 
+			<div class="modal hide fade" id="addNewVisit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
+				  <div class="modal-header">
+					 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+					    <h3 id="myModalLabel3">Add a New Visit</h3>
+					 </div>
+					<div class="modal-body" id="modal-body3">
+						<table class="table">
+							<tr>
+							<td width="25%"> Visit Date</td>
+							<td>
+								<select style="width:100px" id="visitMonth" name="visitMonth"></select>
+								<select style="width:50px" id="visitDay" name="visitDay"></select>
+								<input class="span1" id="visitYear" name="visitYear" placeholder="year">
+								<label class="error" for="visitYear" id="visit_year_error">This field is required </label>
+							</td>
+							</tr>
+							<tr>
+							<td> Visit Purpose</td>
+							<td> <input type="text" id="visit_purpose" name="visit_purpose">
+							</td>
+							</tr>
+							<tr>
+							<td>Note</td>
+							<td ><textarea rows="3" id="note" class="span3" name="note"> </textarea> 
+							</td>
+							</tr>
+							
+						</table>
+		
+					
+					</div>
+					<div class="modal-footer">
+					  <button class="btn btn-small" data-dismiss="modal" aria-hidden="true" id="visitClose">Close</button>
+					  <button class="btn btn-primary btn-small" id="saveVisit">Save</button>
+					  <button class="btn btn-primary btn-small" id="saveVisitSuccess">Go back to view student page</button>
+					</div>
+			</div>
 
 			<div class="modal hide fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
 				  <div class="modal-header">

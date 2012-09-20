@@ -4,13 +4,39 @@
 */
 	
 	$(function() {
-		$('#viewArea').empty();
+		$('.error').hide();
+		$('#saveVisitSuccess').hide();
 		//function to get parameter (id #) from the url
 		$.urlParam = function(name){
 			var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
 			return results[1] || 0;
 		}
 
+		$('#viewArea').empty();
+
+		var months = new Array("January","February","March","April","May","June","July","August","September","October","November","December");
+
+
+		for (i=0; i!= months.length ; i++ )
+		{
+			var actualmonth = i+1;
+			if (actualmonth < 10)
+			{
+				$('#visitMonth').append('<option value=0'+actualmonth+'>'+months[i]+'</option>');
+			} else {
+				$('#visitMonth').append('<option value='+actualmonth+'>'+months[i]+'</option>');
+			}
+		}
+
+		for (i=1; i!= 32  ; i++ )
+		{
+			if (i < 10)
+			{
+				$('#visitDay').append('<option>0'+i+'</option>');
+			} else {
+				$('#visitDay').append('<option>'+i+'</option>');
+			}
+		}
 
 		var student_id = $.urlParam('id');
 
@@ -245,8 +271,7 @@
 		});
 
 		$('#addVisit').click(function() {
-			var url = "studentVisit.html?id="+student_id;
-			window.location = url;
+			$('#addNewVisit').modal('toggle');
 		});
 
 		//add reminder 
@@ -386,6 +411,50 @@
 
 		});
 
+		$('#saveVisit').click(function() {
+
+			var visit_purpose = $('#visit_purpose').val();
+			var visit_note = $('#note').val();
+
+			var visit_Day = $('#visitDay').val();
+			var visit_Month = $('#visitMonth').val();
+			var visit_Year = $('#visitYear').val();
+
+			var visit_date = '';
+
+			if (visit_Year == "")
+			{
+				$('label#visit_year_error').show();
+				$('input#visitYear').focus();
+				return false;
+			} else {
+				visit_date = visit_Year +"-"+visit_Month +"-"+visit_Day; 
+			}
+
+
+			var data_visit = {"studentId": student_id, "date": visit_date, "purpose": visit_purpose, "note" : visit_note};
+
+			$.ajax({
+				type: "POST",
+				url: "bin/add_new_visit.php",
+				data:data_visit,
+				success: function(resp) {
+					$('#modal-body3').empty();
+					$('#modal-body3').append(resp);
+					$('#visitClose').hide();
+					$('#saveVisit').hide();
+					$('#saveVisitSuccess').show();
+				}
+			});
+
+
+		});
+	
+		$('#saveVisitSuccess').click(function() {
+			var url = "viewStudent.html?id="+student_id+"&hidden=N";
+			window.location = url;
+
+		});
 
 
 	});
