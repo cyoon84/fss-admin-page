@@ -326,6 +326,15 @@
 		//save new reminder record to the database
 		$('#saveReminder').click(function() {
 			var reason_replaced = $('#remindreason').val().replace(/\r\n|\r|\n/g,"<br />");
+
+			if (new_reminder_date == '')
+			{
+				$('label#remindDays_error').show();
+				$('input#remindDays').focus();
+ 				 return false;				
+			}
+
+
 			var data_reminder = {"studentId": student_id, "reminder_date": new_reminder_date, "reason": reason_replaced};
 
 			$.ajax({
