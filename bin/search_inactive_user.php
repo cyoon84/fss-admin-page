@@ -15,10 +15,6 @@
 						SELECT `studentId` FROM `studentinfo` WHERE `active_indicator`= 'Y' group by `studentId`) group by `studentId`) b 
 					on a.`studentId` = b.`studentId` and a.`version` = b.`max_version` ";
 
-	//if nothing entered, show all students in the database
-	if ($name == '' and $school == '' and $email == '' and $phone == '') {
-		$query=$query_text;
-	}
 
 	//one of 3 entered
 	if ($name != '' and $school == '' and $email == '' and $phone == '') {

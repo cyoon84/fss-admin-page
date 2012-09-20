@@ -24,6 +24,14 @@ $(function() {
 
 		var searchKeys = {"name": nameText, "language_name": nameLang, "school_name" : schoolText, "email": emailText, "phone": phoneText};
 
+		if (nameText == '' && schoolText == '' && emailText == '' && phoneText == '')
+		{
+			alert('Please enter one of search keyword');
+			return false;
+		}
+		
+		
+		
 		if (searchWithin == 'active')
 		{
 		

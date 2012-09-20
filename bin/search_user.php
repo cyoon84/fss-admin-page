@@ -7,11 +7,6 @@
 	$school = $_GET['school_name'];
 	$email = $_GET['email'];
 	$phone = $_GET['phone'];
-	
-	//if nothing entered, show all students in the database
-	if ($name == '' and $school == '' and $email == '' and $phone == '') {
-		$query="select * from studentinfo where active_indicator ='Y'";
-	}
 
 	//one of 3 entered
 	if ($name != '' and $school == '' and $email == '' and $phone == '') {
