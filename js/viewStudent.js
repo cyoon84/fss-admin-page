@@ -2,7 +2,9 @@
 * viewStudent.js - for viewStudent.html - which shows detailed information about the student and user can choose actions to take - e.g. update, delete, add new visit / reminder
 *
 */
-	
+	var today_date = new Date();
+		
+
 	$(function() {
 		$('.error').hide();
 		$('#saveVisitSuccess').hide();
@@ -15,7 +17,6 @@
 		$('#viewArea').empty();
 
 		var months = new Array("January","February","March","April","May","June","July","August","September","October","November","December");
-		var today_date = new Date();
 		var today_str = getTodayDateString(today_date);
 	
 		$('#visitTodayDate').append(today_str+ " (today)");
@@ -57,26 +58,10 @@
 				dataType: "json",
 				data:data_studentID,
 				success: function(resp) {
-						var formatted_address = resp[0].address.replace(/\r\n|\r|\n/g,"<br />");
-						$('#viewArea').append("<table class='table'><tr><td style='width:25%'>Name (Korean) </td><td>"+resp[0].name_kor+"</td></tr>" 
-										+"<tr><td> Name (English)</td><td>"+resp[0].name_eng+"</td></tr>"
-										+"<tr><td> Gender </td><td>"+resp[0].gender+"</td></tr>"
-										+"<tr><td> Date of birth</td><td>"+resp[0].birthdate+"</td></tr>"
-										+"<tr><td> E-mail address</td><td>"+resp[0].email+"</td></tr>"
-										+"<tr><td> Phone</td><td>"+resp[0].phone+"</td></tr>"
-										+"<tr><td> Current Address</td><td>"+formatted_address+"</td></tr>"
-										+"<tr><td> Date of Arrival</td><td>"+resp[0].arrival_dt+"</td></tr>"
-										+"<tr><td> Visa Type</td><td>"+resp[0].visa_type+"</td></tr>"
-										+"<tr><td> Visa Issue Date</td><td>"+resp[0].visa_issue_date+"</td></tr>"
-										+"<tr><td> Visa Expiry Date</td><td>"+resp[0].visa_exp_date+"</td></tr>"
-										+"<tr><td> How did you hear about us?</td><td>"+resp[0].how_hear_us+"</td></tr>"
-										+"<tr><td> Name of Agency in Korea</td><td>"+resp[0].korea_agency+"</td></tr>"
-										+"<tr><td> Current School</td><td>"+resp[0].current_school+"</td></tr>"
-										+"<tr><td> Current School Start Date</td><td>"+resp[0].current_school_strt_dt+"</td></tr>"
-										+"<tr><td> Current School End Date</td><td>"+resp[0].current_school_end_dt+"</td></tr>"
-										+"<tr><td> Active status</td><td>"+status+"</td></tr>"
-										+"<tr><td> Update reason </td><td>"+resp[0].updt_reason+"</td></tr></table>");
+
 						
+						fillInfoTable(resp);
+
 						version_latest = resp[0].version;
 						for (i=version_latest; i!= -1 ; i-- )
 						{
@@ -119,81 +104,52 @@
 				}
 		});
 
-		$.ajax({
-				type:"GET",
-				url:"bin/get_reminder_record.php",
-				dataType: "json",
-				cache: false,
-				data:data_studentID,
-				success:function(resp) {
-					$('#viewReminders').empty();
-					var ONE_DAY = 1000 * 60 * 60 * 24;
-
-					$('#viewReminders').append("<table class='table' id='remindTable'><thead><tr><td>Days left</td><td>Reason</td><td> Follow up by </td> <td>Followed up </td> <td> Mark follow up</td></tr></thead><tbody>");
-
-					reminder_count = resp.length;
-
-					if (resp.length > 0)
-					{
-						for (i=0;i!=resp.length ;i++ )
-						{
-							var encode_row = $.toJSON(resp[i]);
-							var remindDate_str = $.evalJSON(encode_row).remindDate;
-							var remindReason = $.evalJSON(encode_row).remindReason;
-							var follow_up_ind = $.evalJSON(encode_row).follow_up_ind;
-							var remindDate = $.evalJSON(encode_row).remindDate;
-
-							var remind_year = remindDate_str.substring(0,4);
-
-							var remind_month = parseInt(remindDate_str.substring(5,7),10) - 1;
-							var remind_day = parseInt(remindDate_str.substring(8),10);
-						
-						
-							var remind_date_obj=new Date(remind_year, remind_month, remind_day);
-						
-							var today_ms = today_date.getTime();
-							var remind_ms = remind_date_obj.getTime();
-						
-							var diff_ms = Math.abs(remind_ms - today_ms);
-
-							var diff_days = Math.round(diff_ms / ONE_DAY);
-						
-							$('#remindTable tbody').append("<tr><td>"+ diff_days + "</td><td>" + remindReason+ "</td><td>" +remindDate+ "</td><td>"+follow_up_ind+"</td><td><input type='button' value='followed up' class='follow_up' id='"+resp[i].reminderIndex+"'></td></tr>"); 
-						}
-					} else {
-						$('#remindTable tbody').append("<tr><td colspan='5'><center><h3>There is no reminder for this student</h3></center></td></tr>");
-					}
-
-					
-					$('#viewReminders').append("</tbody></table>");
-
-				}
-
-
-		});
+		reminderLoad(student_id);
+		reminder_old_Load(student_id);
 
 		$('.follow_up').live('click',function() {
 			var remindId = this.id;
-			$(this).parent().parent().remove();
-			
-			//get today date string
-			
+							
 			$.ajax({
 				type:"POST",
 				url:"bin/update_reminder_record.php",
 				cache: false,
 				data:{"reminderIndex": remindId, "follow_up_date": today_str},
-				success:function(resp) {
+				success:function(resp) {												
 						alert(resp);
-						$(this).parent().parent().remove(); 
-						reminder_count --;
-						if (reminder_count == 0)
-						{			
-							$('#remindTable tbody').append("<tr><td colspan='5'><center><h3>There is no reminder for this student</h3></center></td></tr>");
-						}
+
+						reminderLoad(student_id);
+
+						reminder_old_Load(student_id);
+						
+
+
+						
 				}
 			});
 
+		});
+
+		$('.clear_old_follow_up').live('click',function() {
+			var remindId = this.id;
+			$.ajax({
+				type:"POST",
+				url:"bin/delete_reminder_record.php",
+				cache: false,
+				data:{"reminderIndex": remindId, "student_id": student_id},
+				success:function(resp) {
+					
+						alert(resp);
+
+						reminder_old_Load(student_id);
+						//if (reminder_count == 0)
+						//{			
+						//	$('#remindTable_old tbody').append("<tr><td colspan='3'><center><h3>There is no reminder for this student</h3></center></td></tr>");
+						//}
+
+						
+				}
+			});
 		});
 
 
@@ -316,9 +272,10 @@
 				url: "bin/add_reminder.php",
 				data: data_reminder,
 				success: function(resp) {
-					alert(resp);
-					var url = "viewStudent.html?id="+student_id+"&hidden=N";
-					window.location = url;
+					$('#modal-body').empty();
+					$('#modal-body').append(resp);
+					$('#saveReminder').hide();
+					reminderLoad(student_id);
 				}
 			});
 
@@ -339,26 +296,7 @@
 				data:data_studentID,
 				success: function(resp) {
 					$('#viewArea').empty();
-					var formatted_address = resp[0].address.replace(/\r\n|\r|\n/g,"<br />");
-					$('#viewArea').append("<table class='table'><tr><td style='width:25%'>Name (Korean) </td><td>"+resp[0].name_kor+"</td></tr>" 
-										+"<tr><td> Name (English)</td><td>"+resp[0].name_eng+"</td></tr>"
-										+"<tr><td> Gender </td><td>"+resp[0].gender+"</td></tr>"
-										+"<tr><td> Date of birth</td><td>"+resp[0].birthdate+"</td></tr>"
-										+"<tr><td> E-mail address</td><td>"+resp[0].email+"</td></tr>"
-										+"<tr><td> Phone</td><td>"+resp[0].phone+"</td></tr>"
-										+"<tr><td> Current Address</td><td>"+formatted_address+"</td></tr>"
-										+"<tr><td> Date of Arrival</td><td>"+resp[0].arrival_dt+"</td></tr>"
-										+"<tr><td> Visa Type</td><td>"+resp[0].visa_type+"</td></tr>"
-										+"<tr><td> Visa Issue Date</td><td>"+resp[0].visa_issue_date+"</td></tr>"
-										+"<tr><td> Visa Expiry Date</td><td>"+resp[0].visa_exp_date+"</td></tr>"
-										+"<tr><td> How did you hear about us?</td><td>"+resp[0].how_hear_us+"</td></tr>"
-										+"<tr><td> Name of Agency in Korea</td><td>"+resp[0].korea_agency+"</td></tr>"
-										+"<tr><td> Current School</td><td>"+resp[0].current_school+"</td></tr>"
-										+"<tr><td> Current School Start Date</td><td>"+resp[0].current_school_strt_dt+"</td></tr>"
-										+"<tr><td> Current School End Date</td><td>"+resp[0].current_school_end_dt+"</td></tr>"
-										+"<tr><td> Active status</td><td>"+status+"</td></tr>"
-										+"<tr><td> Update reason</td><td>"+resp[0].updt_reason+"</td></tr></table>");
-
+					fillInfoTable(resp);
 				}
 			});
 
@@ -473,5 +411,130 @@
 		}
 
 		return today_str;
+
+	}
+
+	function fillInfoTable(resp) {
+		var formatted_address = resp[0].address.replace(/\r\n|\r|\n/g,"<br />");
+		$('#viewArea').append("<table class='table'><tr><td style='width:25%'>Name (Korean) </td><td>"+resp[0].name_kor+"</td></tr>" 
+						+"<tr><td> Name (English)</td><td>"+resp[0].name_eng+"</td></tr>"
+						+"<tr><td> Gender </td><td>"+resp[0].gender+"</td></tr>"
+						+"<tr><td> Date of birth</td><td>"+resp[0].birthdate+"</td></tr>"
+						+"<tr><td> E-mail address</td><td>"+resp[0].email+"</td></tr>"
+						+"<tr><td> Phone</td><td>"+resp[0].phone+"</td></tr>"
+						+"<tr><td> Current Address</td><td>"+formatted_address+"</td></tr>"
+						+"<tr><td> Date of Arrival</td><td>"+resp[0].arrival_dt+"</td></tr>"
+						+"<tr><td> Visa Type</td><td>"+resp[0].visa_type+"</td></tr>"
+						+"<tr><td> Visa Issue Date</td><td>"+resp[0].visa_issue_date+"</td></tr>"
+						+"<tr><td> Visa Expiry Date</td><td>"+resp[0].visa_exp_date+"</td></tr>"
+						+"<tr><td> How did you hear about us?</td><td>"+resp[0].how_hear_us+"</td></tr>"
+						+"<tr><td> Name of Agency in Korea</td><td>"+resp[0].korea_agency+"</td></tr>"
+						+"<tr><td> Current School</td><td>"+resp[0].current_school+"</td></tr>"
+						+"<tr><td> Current School Start Date</td><td>"+resp[0].current_school_strt_dt+"</td></tr>"
+						+"<tr><td> Current School End Date</td><td>"+resp[0].current_school_end_dt+"</td></tr>"
+						+"<tr><td> Active status</td><td>"+status+"</td></tr>"
+						+"<tr><td> Update reason </td><td>"+resp[0].updt_reason+"</td></tr></table>");
+	}
+
+
+	function reminderLoad(student_id) {
+
+		$('#remindTable tbody').empty();
+
+		var data_follow_up = {"student_id": student_id, "follow_up": 'N'};
+		$.ajax({
+				type:"GET",
+				url:"bin/get_reminder_record.php",
+				dataType: "json",
+				cache: false,
+				data:data_follow_up,
+				success:function(resp) {
+					$('#remindTable tbody').empty();
+					var ONE_DAY = 1000 * 60 * 60 * 24;
+
+					reminder_count = resp.length;
+
+					if (resp.length > 0)
+					{
+						for (i=0;i!=resp.length ;i++ )
+						{
+
+							var encode_row = $.toJSON(resp[i]);
+							var follow_up_ind = $.evalJSON(encode_row).follow_up_ind;
+							var remindDate_str = $.evalJSON(encode_row).remindDate;
+							var remindReason = $.evalJSON(encode_row).remindReason;
+							var remindDate = $.evalJSON(encode_row).remindDate;
+							var follow_up_date =  $.evalJSON(encode_row).follow_up_date;
+
+								
+
+								var remind_year = remindDate_str.substring(0,4);
+
+								var remind_month = parseInt(remindDate_str.substring(5,7),10) - 1;
+								var remind_day = parseInt(remindDate_str.substring(8),10);
+							
+							
+								var remind_date_obj=new Date(remind_year, remind_month, remind_day);
+							
+								var today_ms = today_date.getTime();
+								var remind_ms = remind_date_obj.getTime();
+							
+								var diff_ms = Math.abs(remind_ms - today_ms);
+
+								var diff_days = Math.round(diff_ms / ONE_DAY);
+							
+								$('#remindTable tbody').append("<tr><td>"+ diff_days + "</td><td>" + remindReason+ "</td><td>" +remindDate+ "</td><td>"+follow_up_ind+"</td><td><input type='button' value='followed up' class='follow_up' id='"+resp[i].reminderIndex+"'></td></tr>"); 
+							
+							
+						}
+					} else {
+						$('#remindTable tbody').append("<tr><td colspan='5'><center><h3>There is no reminder for this student</h3></center></td></tr>");
+					}
+
+					
+				}
+
+
+		});
+	}
+
+	function reminder_old_Load(student_id) {
+
+		$('#remindTable_old tbody').empty();
+
+		var data_follow_up = {"student_id": student_id, "follow_up": 'Y'};
+		$.ajax({
+				type:"GET",
+				url:"bin/get_reminder_record.php",
+				dataType: "json",
+				cache: false,
+				data:data_follow_up,
+				success:function(resp) {
+					$('#remindTable_old tbody').empty();
+					
+					if (resp.length > 0)
+					{
+						for (i=0;i!=resp.length ;i++ )
+						{
+
+							var encode_row = $.toJSON(resp[i]);
+							var follow_up_ind = $.evalJSON(encode_row).follow_up_ind;
+							var remindDate_str = $.evalJSON(encode_row).remindDate;
+							var remindReason = $.evalJSON(encode_row).remindReason;
+							var remindDate = $.evalJSON(encode_row).remindDate;
+							var follow_up_date =  $.evalJSON(encode_row).follow_up_date;
+
+							$('#remindTable_old tbody').append("<tr><td>"+ follow_up_date + "</td><td>" + remindReason+ "</td><td><input type='button' value='Clear' class='clear_old_follow_up' id='"+resp[i].reminderIndex+"'></td></tr>"); 
+							
+						}
+					} else {
+						$('#remindTable_old tbody').append("<tr><td colspan='3'><center><h3>There is no reminder for this student</h3></center></td></tr>");
+					}
+
+					
+				}
+
+
+		});
 
 	}

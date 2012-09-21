@@ -2,10 +2,18 @@
 
 	include 'connection.php';
 	
-	$id = $_GET['studentId'];
-	
+	$id = $_GET['student_id'];
+	$follow_up = $_GET['follow_up'];
+
+
 	//show the most up-to-date record only
-	$query="select * from studentreminder where studentId='$id' and follow_up_ind = 'N' order by remindDate asc";
+
+	if ($follow_up == 'N') {
+		$query="select * from studentreminder where studentId ='$id' and follow_up_ind = '$follow_up' order by remindDate asc";
+	} else {
+		$query="select * from studentreminder where studentId ='$id' and follow_up_ind = '$follow_up' order by follow_up_date asc";
+	}
+
 	
 	$result = mysql_query($query, $con);
 
@@ -16,7 +24,8 @@
 			'studentId' => $row['studentId'],
 			'remindDate' => $row['remindDate'],
 			'remindReason' => $row['remindReason'],
-			'follow_up_ind' => $row['follow_up_ind']
+			'follow_up_ind' => $row['follow_up_ind'],
+			'follow_up_date' => $row['follow_up_date']
 		);
 	}
 
