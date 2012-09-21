@@ -26,6 +26,7 @@
 			'visa_type' => $row['visa_type'],
 			'visa_issue_date' => $row['visa_issue_date'],
 			'visa_exp_date' => $row['visa_exp_date'],
+			'how_hear_us' => $row['how_hear_us'],
 			'korea_agency' => $row['korea_agency'],
 			'current_school' => $row['current_school'],
 			'current_school_strt_dt' => $row['current_school_strt_dt'],

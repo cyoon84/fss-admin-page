@@ -45,9 +45,11 @@
 				data:data_getVisit_Parm,
 				success: function(resp) {
 					$('#existing_visit_date').append(resp[0].visit_date);
-					$('#existing_visit_purpose').append(resp[0].visit_purpose);
-					$('#existing_visit_note').append(resp[0].visit_note);
-				} 		
+					$('#visit_purpose').val(resp[0].visit_purpose);
+					var existing_note = resp[0].visit_note;
+					existing_note = existing_note.replace(/<br\s*[\/]?>/gi, "\n");
+				 	$('#newNote').val(existing_note);
+				}		
 		});
 
 		$('#backButton').click(function() {
@@ -102,28 +104,22 @@
 
 			var visit_purpose = $('#visit_purpose').val();
 
-			if (visit_purpose == '')
-			{
-				alert ('please enter text for Visa Purpose');
-				return false;
-			} else {
-				var data_visit = {"visit_record_id": visit_record_id, "studentId": student_id, "visit_purpose": visit_purpose};
-				
-				$.ajax({
-					type: "POST",
-					url: "bin/edit_visit_purpose.php",
-					cache: false,
-					data:data_visit,
-					success: function(resp) {
-						alert(resp);
-						$('#existing_visit_purpose').empty();
-						$('#existing_visit_purpose').append(visit_purpose);
-						$('#visit_purpose').val('');
-					}
-				});
+			var data_visit = {"visit_record_id": visit_record_id, "studentId": student_id, "visit_purpose": visit_purpose};
+			
+			$.ajax({
+				type: "POST",
+				url: "bin/edit_visit_purpose.php",
+				cache: false,
+				data:data_visit,
+				success: function(resp) {
+					alert(resp);
+					$('#existing_visit_purpose').empty();
+					$('#existing_visit_purpose').append(visit_purpose);
+					$('#visit_purpose').val('');
+				}
+			});
 
-				return false;
-			}
+			return false;
 
 		});
 
@@ -138,6 +134,8 @@
 				alert ('please enter text for Note');
 				return false;
 			} else {
+
+				visit_note = visit_note.replace(/\r\n|\r|\n/g,"<br />");
 				var data_visit = {"visit_record_id": visit_record_id, "studentId": student_id, "visit_note": visit_note};
 				
 				$.ajax({

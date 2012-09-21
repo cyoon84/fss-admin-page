@@ -13,7 +13,31 @@
 
 		var months = new Array("January","February","March","April","May","June","July","August","September","October","November","December");
 
+		var genderChange = false;
+		var existingGender = '';
+
+		var visaTypeChange = false;
+		var existingVisaType = '';
+
+		var howHearUsChange = false;
+		var existingHowHearUs = '';
+
 		$('#newPhoneText').mask("999-999-9999",{placeholder:"9"});		
+
+
+		$('#new_doaMonth').append('<option value=0>-----------------</option>');
+		$('#new_dobMonth').append('<option value=0>-----------------</option>');
+		$('#new_vedMonth').append('<option value=0>-----------------</option>');
+		$('#new_schoolStartMonth').append('<option value=0>-----------------</option>');
+		$('#new_schoolEndMonth').append('<option value=0>-----------------</option>');
+		$('#new_visaIssueMonth').append('<option value=0>-----------------</option>');
+		
+		$('#new_doaDay').append('<option value=0>-----------</option>');
+		$('#new_dobDay').append('<option value=0>-----------</option>');
+		$('#new_vedDay').append('<option value=0>-----------</option>');
+		$('#new_schoolStartDay').append('<option value=0>-----------</option>');
+		$('#new_schoolEndDay').append('<option value=0>-----------</option>');
+		$('#new_visaIssueDay').append('<option value=0>-----------</option>');
 
 		//initialize month / day selector fields
 		for (i=0; i!= months.length ; i++ )
@@ -75,37 +99,35 @@
 				cache: false,
 				data:data_studentID,
 				success: function(resp) {
-					$('#existingNameEng').append(resp[0].name_eng);
-					$('#existingNameKor').append(resp[0].name_kor);
+					$('#newNameEngText').val(resp[0].name_eng);
+					$('#newNameKorText').val(resp[0].name_kor);
 					$('#existingGender').append(resp[0].gender);
+					existingGender = resp[0].gender;
 					$('#existingDOB').append(resp[0].birthdate);
-					$('#existingEmail').append(resp[0].email);
+					$('#newEmailText').val(resp[0].email);
 					latestversion = parseInt(resp[0].version,10) +1;
-					if (resp[0].phone == '')
-					{
-						$('#existingPhone').append('N/A');
-					} else {
-						$('#existingPhone').append(resp[0].phone);
-					}
+					
+					$('#newPhoneText').val(resp[0].phone);
 
-					if (resp[0].address == '')
-					{
-						$('#existingAddress').append('N/A');
-					} else {
-						$('#existingAddress').append(resp[0].address);
-					}
+					var existing_address = resp[0].address;
+					existing_address = existing_address.replace(/<br\s*[\/]?>/gi, "\n");
+
+					$('#newAddressText').val(existing_address);
+					
 					$('#existingDOA').append(resp[0].arrival_dt);
 					$('#existingVisaType').append(resp[0].visa_type);
+					existingVisaType = resp[0].visa_type;
 					$('#existingVisaIssue').append(resp[0].visa_issue_date);
-					$('#existingVisaExpiry').append(resp[0].visa_exp_date);
-					$('#existingKoreaAgency').append(resp[0].korea_agency);
 
-					if (resp[0].current_school == '')
-					{
-						$('#existingSchoolName').append('N/A');
-					} else {
-						$('#existingSchoolName').append(resp[0].current_school);
-					}
+					$('#existingVisaExpiry').append(resp[0].visa_exp_date);
+
+					$('#existingHowHearUs').append(resp[0].how_hear_us);
+					existingHowHearUs = resp[0].how_hear_us;
+
+					$('#newKoreaAgencyText').val(resp[0].korea_agency);
+
+					$('#newSchoolText').val(resp[0].current_school);
+
 
 					if (resp[0].current_school_strt_dt == '')
 					{
@@ -124,6 +146,17 @@
 		
 		});
 
+		$('#genderSelect').change(function() {
+			genderChange = true;
+		});
+
+		$('#newVisaTypeVal').change(function() {
+			visaTypeChange = true;
+		});
+
+		$('#newHowHearUsVal').change(function() {
+			howHearUsChange = true;
+		});
 
 		//when 'back' button is pressed, go back to 'view student' page for that student
 		$('#backButton').click(function() {
@@ -138,9 +171,28 @@
 			var new_eng_name = $('#newNameEngText').val();
 			var new_email = $('#newEmailText').val();
 			var new_phone = $('#newPhoneText').val();
-			var new_address = $('#newAddressText').val().replace(/\r\n|\r|\n/g,"<br />");
-			var new_visa_type = $('#newVisaTypeVal').val();
-			var new_gender = $('#genderSelect').val();
+			var new_address = $('#newAddressText').val();
+			if (visaTypeChange)
+			{
+				var new_visa_type = $('#newVisaTypeVal').val();
+			} else {
+				var new_visa_type = existingVisaType;
+			
+			}
+			
+			if (genderChange)
+			{
+				var new_gender = $('#genderSelect').val();
+			} else {
+				var new_gender = existingGender;
+			}
+
+			if (howHearUsChange)
+			{
+				var new_how_hear_us = $('#newHowHearUsVal').val();
+			} else {
+				var new_how_hear_us = existingHowHearUs;
+			}
 			
 			var new_visa_exp_date = '';
 			var new_date_of_birth = '';
@@ -222,6 +274,7 @@
 								 "visa_type" : new_visa_type,
 								 "visa_issue_date" : new_visa_issue_date,
 								 "visa_exp_date" : new_visa_exp_date,
+								 "how_hear_us" : new_how_hear_us,
 								 "korea_agency" : new_korea_agency,
 								 "school_name": new_school_name,
 								 "school_start_dt": new_school_start_date,

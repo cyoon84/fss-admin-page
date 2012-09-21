@@ -14,6 +14,7 @@
 	$new_arrival_date = $_POST['arrival_date'];
 	$new_visa_issue_date = $_POST['visa_issue_date'];
 	$new_visa_exp_date = $_POST['visa_exp_date'];
+	$new_how_hear_us = $_POST['how_hear_us'];
 	$new_korea_agency = $_POST['korea_agency'];
 	$new_school_name = $_POST['school_name'];
 	$new_school_start_date = $_POST['school_start_dt'];
@@ -26,28 +27,8 @@
 
 	mysql_query("update studentinfo set active_indicator ='N' where studentId = '$id' and version = '$latest_version'");
 
-	if ($new_eng_name == '') {
-		$new_eng_name = $active_row['name_eng'];
-	}
-
-	if ($new_kor_name == '') {
-		$new_kor_name = $active_row['name_kor'];
-	}
-
-	if ($new_email == '') {
-		$new_email = $active_row['email'];
-	}
-
 	if ($new_dob == '') {
 		$new_dob = $active_row['date_birth'];
-	}
-
-	if ($new_phone == '') {
-		$new_phone = $active_row['phone_no'];
-	}
-
-	if ($new_address == '') {
-		$new_address = $active_row['address'];
 	}
 
 	if ($new_arrival_date == '') {
@@ -60,14 +41,6 @@
 
 	if ($new_visa_exp_date == '') {
 		$new_visa_exp_date = $active_row['visa_exp_date'];
-	}
-
-	if ($new_korea_agency == '') {
-		$new_korea_agency = $active_row['korea_agency'];
-	}
-
-	if ($new_school_name == '') {
-		$new_school_name = $active_row['current_school'];
 	}
 
 	if ($new_school_start_date == '') {
@@ -94,6 +67,7 @@
 									, visa_type
 									, visa_issue_date
 									, visa_exp_date
+									, how_hear_us 
 									, korea_agency
 									, current_school
 									, current_school_strt_dt
@@ -114,6 +88,7 @@
 									,'$new_visa_type'
 									,'$new_visa_issue_date'
 									,'$new_visa_exp_date'
+									,'$new_how_hear_us'
 									,'$new_korea_agency'
 									,'$new_school_name'
 									,'$new_school_start_date'

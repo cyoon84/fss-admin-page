@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <link href="css/bootstrap.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <script src="http://code.jquery.com/jquery-1.8.0.js"></script>
@@ -34,26 +35,23 @@
 		<h2>Update student record</h2><br>
 
 		<div class="span8" style="margin-top:10px" id="viewArea">
-					<table class="table">
-		<tr>
-		<td style="width:25%"> Name (English)
-		<td>
-			<div id="existingNameEng"></div>
-			<br>
-			<div id="newNameEng" class="newValue">Enter new name <br>
-			<input id="newNameEngText" type="text">
-			</div>
-		</td>
-		</tr>
+		<table class="table">
+		
 		<tr>
 		<td style="width:25%"> Name (Korean)
 		<br>
 		</td>
 		<td>
-			<div id="existingNameKor"></div>
-			<br>
 			<div id="newNameKor" class="newValue">Enter new name <br>
 			<input id="newNameKorText" type="text"></div>
+		</td>
+		</tr>
+		<tr>
+		<td style="width:25%"> Name (English)
+		<td>
+			<div id="newNameEng" class="newValue">Enter new name <br>
+			<input id="newNameEngText" type="text">
+			</div>
 		</td>
 		</tr>
 		<tr>
@@ -83,23 +81,21 @@
 		</tr>
 		<tr>
 		<td> Email address</td>
-		<td> <div id="existingEmail"></div><br>
+		<td> 
 			<div id="newEmail" class="newValue"> Enter new email address<br>
 			<input id="newEmailText" type="text"></div>
 		</td>
 		</tr>
 		<tr>
 		<td> Phone Number </td>
-		<td > <div id="existingPhone"></div><br>
+		<td > 
 			<div id="newPhone" class="newValue">Enter new phone<br>
 			<input id="newPhoneText" type="text"></div>
 		</td>
 		</tr>
 		<tr>
 		<td> Address</td>
-		<td ><div id="existingAddress">
-		</div>
-		<br>
+		<td >
 		<div id="newAddress" class="newValue">Enter new address<br>
 			<textarea id="newAddressText" rows="3" class="span5"></textarea>
 		</div>
@@ -165,17 +161,33 @@
 		</td>
 		</tr>
 		<tr>
+		<td> How did you hear about us </td>
+		<td>
+			<div id="existingHowHearUs">
+
+			</div>
+			<br>
+			<div id="newHowHearUs" class="newValue">Select new visa type<br>
+				<select id="newHowHearUsVal" class="span2" name="newHowHearUsType">
+					<option>캐스모</option>
+					<option>한국 엽력업체</option>
+					<option>Walk in</option>
+				</select>
+			</div>
+
+					
+		</td>
+		</tr>
+		<tr>
 		<td> Name of Agency in Korea</td>
-		<td ><div id="existingKoreaAgency"></div>
-		<br>
+		<td >
 		<div id="newKoreaAgency" class="newValue"> Enter new agency in Korea name<br>
 			<input id="newKoreaAgencyText" type="text"></div>
 		</td>
 		</tr>
 		<tr>
 		<td> Current School Name</td>
-		<td ><div id="existingSchoolName"></div>
-		<br>
+		<td >
 		<div id="newSchool" class="newValue"> Enter new school name<br>
 			<input id="newSchoolText" type="text"></div>
 		</td>
@@ -197,7 +209,7 @@
 		<td> 
 			<div id="existingSchoolEnd"></div>
 			<br>
-			<div id="newSchoolEndDT" class="newValue">Enter new school end date (YYYY-MM-DD)<br>
+			<div id="newSchoolEndDT" class="newValue">Enter new school end date<br>
 				<select class="span2" id="new_schoolEndMonth" name="schoolEndMonth"></select>
 				<select class="span2" id="new_schoolEndDay" name="schoolEndDay"></select>
 				<input class="span2" id="new_schoolEndYear" name="schoolEndYear" placeholder="year (yyyy)">

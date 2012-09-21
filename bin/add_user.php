@@ -24,6 +24,8 @@
 
 	$visa_expiry_date = $_POST['visa_exp_date'];
 
+	$source_to_FSS = $_POST['source_to_FSS'];
+
 	$korean_agency = $_POST['korean_agency'];
 
 	$schoolName = $_POST['current_school'];
@@ -53,6 +55,7 @@
 									, visa_type
 									, visa_issue_date
 									, visa_exp_date
+									, how_hear_us
 									, korea_agency
 									, current_school
 									, current_school_strt_dt
@@ -73,6 +76,7 @@
 									,'$visa_type'
 									,'$visa_issue_date'
 									,'$visa_expiry_date'
+									,'$source_to_FSS'
 									,'$korean_agency'
 									,'$schoolName'
 									,'$school_strt_dt'

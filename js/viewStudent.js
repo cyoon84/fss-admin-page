@@ -15,28 +15,10 @@
 		$('#viewArea').empty();
 
 		var months = new Array("January","February","March","April","May","June","July","August","September","October","November","December");
-
-
-		for (i=0; i!= months.length ; i++ )
-		{
-			var actualmonth = i+1;
-			if (actualmonth < 10)
-			{
-				$('#visitMonth').append('<option value=0'+actualmonth+'>'+months[i]+'</option>');
-			} else {
-				$('#visitMonth').append('<option value='+actualmonth+'>'+months[i]+'</option>');
-			}
-		}
-
-		for (i=1; i!= 32  ; i++ )
-		{
-			if (i < 10)
-			{
-				$('#visitDay').append('<option>0'+i+'</option>');
-			} else {
-				$('#visitDay').append('<option>'+i+'</option>');
-			}
-		}
+		var today_date = new Date();
+		var today_str = getTodayDateString(today_date);
+	
+		$('#visitTodayDate').append(today_str+ " (today)");
 
 		var student_id = $.urlParam('id');
 
@@ -51,7 +33,6 @@
 		var data_studentID = {"studentId": student_id, "is_hidden": is_hidden};
 		var new_reminder_date ='';
 
-		var today_date = new Date();
 		var status = '';
 
 		if (is_hidden == 'Y')
@@ -76,17 +57,19 @@
 				dataType: "json",
 				data:data_studentID,
 				success: function(resp) {
+						var formatted_address = resp[0].address.replace(/\r\n|\r|\n/g,"<br />");
 						$('#viewArea').append("<table class='table'><tr><td style='width:25%'>Name (Korean) </td><td>"+resp[0].name_kor+"</td></tr>" 
 										+"<tr><td> Name (English)</td><td>"+resp[0].name_eng+"</td></tr>"
 										+"<tr><td> Gender </td><td>"+resp[0].gender+"</td></tr>"
 										+"<tr><td> Date of birth</td><td>"+resp[0].birthdate+"</td></tr>"
 										+"<tr><td> E-mail address</td><td>"+resp[0].email+"</td></tr>"
 										+"<tr><td> Phone</td><td>"+resp[0].phone+"</td></tr>"
-										+"<tr><td> Current Address</td><td>"+resp[0].address+"</td></tr>"
+										+"<tr><td> Current Address</td><td>"+formatted_address+"</td></tr>"
 										+"<tr><td> Date of Arrival</td><td>"+resp[0].arrival_dt+"</td></tr>"
 										+"<tr><td> Visa Type</td><td>"+resp[0].visa_type+"</td></tr>"
 										+"<tr><td> Visa Issue Date</td><td>"+resp[0].visa_issue_date+"</td></tr>"
 										+"<tr><td> Visa Expiry Date</td><td>"+resp[0].visa_exp_date+"</td></tr>"
+										+"<tr><td> How did you hear about us?</td><td>"+resp[0].how_hear_us+"</td></tr>"
 										+"<tr><td> Name of Agency in Korea</td><td>"+resp[0].korea_agency+"</td></tr>"
 										+"<tr><td> Current School</td><td>"+resp[0].current_school+"</td></tr>"
 										+"<tr><td> Current School Start Date</td><td>"+resp[0].current_school_strt_dt+"</td></tr>"
@@ -192,19 +175,9 @@
 		$('.follow_up').live('click',function() {
 			var remindId = this.id;
 			$(this).parent().parent().remove();
-			var today_year = today_date.getFullYear();
-			var today_month = today_date.getMonth()+1;
-			var today_day = today_date.getDate();
-
-			if (today_month >= 10)
-			{
-				var today_str = today_year + "-"+today_month+ "-"+today_day;
-			} else {
-				var today_str = today_year + "-0"+today_month + "-"+today_day;
-
-			}
 			
-
+			//get today date string
+			
 			$.ajax({
 				type:"POST",
 				url:"bin/update_reminder_record.php",
@@ -366,17 +339,19 @@
 				data:data_studentID,
 				success: function(resp) {
 					$('#viewArea').empty();
+					var formatted_address = resp[0].address.replace(/\r\n|\r|\n/g,"<br />");
 					$('#viewArea').append("<table class='table'><tr><td style='width:25%'>Name (Korean) </td><td>"+resp[0].name_kor+"</td></tr>" 
 										+"<tr><td> Name (English)</td><td>"+resp[0].name_eng+"</td></tr>"
 										+"<tr><td> Gender </td><td>"+resp[0].gender+"</td></tr>"
 										+"<tr><td> Date of birth</td><td>"+resp[0].birthdate+"</td></tr>"
 										+"<tr><td> E-mail address</td><td>"+resp[0].email+"</td></tr>"
 										+"<tr><td> Phone</td><td>"+resp[0].phone+"</td></tr>"
-										+"<tr><td> Current Address</td><td>"+resp[0].address+"</td></tr>"
+										+"<tr><td> Current Address</td><td>"+formatted_address+"</td></tr>"
 										+"<tr><td> Date of Arrival</td><td>"+resp[0].arrival_dt+"</td></tr>"
 										+"<tr><td> Visa Type</td><td>"+resp[0].visa_type+"</td></tr>"
 										+"<tr><td> Visa Issue Date</td><td>"+resp[0].visa_issue_date+"</td></tr>"
 										+"<tr><td> Visa Expiry Date</td><td>"+resp[0].visa_exp_date+"</td></tr>"
+										+"<tr><td> How did you hear about us?</td><td>"+resp[0].how_hear_us+"</td></tr>"
 										+"<tr><td> Name of Agency in Korea</td><td>"+resp[0].korea_agency+"</td></tr>"
 										+"<tr><td> Current School</td><td>"+resp[0].current_school+"</td></tr>"
 										+"<tr><td> Current School Start Date</td><td>"+resp[0].current_school_strt_dt+"</td></tr>"
@@ -434,21 +409,8 @@
 
 			var visit_purpose = $('#visit_purpose').val();
 			var visit_note = $('#visit_note').val();
-
-			var visit_Day = $('#visitDay').val();
-			var visit_Month = $('#visitMonth').val();
-			var visit_Year = $('#visitYear').val();
-
-			var visit_date = '';
-
-			if (visit_Year == "")
-			{
-				$('label#visit_year_error').show();
-				$('input#visitYear').focus();
-				return false;
-			} else {
-				visit_date = visit_Year +"-"+visit_Month +"-"+visit_Day; 
-			}
+			
+			var visit_date = today_str;
 
 			if (visit_purpose == "")
 			{
@@ -462,6 +424,9 @@
 				$('label#visit_note_error').show();
 				$('textarea#visit_note').focus();
 				return false;
+			} else {
+				visit_note = visit_note.replace(/\r\n|\r|\n/g,"<br />");
+
 			}
 
 
@@ -492,3 +457,21 @@
 
 
 	});
+
+
+	function getTodayDateString(today_date_obj) {
+		var today_year = today_date_obj.getFullYear();
+		var today_month = today_date_obj.getMonth()+1;
+		var today_day = today_date_obj.getDate();
+	
+		if (today_month >= 10)
+		{
+			var today_str = today_year + "-"+today_month+ "-"+today_day;
+		} else {
+			var today_str = today_year + "-0"+today_month + "-"+today_day;
+
+		}
+
+		return today_str;
+
+	}

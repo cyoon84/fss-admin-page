@@ -11,6 +11,20 @@
 		
 		$('#phoneNo').mask("999-999-9999",{placeholder:"9"});		
 
+		$('#doaMonth').append('<option value=0>-----------------</option>');
+		$('#dobMonth').append('<option value=0>-----------------</option>');
+		$('#vedMonth').append('<option value=0>-----------------</option>');
+		$('#schoolStartMonth').append('<option value=0>-----------------</option>');
+		$('#schoolEndMonth').append('<option value=0>-----------------</option>');
+		$('#visaIssueMonth').append('<option value=0>-----------------</option>');
+		
+		$('#doaDay').append('<option value=0>-----------</option>');
+		$('#dobDay').append('<option value=0>-----------</option>');
+		$('#vedDay').append('<option value=0>-----------</option>');
+		$('#schoolStartDay').append('<option value=0>-----------</option>');
+		$('#schoolEndDay').append('<option value=0>-----------</option>');
+		$('#visaIssueDay').append('<option value=0>-----------</option>');
+		
 		//initialize month / day selector boxes
 		for (i=0; i!= months.length ; i++ )
 		{
@@ -69,7 +83,7 @@
 			//fields to be validated
 			var engName = $('#nameEng').val();
 			var korName = $('#nameKor').val();
-			var address = $('#address').val().replace(/\r\n|\r|\n/g,"<br />");
+			var address = $('#address').val();
 
 			var email = $('#email').val();
 
@@ -107,6 +121,8 @@
 
 			var korAgencyName = $('#korAgencyName').val();
 			
+			var sourceToFSS = $('#sourceToFSS').val();
+
 			//do field validation
 			if (korName == "") {
 				$('label#nameKor_error').show();
@@ -152,6 +168,7 @@
 							"visa_type" : visaType, "visa_issue_date" : visaIssueDate, 
 							"visa_exp_date" : visaExpiryDate, "korean_agency" : korAgencyName, 
 							"current_school" : schoolName, "current_school_strt_dt" : schoolStartDT, 
+							"source_to_FSS" : sourceToFSS,
 							"current_school_end_dt" : schoolEndDT};
 		
 		
