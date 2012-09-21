@@ -10,7 +10,9 @@
 		}
 		$('.error').hide();
 		var months = new Array("January","February","March","April","May","June","July","August","September","October","November","December");
-		
+		$('#new_visitMonth').append('<option value=0>-----------------</option>');
+		$('#new_visitDay').append('<option value=0>-----------</option>');
+
 		for (i=0; i!= months.length ; i++ )
 		{
 			var actualmonth = i+1;

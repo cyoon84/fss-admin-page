@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <link href="css/bootstrap.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/datepicker.css" rel="stylesheet">
@@ -42,8 +43,17 @@
 			<li>Click on each column header to sort
 			<li>Enter any search keywords: phone number, date added, email, name (both Korean and English) to search
 			</ul>
+				Show students from: 
+				<select class="span2" id="category">
+					<option>All</option>
+					<option>캐스모</option>
+					<option>Walk In</option>
+					<option>한국 협력업체</option>
+				</select>
 			<br>
-		<table cellpadding="0" cellspacing="0" border="0" class="table table-bordered" id="result">
+			<br>
+
+	<table cellpadding="0" cellspacing="0" border="0" class="table table-bordered" id="result">
 	<thead>
 		<tr>
 			<th style="width:15%">Name (Korean)</th>

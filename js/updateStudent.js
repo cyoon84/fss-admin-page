@@ -187,7 +187,7 @@
 				var new_gender = existingGender;
 			}
 
-			if (howHearUsChange)
+			if (howHearUsChange || existingHowHearUs == '')
 			{
 				var new_how_hear_us = $('#newHowHearUsVal').val();
 			} else {

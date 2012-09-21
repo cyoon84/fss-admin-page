@@ -13,10 +13,30 @@ $(function() {
 		}
 	} );
 
+	
+	loadTable('All');
+
+
+	$('#category').change(function() {
+		var new_category = $('#category').val();
+		loadTable(new_category);
+	
+	});
+
+});
+
+function loadTable(category) {
+		
+	var loadTableCond = {"category": category};
+
+	resultTable.fnClearTable();
+
 	$.ajax({
+		type:"GET",
 		url:"bin/getAllUser.php",
 		dataType:"json",
 		cache: false,
+		data: loadTableCond,
 		success:function(resp) {
 			for (i=0;i!= resp.length ;i++ )
 			{
@@ -39,4 +59,5 @@ $(function() {
 		}
 	});
 
-});
+
+}

@@ -1,11 +1,22 @@
 <?php
 
 	include 'connection.php';
-	
 
-	$query = "SELECT * from studentinfo a inner join 
-		(SELECT `studentId`,max(`version`)  as max_version FROM `studentinfo` group by `studentId`) e 
-		where a.studentId = e.studentId and a.version = e.max_version  ";
+	$category = $_GET['category'];
+
+	if ($category == 'All') {
+
+		$query = "SELECT * from studentinfo a inner join 
+			(SELECT `studentId`,max(`version`)  as max_version FROM `studentinfo` group by `studentId`) e 
+			where a.studentId = e.studentId and a.version = e.max_version  ";
+
+	} else {
+		$query = "SELECT * from studentinfo a inner join 
+			(SELECT `studentId`,max(`version`)  as max_version FROM `studentinfo` group by `studentId`) e 
+			where a.studentId = e.studentId and a.version = e.max_version  and  a.how_hear_us = '$category'";
+
+	}
+	
 
 	$result = mysql_query($query, $con);
 
