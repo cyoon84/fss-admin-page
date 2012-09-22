@@ -61,12 +61,12 @@
 					<div class="modal-body" id="modal-body">
 					<table class="table">
 					<tr>
-					<td>Remind in
-					<td><input type="text" id="remindDays" name="remindDays" class="span1"> Days from Today
-						<label class="error" for="remindDays" id="remindDays_error"> This field is required </label>
-
-					<br>Reminder date:
-					<div id="remindAt"> </div>
+					<td>Reminder date
+					<td>
+						<select id="remindMonth" name="remindMonth" style="width:100px"></select>
+						<select id="remindDay" name="remindDay" style="width:70px"></select>
+						<input  id="remindYear" placeholder="year (yyyy)" name="remindYear" style="width:100px">
+						<label class="error" for="remindYear" id="remindYear_error">This field is required </label>
 					</tr>
 					<tr>
 					<td>Reason 
@@ -203,11 +203,11 @@
 						<table class='table' id='remindTable'>
 						<thead>
 							<tr>
-							<td>Days left</td>
-							<td>Reason</td>
-							<td> Follow up by </td> 
-							<td>Followed up </td> 
-							<td> Mark follow up</td>
+							<th>Days left</th>
+							<th>Reason</th>
+							<th> Follow up by </th> 
+							<th>Followed up </th> 
+							<th> <i class="icon-check"></i>&nbsp;Mark follow up</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -220,9 +220,9 @@
 						<table class='table' id='remindTable_old'>
 						<thead>
 							<tr>
-							<td width="20%">Followed up date</td> 
-							<td width="70%">Reason</td>
-							<td width="10%"> Delete? </td>
+							<th width="20%"><i class="icon-calendar"></i>&nbsp;Followed up date</th> 
+							<th width="60%">Reason</th>
+							<th width="20%"><i class="icon-trash"></i>&nbsp; Delete? </th>
 							</tr>
 						</thead>
 						<tbody>

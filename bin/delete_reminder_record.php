@@ -13,7 +13,7 @@
 	if (!mysql_query($query, $con)) {
 		die('Error: ' . mysql_error());
 	} else {
-		echo "Follow up complete";
+		echo "Removed from the database";
 	}
 
 	mysql_close($con);
