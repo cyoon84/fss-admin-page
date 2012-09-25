@@ -14,6 +14,23 @@
 - Can record visit record of each students, also able to edit / delete
 - Add a reminder for each students (e.g. not to forget to follow up with students for some important businesses such as visa extension, etc)
 
+## Working lists - as of September 25 ##
+
+- Add a new student
+- Search for students
+- Update, Delete students information
+-- For deleting a student, user can choose to permanently delete the record from the database or make it inactive for a time being (can be active again)
+- Add / edit/ delete new visit record for each students
+- Add a reminder and follow up on a reminder. When user followed up, it will show it under 'previous reminder' section. From 'previous reminder' section, user can choose to clear it out
+- Master list of students registered in the database
+
+## Working in progress - as of September 25 ##
+
+- Login / logout process (making use of JQuery Session Plugin - https://github.com/AlexChittock/JQuery-Session-Plugin )
+- Few miscellaneous enhancements requested by FSS Toronto Agency
+
+---
+
 ## Working lists - as of September 19 ##
 
 - Add a new student
