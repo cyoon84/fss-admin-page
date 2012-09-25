@@ -24,9 +24,7 @@ $(function () {
 				{
 					var random_id = randomString();
 					$.session.set('session_id', random_id);
-
 					$(document.location = 'index.html');
-
 				} else {
 					$('#loginresult').append("Invalid ID and Password, please try again!");
 
