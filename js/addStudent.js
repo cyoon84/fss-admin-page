@@ -3,6 +3,8 @@
 *
 */
 	$(function() {
+
+
 		//hide error message fields for 'required' fields
 		$('.error').hide();
 		var months = new Array("January","February","March","April","May","June","July","August","September","October","November","December");

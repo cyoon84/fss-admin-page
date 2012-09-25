@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title> Please log in - FSS Admin Page </title>
+  <link href="css/bootstrap.css" rel="stylesheet">
+  <link href="css/bootstrap-responsive.css" rel="stylesheet">
+  <link href="css/page-style.css" rel="stylesheet">
+  <script src="http://code.jquery.com/jquery-1.8.0.js"></script>
+  <script src="js/jquery.json-2.3.js"></script>
+  <script src="js/jquery.session.js"></script>
+  <script src="js/login.js"></script>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+ </head>
+
+ <body>
+ <div id="loginimg" class="login-div">
+	<img src="images/logo01.png" class="login-logo-img">
+	<br>
+	<br>
+	<br>
+	<p id="adminHeader"><span style="color:red" id="adminHeaderTxt"> Login </span> | <span id="adminHeaderTxt"> Admin Page</span></p>
+
+	<div class="well" id="loginenter">
+		<p> Please enter ID & Password to log in! </p>
+		<br>
+		<form class="form-horizontal">
+			<div class="control-group">
+				<label class="control-label" for="inputID">ID</label>
+					<div class="controls">
+						<input type="text" id="inputID" placeholder="ID">
+					</div>
+				</label>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="inputPWD">Password</label>
+					<div class="controls">
+						<input type="password" id="inputPWD" placeholder="Password">
+					</div>
+				</label>
+			</div>
+		</form>
+	</div>
+
+	<div id="loginresult">
+	</div>
+
+	<div id="loginButtonArea">
+		<button class="btn btn-large btn-primary" type="button" id="loginButton">Login</button>
+	</div>
+ </div>
+  
+ </body>
+</html>

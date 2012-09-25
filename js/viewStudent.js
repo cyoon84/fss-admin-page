@@ -149,8 +149,6 @@
 
 						reminder_old_Load(student_id);
 						
-
-
 						
 				}
 			});
@@ -387,6 +385,8 @@
 			window.location = url;
 
 		});
+
+		return false;
 
 
 	});
