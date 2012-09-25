@@ -83,6 +83,30 @@ CREATE TABLE IF NOT EXISTS `studentvisit` (
   PRIMARY KEY (`visit_index`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=10 ;
 
+
+--
+-- Table structure for table `userlist`
+--
+
+CREATE TABLE IF NOT EXISTS `userlist` (
+  `user_no` int(5) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
+  `pwd` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `first_name` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
+  `last_name` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`user_id`),
+  KEY `user_no` (`user_no`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `userlist` - test user id
+--
+
+INSERT INTO `userlist` (`user_no`, `user_id`, `pwd`, `first_name`, `last_name`, `email`) VALUES
+(1, 'test', 'cc03e747a6afbbcbf8be7668acfebee5', 'test', 'test', 'aaa@bb.com');
+
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
