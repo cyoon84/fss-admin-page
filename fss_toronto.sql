@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS `studentinfo` (
   `visa_type` varchar(20) NOT NULL,
   `visa_issue_date` varchar(10) NOT NULL,
   `visa_exp_date` varchar(10) NOT NULL,
+  `how_hear_us` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `korea_agency` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `current_school` varchar(50) NOT NULL,
   `current_school_strt_dt` varchar(10) NOT NULL,
@@ -48,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `studentinfo` (
   `updt_reason` varchar(100) DEFAULT NULL,
   `date_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`studentId`,`version`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 
 -- --------------------------------------------------------
