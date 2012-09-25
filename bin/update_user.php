@@ -15,6 +15,7 @@
 	$new_visa_issue_date = $_POST['visa_issue_date'];
 	$new_visa_exp_date = $_POST['visa_exp_date'];
 	$new_how_hear_us = $_POST['how_hear_us'];
+	$new_referred_by = $_POST['referred_by'];
 	$new_korea_agency = $_POST['korea_agency'];
 	$new_school_name = $_POST['school_name'];
 	$new_school_start_date = $_POST['school_start_dt'];
@@ -68,6 +69,7 @@
 									, visa_issue_date
 									, visa_exp_date
 									, how_hear_us 
+									, referred_by
 									, korea_agency
 									, current_school
 									, current_school_strt_dt
@@ -89,6 +91,7 @@
 									,'$new_visa_issue_date'
 									,'$new_visa_exp_date'
 									,'$new_how_hear_us'
+									,'$new_referred_by'
 									,'$new_korea_agency'
 									,'$new_school_name'
 									,'$new_school_start_date'

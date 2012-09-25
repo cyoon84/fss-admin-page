@@ -39,6 +39,7 @@
 			'visa_exp_date' => $row['visa_exp_date'],
 			'korea_agency' => $row['korea_agency'],
 			'how_hear_us' => $row['how_hear_us'],
+			'referred_by' => $row['referred_by'],
 			'current_school' => $row['current_school'],
 			'current_school_strt_dt' => $row['current_school_strt_dt'],
 			'current_school_end_dt' => $row['current_school_end_dt'],

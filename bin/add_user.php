@@ -26,6 +26,8 @@
 
 	$source_to_FSS = $_POST['source_to_FSS'];
 
+	$referrer_name = $_POST['referrer_name'];
+
 	$korean_agency = $_POST['korean_agency'];
 
 	$schoolName = $_POST['current_school'];
@@ -56,6 +58,7 @@
 									, visa_issue_date
 									, visa_exp_date
 									, how_hear_us
+									, referred_by
 									, korea_agency
 									, current_school
 									, current_school_strt_dt
@@ -77,6 +80,7 @@
 									,'$visa_issue_date'
 									,'$visa_expiry_date'
 									,'$source_to_FSS'
+									,'$referrer_name'
 									,'$korean_agency'
 									,'$schoolName'
 									,'$school_strt_dt'

@@ -169,7 +169,6 @@
 				data: data_getVisit_Parm,
 				success: function(resp) {
 					$('#delVisitConfirm').modal('hide');
-					alert(resp);
 					var url = "viewStudent.html?id="+student_id+"&hidden=N";
 					window.location = url;
 				}

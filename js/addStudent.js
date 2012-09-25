@@ -11,7 +11,7 @@
 		
 		var newId = 0;
 		
-		$('#phoneNo').mask("999-999-9999",{placeholder:"9"});		
+		$('#phoneNo').mask("999-999-9999");		
 
 		$('#doaMonth').append('<option value=0>-----------------</option>');
 		$('#dobMonth').append('<option value=0>-----------------</option>');
@@ -125,6 +125,13 @@
 			
 			var sourceToFSS = $('#sourceToFSS').val();
 
+			if (sourceToFSS == 0)
+			{
+				sourceToFSS = '';
+			}
+
+			var referrerName = $('#refferNameText').val();
+
 			//do field validation
 			if (korName == "") {
 				$('label#nameKor_error').show();
@@ -168,9 +175,9 @@
 							"email": email, "phone_no" : phoneNo, 
 							"address" : address, "arrival_date" : doa, 
 							"visa_type" : visaType, "visa_issue_date" : visaIssueDate, 
-							"visa_exp_date" : visaExpiryDate, "korean_agency" : korAgencyName, 
+							"visa_exp_date" : visaExpiryDate, "korean_agency" : korAgencyName,
 							"current_school" : schoolName, "current_school_strt_dt" : schoolStartDT, 
-							"source_to_FSS" : sourceToFSS,
+							"source_to_FSS" : sourceToFSS, "referrer_name" : referrerName,
 							"current_school_end_dt" : schoolEndDT};
 		
 		
@@ -195,6 +202,16 @@
 			window.location = url;
 		});
 
-	
+		$('#sourceToFSS').change(function() {
+			if ($('#sourceToFSS').val() == 'Referral')
+			{
+				$('#referrerName').show();
+			} else {
+				$('#referrerName').hide();
+				$('#refferNameText').val("");
+			}
+
+
+		});
 
 	});

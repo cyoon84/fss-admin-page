@@ -22,6 +22,7 @@ $(function () {
 			success: function(resp) {
 				if (resp == 0)
 				{
+					$('#loginresult').append("ID / Password verified!");
 					var random_id = randomString();
 					$.session.set('session_id', random_id);
 					$(document.location = 'index.html');

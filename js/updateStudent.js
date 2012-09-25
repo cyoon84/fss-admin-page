@@ -22,7 +22,7 @@
 		var howHearUsChange = false;
 		var existingHowHearUs = '';
 
-		$('#newPhoneText').mask("999-999-9999",{placeholder:"9"});		
+		$('#newPhoneText').mask("999-999-9999");		
 
 
 		$('#new_doaMonth').append('<option value=0>-----------------</option>');
@@ -128,6 +128,7 @@
 
 					$('#newSchoolText').val(resp[0].current_school);
 
+					$('#referrerNameText_new').val(resp[0].referred_by);
 
 					if (resp[0].current_school_strt_dt == '')
 					{
@@ -172,6 +173,9 @@
 			var new_email = $('#newEmailText').val();
 			var new_phone = $('#newPhoneText').val();
 			var new_address = $('#newAddressText').val();
+
+			var new_referrer_name = $('#referrerNameText_new').val();
+
 			if (visaTypeChange)
 			{
 				var new_visa_type = $('#newVisaTypeVal').val();
@@ -190,8 +194,20 @@
 			if (howHearUsChange || existingHowHearUs == '')
 			{
 				var new_how_hear_us = $('#newHowHearUsVal').val();
+
+				if (new_how_hear_us == 0)
+				{
+					var new_how_hear_us = existingHowHearUs;
+				}
 			} else {
 				var new_how_hear_us = existingHowHearUs;
+
+
+			}
+
+			if (existingHowHearUs == 'Referral' && new_how_hear_us != 'Referral')
+			{
+				new_referrer_name = '';
 			}
 			
 			var new_visa_exp_date = '';
@@ -275,6 +291,7 @@
 								 "visa_issue_date" : new_visa_issue_date,
 								 "visa_exp_date" : new_visa_exp_date,
 								 "how_hear_us" : new_how_hear_us,
+								 "referred_by" : new_referrer_name,
 								 "korea_agency" : new_korea_agency,
 								 "school_name": new_school_name,
 								 "school_start_dt": new_school_start_date,
@@ -298,6 +315,17 @@
 		});
 
 
+		$('#newHowHearUsVal').change(function() {
+			if ($('#newHowHearUsVal').val() == 'Referral')
+			{
+				$('#referrerName_new').show();
+			} else {
+				$('#referrerName_new').hide();
+				$('#refferNameText').val("");
+			}
+
+
+		});
 
 		
 
