@@ -6,6 +6,9 @@
 	$(function() {
 		//function to get parameter (id #) from the url
 
+		var current_userid = $.session.get('session_userid');
+
+
 		$.urlParam = function(name){
 			var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
 			return results[1] || 0;
@@ -296,7 +299,8 @@
 								 "school_name": new_school_name,
 								 "school_start_dt": new_school_start_date,
 								 "school_end_dt" : new_school_end_date,
-								 "update_reason" : update_reason
+								 "update_reason" : update_reason,
+								 "updated_by": current_userid
 								};
 
 			$.ajax({

@@ -16,7 +16,8 @@
 			'student_id' => $row['studentId'],
 			'visit_date' => $row['visit_date'],
 			'visit_purpose' => $row['visit_purpose'],
-			'visit_note' => $row['visit_note']
+			'visit_note' => $row['visit_note'],
+			'user_id' => $row['user_id']
 		);
 	}
 

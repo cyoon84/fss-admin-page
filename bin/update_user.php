@@ -21,6 +21,7 @@
 	$new_school_start_date = $_POST['school_start_dt'];
 	$new_school_end_date = $_POST['school_end_dt'];
 	$update_reason = $_POST['update_reason'];
+	$updated_by = $_POST['updated_by'];
 
 	$active_row = mysql_fetch_array(mysql_query("select * from studentinfo where studentId='$id' and active_indicator = 'Y'"));
 	
@@ -74,7 +75,8 @@
 									, current_school
 									, current_school_strt_dt
 									, current_school_end_dt
-									, updt_reason) 
+									, updt_reason
+									, user_id) 
 									VALUES 
 									('$id'
 									,'$new_version'
@@ -96,7 +98,8 @@
 									,'$new_school_name'
 									,'$new_school_start_date'
 									,'$new_school_end_date'
-									,'$update_reason')";
+									,'$update_reason'
+									,'$updated_by')";
 
 	if (!mysql_query($insert_query, $con)) {
 		die('Error: ' . mysql_error());

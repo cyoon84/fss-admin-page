@@ -5,6 +5,8 @@
 var resultTable;
 
 $(function() {
+
+
 	resultTable = $('#result').dataTable( {
 		"sDom": "<'row'<'span4'l><'span4'f>r>t<'row'<'span4'i><'span4'p>>",
 		"sPaginationType": "bootstrap",

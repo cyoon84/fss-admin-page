@@ -46,6 +46,9 @@
 
 		var today_str = getTodayDateString(today_date);
 	
+		var current_userid = $.session.get('session_userid');
+		
+
 		$('#visitTodayDate').append(today_str+ " (today)");
 
 		var student_id = $.urlParam('id');
@@ -118,8 +121,9 @@
 						for (i=0;i!=resp.length ;i++ )
 						{
 							var visitNum = i+1;
-							$('#visitRecordTable tbody').append('<tr><td rowspan="4" width="10%">'+visitNum+ '</td><td width="20%"> Visit Date </td><td>' + resp[i].visit_date+ '</td></tr>'
-							+'<tr><td> Visit Purpose</td><td>'+ resp[i].visit_purpose+ '</tr><tr><td> Notes<td>' + resp[i].visit_note + '</td></tr>' 
+							$('#visitRecordTable tbody').append('<tr><td rowspan="5" width="10%">'+visitNum+ '</td><td width="20%"> Visit Date </td><td>' + resp[i].visit_date+ '</td></tr>'
+							+'<tr><td> Visit Purpose</td><td>'+ resp[i].visit_purpose+ '</tr><tr><td> Notes<td>' + resp[i].visit_note + '</td></tr>'
+							+'<tr><td> Added by </td><td>'+ resp[i].user_id+ '</td></tr>' 
 							+'<tr><td colspan="2"><a href="editVisitRecord.html?visit_id='+resp[i].visit_index+'&student_id='+student_id+'">Edit / Delete this record</a> </td></tr>');
 						}
 		
@@ -141,7 +145,7 @@
 				type:"POST",
 				url:"bin/update_reminder_record.php",
 				cache: false,
-				data:{"reminderIndex": remindId, "follow_up_date": today_str},
+				data:{"reminderIndex": remindId, "follow_up_date": today_str,"updated_by": current_userid},
 				success:function(resp) {												
 						
 						reminderLoad(student_id);
@@ -255,7 +259,7 @@
 			}
 
 
-			var data_reminder = {"studentId": student_id, "reminder_date": new_reminder_date, "reason": reason_replaced};
+			var data_reminder = {"studentId": student_id, "reminder_date": new_reminder_date, "reason": reason_replaced,"added_by": current_userid};
 
 			$.ajax({
 				type: "POST",
@@ -357,7 +361,7 @@
 			}
 
 
-			var data_visit = {"studentId": student_id, "date": visit_date, "purpose": visit_purpose, "note" : visit_note};
+			var data_visit = {"studentId": student_id, "date": visit_date, "purpose": visit_purpose, "note" : visit_note,"updated_by": current_userid};
 
 			$.ajax({
 				type: "POST",
@@ -418,7 +422,8 @@
 				+"<tr><td> Current School Start Date</td><td>"+resp[0].current_school_strt_dt+"</td></tr>"
 				+"<tr><td> Current School End Date</td><td>"+resp[0].current_school_end_dt+"</td></tr>"
 				+"<tr><td> Active status</td><td>"+status+"</td></tr>"
-				+"<tr><td> Update reason </td><td>"+resp[0].updt_reason+"</td></tr></table>");
+				+"<tr><td> Update reason </td><td>"+resp[0].updt_reason+"</td></tr>"
+				+"<tr><td> Added / updated by </td><td>"+resp[0].user_id+"</td></tr></table>");
 		} else {
 			$('#viewArea').append("<table class='table'><tr><td style='width:25%'>Name (Korean) </td><td>"+resp[0].name_kor+"</td></tr>" 
 				+"<tr><td> Name (English)</td><td>"+resp[0].name_eng+"</td></tr>"
@@ -438,7 +443,8 @@
 				+"<tr><td> Current School Start Date</td><td>"+resp[0].current_school_strt_dt+"</td></tr>"
 				+"<tr><td> Current School End Date</td><td>"+resp[0].current_school_end_dt+"</td></tr>"
 				+"<tr><td> Active status</td><td>"+status+"</td></tr>"
-				+"<tr><td> Update reason </td><td>"+resp[0].updt_reason+"</td></tr></table>");	
+				+"<tr><td> Update reason </td><td>"+resp[0].updt_reason+"</td></tr>"
+				+"<tr><td> Added / updated by </td><td>"+resp[0].user_id+"</td></tr></table>");
 
 
 		}
@@ -492,7 +498,7 @@
 
 								var diff_days = Math.round(diff_ms / ONE_DAY);
 							
-								$('#remindTable tbody').append("<tr class='warning'><td>"+ diff_days + "</td><td>" + remindReason+ "</td><td>" +remindDate+ "</td><td>"+follow_up_ind+"</td><td><input type='button' value='followed up' class='follow_up' id='"+resp[i].reminderIndex+"'></td></tr>"); 
+								$('#remindTable tbody').append("<tr'><td>"+ diff_days + "</td><td>" + remindReason+ "</td><td>" +remindDate+ "</td><td>"+follow_up_ind+"</td><td><input type='button' value='followed up' class='follow_up' id='"+resp[i].reminderIndex+"'></td></tr>"); 
 							
 								
 							
@@ -533,8 +539,9 @@
 							var remindReason = $.evalJSON(encode_row).remindReason;
 							var remindDate = $.evalJSON(encode_row).remindDate;
 							var follow_up_date =  $.evalJSON(encode_row).follow_up_date;
+							var follow_up_userid = $.evalJSON(encode_row).user_id;
 
-							$('#remindTable_old tbody').append("<tr><td>"+ follow_up_date + "</td><td>" + remindReason+ "</td><td><input type='button' value='Delete' class='clear_old_follow_up' id='"+resp[i].reminderIndex+"'></td></tr>"); 
+							$('#remindTable_old tbody').append("<tr><td>"+ follow_up_date + "</td><td>" + remindReason+ "</td><td>"+follow_up_userid+"<td><input type='button' value='Delete' class='clear_old_follow_up' id='"+resp[i].reminderIndex+"'></td></tr>"); 
 							
 						}
 					} else {

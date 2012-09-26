@@ -9,6 +9,11 @@
 			return results[1] || 0;
 		}
 		$('.error').hide();
+
+		var current_userid = $.session.get('session_userid');
+
+
+
 		var months = new Array("January","February","March","April","May","June","July","August","September","October","November","December");
 		$('#new_visitMonth').append('<option value=0>-----------------</option>');
 		$('#new_visitDay').append('<option value=0>-----------</option>');
@@ -80,7 +85,7 @@
 			} else {
 				visit_date = visitYear + "-"+visitMonth+"-"+visitDay;
 
-				var data_visit = {"visit_record_id": visit_record_id, "studentId": student_id, "date": visit_date};
+				var data_visit = {"visit_record_id": visit_record_id, "studentId": student_id, "date": visit_date, "updated_by": current_userid};
 				
 				$.ajax({
 					type: "POST",
@@ -106,7 +111,7 @@
 
 			var visit_purpose = $('#visit_purpose').val();
 
-			var data_visit = {"visit_record_id": visit_record_id, "studentId": student_id, "visit_purpose": visit_purpose};
+			var data_visit = {"visit_record_id": visit_record_id, "studentId": student_id, "visit_purpose": visit_purpose, "updated_by": current_userid};
 			
 			$.ajax({
 				type: "POST",
@@ -138,7 +143,7 @@
 			} else {
 
 				visit_note = visit_note.replace(/\r\n|\r|\n/g,"<br />");
-				var data_visit = {"visit_record_id": visit_record_id, "studentId": student_id, "visit_note": visit_note};
+				var data_visit = {"visit_record_id": visit_record_id, "studentId": student_id, "visit_note": visit_note,"updated_by": current_userid};
 				
 				$.ajax({
 					type: "POST",

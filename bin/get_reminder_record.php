@@ -25,7 +25,8 @@
 			'remindDate' => $row['remindDate'],
 			'remindReason' => $row['remindReason'],
 			'follow_up_ind' => $row['follow_up_ind'],
-			'follow_up_date' => $row['follow_up_date']
+			'follow_up_date' => $row['follow_up_date'],
+			'user_id' => $row['user_id']
 		);
 	}
 
