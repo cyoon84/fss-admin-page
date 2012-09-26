@@ -504,7 +504,7 @@
 							
 						}
 					} else {
-						$('#remindTable tbody').append("<tr><td colspan='5'><center><h3>There is no reminder for this student</h3></center></td></tr>");
+						$('#remindTable tbody').append("<tr><td colspan='4'><center><h3>There is no reminder for this student</h3></center></td></tr>");
 					}
 
 					
@@ -545,7 +545,7 @@
 							
 						}
 					} else {
-						$('#remindTable_old tbody').append("<tr><td colspan='3'><center><h3>There is no reminder for this student</h3></center></td></tr>");
+						$('#remindTable_old tbody').append("<tr><td colspan='4'><center><h3>There is no reminder for this student</h3></center></td></tr>");
 					}
 
 					

@@ -106,18 +106,20 @@
 		$query="INSERT INTO studentvisit (studentId
 									, visit_date
 									, visit_purpose
-									, visit_note) 
+									, visit_note
+									, user_id) 
 									VALUES 
 									('$new_id'
 									,'$visit_date'
 									,'$visit_purpose'
-									,'$visit_note')";
+									,'$visit_note'
+									,'$user_id')";
 		for ($i = 1; $i != $init_visit_numbers; $i++) {
 			$visit_date = $visitLists[$i]['visitDate'];
 			$visit_purpose = $visitLists[$i]['visitPurpose'];
 			$visit_note = $visitLists[$i]['visitNote'];
 
-			$query = $query. ",('$new_id','$visit_date','$visit_purpose','$visit_note')";
+			$query = $query. ",('$new_id','$visit_date','$visit_purpose','$visit_note','$user_id')";
 			
 				
 		}
