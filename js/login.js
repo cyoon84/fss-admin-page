@@ -25,6 +25,7 @@ $(function () {
 					$('#loginresult').append("ID / Password verified!");
 					var random_id = randomString();
 					$.session.set('session_id', random_id);
+					$.session.set('session_userid', id);
 					$(document.location = 'index.html');
 				} else {
 					$('#loginresult').append("Invalid ID and Password, please try again!");

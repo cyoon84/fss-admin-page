@@ -3,71 +3,24 @@
 *
 */
 	$(function() {
-
+		
+		var current_userid = $.session.get('session_userid');
+		var visitRows = 0;
 
 		//hide error message fields for 'required' fields
 		$('.error').hide();
-		var months = new Array("January","February","March","April","May","June","July","August","September","October","November","December");
 		
 		var newId = 0;
 		
 		$('#phoneNo').mask("999-999-9999");		
 
-		$('#doaMonth').append('<option value=0>-----------------</option>');
-		$('#dobMonth').append('<option value=0>-----------------</option>');
-		$('#vedMonth').append('<option value=0>-----------------</option>');
-		$('#schoolStartMonth').append('<option value=0>-----------------</option>');
-		$('#schoolEndMonth').append('<option value=0>-----------------</option>');
-		$('#visaIssueMonth').append('<option value=0>-----------------</option>');
-		
-		$('#doaDay').append('<option value=0>-----------</option>');
-		$('#dobDay').append('<option value=0>-----------</option>');
-		$('#vedDay').append('<option value=0>-----------</option>');
-		$('#schoolStartDay').append('<option value=0>-----------</option>');
-		$('#schoolEndDay').append('<option value=0>-----------</option>');
-		$('#visaIssueDay').append('<option value=0>-----------</option>');
-		
-		//initialize month / day selector boxes
-		for (i=0; i!= months.length ; i++ )
-		{
-			var actualmonth = i+1;
-			if (actualmonth < 10)
-			{
-				$('#doaMonth').append('<option value=0'+actualmonth+'>'+months[i]+'</option>');
-				$('#dobMonth').append('<option value=0'+actualmonth+'>'+months[i]+'</option>');
-				$('#vedMonth').append('<option value=0'+actualmonth+'>'+months[i]+'</option>');
-				$('#schoolStartMonth').append('<option value=0'+actualmonth+'>'+months[i]+'</option>');
-				$('#schoolEndMonth').append('<option value=0'+actualmonth+'>'+months[i]+'</option>');
-				$('#visaIssueMonth').append('<option value=0'+actualmonth+'>'+months[i]+'</option>');
-			} else {
-				$('#doaMonth').append('<option value='+actualmonth+'>'+months[i]+'</option>');
-				$('#dobMonth').append('<option value='+actualmonth+'>'+months[i]+'</option>');
-				$('#vedMonth').append('<option value='+actualmonth+'>'+months[i]+'</option>');
-				$('#schoolStartMonth').append('<option value='+actualmonth+'>'+months[i]+'</option>');
-				$('#schoolEndMonth').append('<option value='+actualmonth+'>'+months[i]+'</option>');
-				$('#visaIssueMonth').append('<option value='+actualmonth+'>'+months[i]+'</option>');
-			}
-		}
+		initializeDateSelector('#doaDay', '#doaMonth');
+		initializeDateSelector('#dobDay', '#dobMonth');
+		initializeDateSelector('#vedDay', '#vedMonth');
+		initializeDateSelector('#schoolStartDay', '#schoolStartMonth');
+		initializeDateSelector('#schoolEndDay', '#schoolEndMonth');
+		initializeDateSelector('#visaIssueDay', '#visaIssueMonth');
 
-		for (i=1; i!= 32  ; i++ )
-		{
-			if (i < 10)
-			{
-				$('#doaDay').append('<option>0'+i+'</option>');
-				$('#dobDay').append('<option>0'+i+'</option>');
-				$('#vedDay').append('<option>0'+i+'</option>');
-				$('#schoolStartDay').append('<option>0'+i+'</option>');
-				$('#schoolEndDay').append('<option>0'+i+'</option>');
-				$('#visaIssueDay').append('<option>0'+i+'</option>');
-			} else {
-				$('#doaDay').append('<option>'+i+'</option>');
-				$('#dobDay').append('<option>'+i+'</option>');
-				$('#vedDay').append('<option>'+i+'</option>');
-				$('#schoolStartDay').append('<option>'+i+'</option>');
-				$('#schoolEndDay').append('<option>'+i+'</option>');
-				$('#visaIssueDay').append('<option>'+i+'</option>');
-			}
-		}
 
 		//when 'add' button is clicked
 		$('#addButton').click(function() {
@@ -178,8 +131,41 @@
 							"visa_exp_date" : visaExpiryDate, "korean_agency" : korAgencyName,
 							"current_school" : schoolName, "current_school_strt_dt" : schoolStartDT, 
 							"source_to_FSS" : sourceToFSS, "referrer_name" : referrerName,
-							"current_school_end_dt" : schoolEndDT};
+							"user_id" : current_userid,
+							"current_school_end_dt" : schoolEndDT,
+							"initial_visits": []};
 		
+
+			if (visitRows > 0)
+			{		
+				for (i=0;i!=visitRows ;i++ )
+				{
+					var idnum = i + 1;
+					var visitDayId = '#visitDay'+idnum;
+					var visitMonthId = '#visitMonth'+idnum;
+					var visitYearId = '#visitYear'+ idnum;
+				
+					var visitPurposeId = '#visitPurpose'+idnum;
+					var visitNoteId = '#visitNote'+idnum;
+
+					var visitYearVal = $(visitYearId).val();
+					var visitMonthVal = $(visitMonthId).val();
+					var visitDayVal = $(visitDayId).val();
+
+					var visitPurposeVal = $(visitPurposeId).val();
+					var visitNoteVal = $(visitNoteId).val();
+
+					var visitDateString = visitYearVal+"-"+visitMonthVal+"-"+visitDayVal;
+
+
+
+					var list = {"visitDate": visitDateString, "visitPurpose": visitPurposeVal, "visitNote" : visitNoteVal};
+
+					dataInsert.initial_visits.push(list);
+			
+				}
+
+			}
 		
 			$.ajax({
 				type: "POST",
@@ -214,4 +200,65 @@
 
 		});
 
+		$('#addMoreVisitRow').click(function() {
+
+			visitRows++;
+
+			$('#initialVisitRecords tbody').append('<tr><td rowspan=3">'+visitRows+'<td style="width:25%"> Visit Date<td><select class="span2" id="visitMonth'+visitRows+'" name="visitMonth"></select>'
+						+'<select class="span2" id="visitDay'+visitRows+'" name="visitDay"></select>'
+						+'<input class="span2" id="visitYear'+visitRows+'" placeholder="year (yyyy)" name="visitYear">'
+			+'</tr><tr><td> Visit Purpose<td> <input class="span3" type="text" id="visitPurpose'+visitRows+'"></tr><tr><td> Note<td> <textarea rows="3" id="visitNote'+visitRows+'" class="span5"></textarea></tr><tr><td colspan=3 style="text-align:right"><button class="deleteVisitRow">Delete</button></tr>');
+
+			var day_selector_id = "#visitDay"+visitRows;
+			var month_selector_id = "#visitMonth"+visitRows;
+
+			initializeDateSelector(day_selector_id, month_selector_id);
+			
+		});
+
+
+		$('#initialVisitRecords').on("click",".deleteVisitRow",function() {
+			$('#initialVisitRecords tbody tr').slice(-4).remove();
+			visitRows --;
+		});
+
+		$('#reset').click(function() {
+				var rowsToDelete = visitRows * -4;
+				$('#initialVisitRecords tbody tr').slice(rowsToDelete).remove();
+
+				visitRows = 0;
+
+		});
+
 	});
+
+
+	function initializeDateSelector(id_day, id_month) {
+		var months = new Array("January","February","March","April","May","June","July","August","September","October","November","December");
+
+		$(id_month).append('<option value=0>-----------------</option>');
+		$(id_day).append('<option value=0>-----------</option>');
+
+		for (i=0; i!= months.length ; i++ )
+		{
+			var actualmonth = i+1;
+			if (actualmonth < 10)
+			{
+				$(id_month).append('<option value=0'+actualmonth+'>'+months[i]+'</option>');
+			} else {
+				$(id_month).append('<option value='+actualmonth+'>'+months[i]+'</option>');
+			}
+		}
+
+		for (i=1; i!= 32  ; i++ )
+		{
+			if (i < 10)
+			{
+				$(id_day).append('<option>0'+i+'</option>');
+			} else {
+				$(id_day).append('<option>'+i+'</option>');
+			}
+		}
+		
+
+	};

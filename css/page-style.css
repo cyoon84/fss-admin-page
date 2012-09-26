@@ -15,6 +15,13 @@ url('../fonts/helveticaneueltstd-roman-webfont.eot') format('embedded-opentype')
 	text-align:center;
 }
 
+
+
+#headerName {
+	border-style:dotted;
+
+}
+
 #adminHeader {
 	font-size:25px;
 	text-align:center;
@@ -48,5 +55,11 @@ url('../fonts/helveticaneueltstd-roman-webfont.eot') format('embedded-opentype')
 	width:500px;
 	margin: 20px auto;
 	text-align:right;
+
+}
+
+#add_submitbuttonarea{
+	text-align:right;
+
 
 }

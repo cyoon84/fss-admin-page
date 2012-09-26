@@ -36,6 +36,9 @@
 
 	$school_end_dt = $_POST ['current_school_end_dt'];
 
+	$user_id = $_POST['user_id'];
+
+	$visitLists = $_POST['initial_visits'];
 
 	$last_id = mysql_query("select max(studentId) from studentinfo");
 	$last_id = mysql_fetch_array($last_id,MYSQL_BOTH);
@@ -63,6 +66,7 @@
 									, current_school
 									, current_school_strt_dt
 									, current_school_end_dt
+									, user_id
 									, updt_reason) 
 									VALUES 
 									('$new_id'
@@ -85,14 +89,49 @@
 									,'$schoolName'
 									,'$school_strt_dt'
 									,'$school_end_dt'
+									,'$user_id'
 									,'Initial record')";
 
 	if (!mysql_query($query, $con)) {
 		die('Error: ' . mysql_error());
 	}
+
+	$init_visit_numbers = count($visitLists);
+
+	if ($init_visit_numbers > 0) {
+		$visit_date = $visitLists[0]['visitDate'];
+		$visit_purpose = $visitLists[0]['visitPurpose'];
+		$visit_note = $visitLists[0]['visitNote'];
+		
+		$query="INSERT INTO studentvisit (studentId
+									, visit_date
+									, visit_purpose
+									, visit_note) 
+									VALUES 
+									('$new_id'
+									,'$visit_date'
+									,'$visit_purpose'
+									,'$visit_note')";
+		for ($i = 1; $i != $init_visit_numbers; $i++) {
+			$visit_date = $visitLists[$i]['visitDate'];
+			$visit_purpose = $visitLists[$i]['visitPurpose'];
+			$visit_note = $visitLists[$i]['visitNote'];
+
+			$query = $query. ",('$new_id','$visit_date','$visit_purpose','$visit_note')";
+			
+				
+		}
+
+		
+		
+		if (!mysql_query($query, $con)) {
+			die('Error: ' . mysql_error());
+		}
+
+
+	}
 	
 	echo $new_id;
-	
 
 	mysql_close($con);
 ?>

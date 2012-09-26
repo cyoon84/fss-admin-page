@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/page-style.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <script src="http://code.jquery.com/jquery-1.8.0.js"></script>
 <script src="js/jquery.maskedinput-1.3.js"></script>
@@ -41,8 +42,20 @@
 	</div>
 </div>	
 
-<div class="span12" style="margin-top:10px">
-<h3>FSS Toronto</h3>
+
+<div class="span12" style="margin-top:10px" id="top-header">
+	<div class="row">
+		<div class="span10">
+			<h3>FSS Toronto</h3>
+		</div>
+		
+	
+		<div class="span2">
+			<div id="currentUserName">
+			</div>
+		</div>
+	</div>
+
 </div>
 
 <div class="span12">
@@ -78,143 +91,167 @@
 	</div>	
 
 
+	<div class="span8">
+		<div class="span8 well well-large" style="margin-top:10px">
+		
+			<h2>Add a new student</h2>
 
-	<div class="span8 well well-large" style="margin-top:10px">
-	
-		<h2>Add a new student</h2>
+			<br>
+			<form id="newStudent">
+				<table class="table">
+					<tr>
+					<td style="width:25%"> Name (Korean)</td>
+					<td>
 
-		<br>
-		<form id="newStudent">
-		<table class="table">
-		<tr>
-		<td style="width:25%"> Name (Korean)</td>
-		<td>
+						<input type="text" id="nameKor" name="nameKor"> 
+						<label class="error" for="nameKor" id="nameKor_error"> This field is required </label>
+					</td>
+					</tr>
+					<tr>
+					<td style="width:25%"> Name (English)</td>
+					<td>
+						<input type="text" id="nameEng" name="nameEng"> 
+					</td>
+					</tr>
+					<tr>
+					<td> Gender </td>
+					<td> 
+						<select id="gender" class="span2" name="gender">
+							<option>Male</option>
+							<option>Female</option>
+						</select>
+					</td>
+					</tr>
+					<tr>
+					<td> Date of Birth</td>
+					<td>
+						<select class="span2" id="dobMonth" name="dobMonth"></select>
+						<select class="span2" id="dobDay" name="dobDay"></select>
+						<input class="span2" id="dobYear" placeholder="year (yyyy)" name="dobYear">
+					
+					</td>
+					</tr>
+					<tr>
+					<td> Email address</td>
+					<td> <input type="text" id="email" name="email">
+					</td>
+					</tr>
+					<tr>
+					<td> Phone Number </td>
+					<td > <input type="text" id="phoneNo"> </td>
+					</tr>
+					<tr>
+					<td> Address</td>
+					<td ><textarea rows="3" id="address" class="span5" name="address"> </textarea> 
+					</td>
+					</tr>
+					<tr>
+					<td> Date of Arrival</td>
+					<td> 
+						<select class="span2" id="doaMonth" name="doaMonth"></select>
+						<select class="span2" id="doaDay" name="doaDay"></select>
+						<input class="span2" id="doaYear" name="doaYear" placeholder="year (yyyy)">
+					</td>
+					</tr>
+					<tr>
+					<td> Visa Type </td>
+					<td>
+						<select id="visaType" class="span2" name="visaType">
+							<option>Unknown</option>
+							<option>Study</option>
+							<option>Working Holiday</option>
+							<option>Visitor</option>
+							<option>Co-op</option>
+						</select>
+					
+					</td>
+					</tr>
+					<tr>
+					<td> Visa Issue Date</td>
+					<td> 
+						<select class="span2" id="visaIssueMonth" name="visaIssueMonth"></select>
+						<select class="span2" id="visaIssueDay" name="visaIssueDay"></select>
+						<input class="span2" id="visaIssueYear" name="visaIssueYear" placeholder="year (yyyy)">
+					</td>
+					</tr>
+					<tr>
+					<td> Visa Expiry Date</td>
+					<td> 
+						<select class="span2" id="vedMonth" name="vedMonth"></select>
+						<select class="span2" id="vedDay" name="vedDay"></select>
+						<input class="span2" id="vedYear" name="vedYear" placeholder="year (yyyy)">
+					</td>
+					</tr>
+					<tr>
+					<td> How did you hear about us? </td>
+					<td>
+						<select id="sourceToFSS" class="span2" name="sourceToFSS">
+							<option value = 0>----------------</option>
+							<option>캐스모</option>
+							<option>한국 협력업체</option>
+							<option>Walk in</option>
+							<option>Referral</option>
+						</select>
+						<div id="referrerName" style="display:none">
+							Enter referrer's name
+							<input class="span2" id="refferNameText">
+						</div>
+					
+					</td>
+					</tr>
+					
+					<tr>
+					<td> Name of Agency in Korea</td>
+					<td ><input type="text" id="korAgencyName" name="korAgencyName"></td>
+					</tr>
+					<tr>
+					<td> Current School Name</td>
+					<td ><input type="text" id="schoolName" name="schoolName"> </td>
+					</tr>
+					<tr>
+					<td> Current School Start Date</td>
+					<td> 
+						<select class="span2" id="schoolStartMonth" name="schoolStartMonth"></select>
+						<select class="span2" id="schoolStartDay" name="schoolStartDay"></select>
+						<input class="span2" id="schoolStartYear" name="schoolStartYear" placeholder="year (yyyy)">
+					</td>
+					</tr>
+					<tr>
+					<td> Current School End Date</td>
+					<td> 
+						<select class="span2" id="schoolEndMonth" name="schoolEndMonth"></select>
+						<select class="span2" id="schoolEndDay" name="schoolEndDay"></select>
+						<input class="span2" id="schoolEndYear" name="schoolEndYear" placeholder="year (yyyy)">
+					</td>
+					</tr>
+				
+				</table>
+			
+			</form>
+		</div>
+		
 
-			<input type="text" id="nameKor" name="nameKor"> 
-			<label class="error" for="nameKor" id="nameKor_error"> This field is required </label>
-		</td>
-		</tr>
-		<tr>
-		<td style="width:25%"> Name (English)</td>
-		<td>
-			<input type="text" id="nameEng" name="nameEng"> 
-		</td>
-		</tr>
-		<tr>
-		<td> Gender </td>
-		<td> 
-			<select id="gender" class="span2" name="gender">
-				<option>Male</option>
-				<option>Female</option>
-			</select>
-		</td>
-		</tr>
-		<tr>
-		<td> Date of Birth</td>
-		<td>
-			<select class="span2" id="dobMonth" name="dobMonth"></select>
-			<select class="span2" id="dobDay" name="dobDay"></select>
-			<input class="span2" id="dobYear" placeholder="year (yyyy)" name="dobYear">
-		
-		</td>
-		</tr>
-		<tr>
-		<td> Email address</td>
-		<td> <input type="text" id="email" name="email">
-		</td>
-		</tr>
-		<tr>
-		<td> Phone Number </td>
-		<td > <input type="text" id="phoneNo"> </td>
-		</tr>
-		<tr>
-		<td> Address</td>
-		<td ><textarea rows="3" id="address" class="span5" name="address"> </textarea> 
-		</td>
-		</tr>
-		<tr>
-		<td> Date of Arrival</td>
-		<td> 
-			<select class="span2" id="doaMonth" name="doaMonth"></select>
-			<select class="span2" id="doaDay" name="doaDay"></select>
-			<input class="span2" id="doaYear" name="doaYear" placeholder="year (yyyy)">
-		</td>
-		</tr>
-		<tr>
-		<td> Visa Type </td>
-		<td>
-			<select id="visaType" class="span2" name="visaType">
-				<option>Unknown</option>
-				<option>Study</option>
-				<option>Working Holiday</option>
-				<option>Visitor</option>
-				<option>Co-op</option>
-			</select>
-		
-		</td>
-		</tr>
-		<tr>
-		<td> Visa Issue Date</td>
-		<td> 
-			<select class="span2" id="visaIssueMonth" name="visaIssueMonth"></select>
-			<select class="span2" id="visaIssueDay" name="visaIssueDay"></select>
-			<input class="span2" id="visaIssueYear" name="visaIssueYear" placeholder="year (yyyy)">
-		</td>
-		</tr>
-		<tr>
-		<td> Visa Expiry Date</td>
-		<td> 
-			<select class="span2" id="vedMonth" name="vedMonth"></select>
-			<select class="span2" id="vedDay" name="vedDay"></select>
-			<input class="span2" id="vedYear" name="vedYear" placeholder="year (yyyy)">
-		</td>
-		</tr>
-		<tr>
-		<td> How did you hear about us? </td>
-		<td>
-			<select id="sourceToFSS" class="span2" name="sourceToFSS">
-				<option value = 0>----------------</option>
-				<option>캐스모</option>
-				<option>한국 협력업체</option>
-				<option>Walk in</option>
-				<option>Referral</option>
-			</select>
-			<div id="referrerName" style="display:none">
-				Enter referrer's name
-				<input class="span2" id="refferNameText">
-			</div>
-		
-		</td>
-		</tr>
-		
-		<tr>
-		<td> Name of Agency in Korea</td>
-		<td ><input type="text" id="korAgencyName" name="korAgencyName"></td>
-		</tr>
-		<tr>
-		<td> Current School Name</td>
-		<td ><input type="text" id="schoolName" name="schoolName"> </td>
-		</tr>
-		<tr>
-		<td> Current School Start Date</td>
-		<td> 
-			<select class="span2" id="schoolStartMonth" name="schoolStartMonth"></select>
-			<select class="span2" id="schoolStartDay" name="schoolStartDay"></select>
-			<input class="span2" id="schoolStartYear" name="schoolStartYear" placeholder="year (yyyy)">
-		</td>
-		</tr>
-		<tr>
-		<td> Current School End Date</td>
-		<td> 
-			<select class="span2" id="schoolEndMonth" name="schoolEndMonth"></select>
-			<select class="span2" id="schoolEndDay" name="schoolEndDay"></select>
-			<input class="span2" id="schoolEndYear" name="schoolEndYear" placeholder="year (yyyy)">
-		</td>
-		</tr>
-		
-		</table>
-		<button type="submit" class="btn btn-primary btn-large" id="addButton"> Add a new student </button>
-		</form>
+		<div class="span8 well well-large" style="margin-top:10px" id="addInitialVisit">
+			<h2>Add visit records</h2>
+			<br>
+			<button class='btn btn-primary' id='addMoreVisitRow'> Add more visit records</button>
+			<button class='btn btn-primary' id='reset'> Remove all added visit records</button>
+			<br>
+			<br>
+			<table class="table" id="initialVisitRecords">
+				<thead>
+				</thead>
+
+				<tbody>
+				</tbody>
+
+			</table>
+
+		</div>
+
+		<div class="span8" id="add_submitbuttonarea">
+			<button type="submit" class="btn btn-primary btn-large" id="addButton"> Add a new student </button>
+		</div>
 	</div>
 	</div>
 </div>
