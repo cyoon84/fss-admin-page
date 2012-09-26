@@ -206,7 +206,7 @@
 		});
 
 		$('#recInactive').click(function() {
-			var delId = {"student_id": student_id};
+			var delId = {"student_id": student_id, "hide_by": current_userid };
 			$.ajax({
 				type:"POST",
 				url:"bin/hide_user.php",
@@ -304,7 +304,7 @@
 		});
 
 		$('#activeProceed').click(function() {
-			var to_active_info = {"studentId": student_id, "version_latest" : version_latest};
+			var to_active_info = {"studentId": student_id, "version_latest" : version_latest, "active_by": current_userid };
 			
 			$.ajax({
 				type: "POST",
@@ -498,7 +498,7 @@
 
 								var diff_days = Math.round(diff_ms / ONE_DAY);
 							
-								$('#remindTable tbody').append("<tr'><td>"+ diff_days + "</td><td>" + remindReason+ "</td><td>" +remindDate+ "</td><td>"+follow_up_ind+"</td><td><input type='button' value='followed up' class='follow_up' id='"+resp[i].reminderIndex+"'></td></tr>"); 
+								$('#remindTable tbody').append("<tr'><td>"+ diff_days + "</td><td>" + remindReason+ "</td><td>" +remindDate+ "</td><td><input type='button' value='followed up' class='follow_up' id='"+resp[i].reminderIndex+"'></td></tr>"); 
 							
 								
 							
