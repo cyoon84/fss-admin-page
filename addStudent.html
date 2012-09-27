@@ -92,9 +92,11 @@
 
 
 	<div class="span8">
+		<h1> Add a new student</h1>
+		<br>
 		<div class="span8 well well-large" style="margin-top:10px">
 		
-			<h2>Add a new student</h2>
+			<h2>Current information</h2>
 
 			<br>
 			<form id="newStudent">
@@ -209,6 +211,10 @@
 					<td ><input type="text" id="schoolName" name="schoolName"> </td>
 					</tr>
 					<tr>
+					<td> Current School Program</td>
+					<td ><input type="text" id="pgmName" name="pgmName"> </td>
+					</tr>
+					<tr>
 					<td> Current School Start Date</td>
 					<td> 
 						<select class="span2" id="schoolStartMonth" name="schoolStartMonth"></select>
@@ -229,13 +235,29 @@
 			
 			</form>
 		</div>
+
+		<div class="span8 well well-large" style="margin-top:10px" id="addPrevSchools">
+			<h2>Add previous schools</h2> 
+			Add up to 5 previous schools<br>
+			<button class='btn btn-primary' id='addMorePrevSchoolRow'> Add more previous schools</button>
+			<button class='btn btn-primary' id='resetPrevSchool'> Remove all rows</button>
+			<br><br>
+			<table class="table" id="previousSchoolRows">
+				<thead>
+				</thead>
+				<tbody>
+					
+				</tbody>
+
+			</table>
+		</div>
 		
 
 		<div class="span8 well well-large" style="margin-top:10px" id="addInitialVisit">
 			<h2>Add visit records</h2>
 			<br>
 			<button class='btn btn-primary' id='addMoreVisitRow'> Add more visit records</button>
-			<button class='btn btn-primary' id='reset'> Remove all added visit records</button>
+			<button class='btn btn-primary' id='reset'> Remove all rows</button>
 			<br>
 			<br>
 			<table class="table" id="initialVisitRecords">

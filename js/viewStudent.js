@@ -487,8 +487,7 @@
 
 								var remind_month = parseInt(remindDate_str.substring(5,7),10) - 1;
 								var remind_day = parseInt(remindDate_str.substring(8),10);
-							
-							
+														
 								var remind_date_obj=new Date(remind_year, remind_month, remind_day);
 							
 								var today_ms = today_date.getTime();
@@ -496,7 +495,7 @@
 							
 								var diff_ms = Math.abs(remind_ms - today_ms);
 
-								var diff_days = Math.round(diff_ms / ONE_DAY);
+								var diff_days = Math.round(diff_ms / ONE_DAY) + 1;
 							
 								$('#remindTable tbody').append("<tr'><td>"+ diff_days + "</td><td>" + remindReason+ "</td><td>" +remindDate+ "</td><td><input type='button' value='followed up' class='follow_up' id='"+resp[i].reminderIndex+"'></td></tr>"); 
 							

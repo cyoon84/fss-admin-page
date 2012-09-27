@@ -6,6 +6,7 @@
 		
 		var current_userid = $.session.get('session_userid');
 		var visitRows = 0;
+		var prevSchoolRows = 0;
 
 		//hide error message fields for 'required' fields
 		$('.error').hide();
@@ -21,6 +22,8 @@
 		initializeDateSelector('#schoolEndDay', '#schoolEndMonth');
 		initializeDateSelector('#visaIssueDay', '#visaIssueMonth');
 
+		initializeDateSelector('#prevStartDay1', '#prevStartMonth1');
+		initializeDateSelector('#prevEndDay1', '#prevEndMonth1');
 
 		//when 'add' button is clicked
 		$('#addButton').click(function() {
@@ -204,29 +207,107 @@
 
 			visitRows++;
 
-			$('#initialVisitRecords tbody').append('<tr><td rowspan=3">'+visitRows+'<td style="width:25%"> Visit Date<td><select class="span2" id="visitMonth'+visitRows+'" name="visitMonth"></select>'
+			$('#initialVisitRecords tbody').append('<tr><td rowspan="4" style="width:5%">'+visitRows+'<td style="width:25%"> Visit Date<td><select class="span2" id="visitMonth'+visitRows+'" name="visitMonth"></select>'
 						+'<select class="span2" id="visitDay'+visitRows+'" name="visitDay"></select>'
 						+'<input class="span2" id="visitYear'+visitRows+'" placeholder="year (yyyy)" name="visitYear">'
-			+'</tr><tr><td> Visit Purpose<td> <input class="span3" type="text" id="visitPurpose'+visitRows+'"></tr><tr><td> Note<td> <textarea rows="3" id="visitNote'+visitRows+'" class="span5"></textarea></tr><tr><td colspan=3 style="text-align:right"><button class="deleteVisitRow">Delete</button></tr>');
+			+'</tr><tr><td> Visit Purpose<td> <input class="span3" type="text" id="visitPurpose'+visitRows+'"></tr><tr><td> Note<td> <textarea rows="3" id="visitNote'+visitRows+'" class="span5"></textarea></tr><tr><td colspan=3 style="text-align:right"><button class="deleteVisitRow" id="deleteVisitButton'+visitRows+'">Delete the last row</button></tr>');
 
 			var day_selector_id = "#visitDay"+visitRows;
 			var month_selector_id = "#visitMonth"+visitRows;
 
 			initializeDateSelector(day_selector_id, month_selector_id);
 			
+			var oneBeforeRow = visitRows - 1;
+
+			if (oneBeforeRow > 0)
+			{
+				var prevDeleteButtonId = "#deleteVisitButton"+oneBeforeRow;
+			
+				$(prevDeleteButtonId).hide();
+			}
+
+			
+		});
+
+		$('#addMorePrevSchoolRow').click(function() {
+
+			if (prevSchoolRows < 5) {
+
+				prevSchoolRows++;
+
+				$('#previousSchoolRows tbody').append('<tr><td rowspan="5" style="width:5%">'+prevSchoolRows+'</td>'
+						+'<td style="width:25%"> Previous School Name</td>'
+						+'<td> <input type="text" id="prevSchoolName'+prevSchoolRows+'" name="prevSchoolName'+prevSchoolRows+'"></td></tr>'
+						+'<tr><td> Previous School Program</td><td> <input type="text" id="prevSchoolName'+prevSchoolRows+'" name="prevSchoolName'+prevSchoolRows+'"></td></tr>'
+						+'<tr><td> Previous School Start Date</td><td><select class="span2" id="prevStartMonth'+prevSchoolRows+'" name="prevStartMonth'+prevSchoolRows+'"></select>'
+						+'<select class="span2" id="prevStartDay'+prevSchoolRows+'" name="prevStartDay'+prevSchoolRows+'"></select>'
+						+'<input class="span2" id="prevStartYear'+prevSchoolRows+'" name="prevStartYear'+prevSchoolRows+'" placeholder="year (yyyy)"></td></tr>'
+						+'<tr><td> Previous School End Date</td><td><select class="span2" id="prevEndMonth'+prevSchoolRows+'" name="prevEndMonth'+prevSchoolRows+'"></select>'
+						+'<select class="span2" id="prevEndDay'+prevSchoolRows+'" name="prevEndDay'+prevSchoolRows+'"></select>'
+						+'<input class="span2" id="prevEndYear'+prevSchoolRows+'" name="prevEndYear'+prevSchoolRows+'" placeholder="year (yyyy)"></td></tr>'
+						+'<tr><td  style="text-align:right" colspan="2"><button class="deletePrevSchool" id="deletePrevSchool'+prevSchoolRows+'">Delete the last row</button></td></tr>');
+				
+				var start_day_selector_id = "#prevStartDay"+prevSchoolRows;
+				var start_month_selector = "#prevStartMonth"+prevSchoolRows;
+
+				initializeDateSelector(start_day_selector_id, start_month_selector);
+
+				var end_day_selector_id = "#prevEndDay"+prevSchoolRows;
+				var end_month_selector = "#prevEndMonth"+prevSchoolRows;
+
+				initializeDateSelector(end_day_selector_id, end_month_selector);
+				
+				var oneBeforeRow = prevSchoolRows - 1;
+
+				if (oneBeforeRow > 0)
+				{
+					var prevDeleteButtonId = "#deletePrevSchool"+oneBeforeRow;
+
+					$(prevDeleteButtonId).hide();
+				}
+
+				
+
+			}
+		});
+
+		$('#previousSchoolRows').on("click",".deletePrevSchool",function() {
+
+			$('#previousSchoolRows tbody tr').slice(-5).remove();
+							
+			prevSchoolRows --;
+
+			var prevDeleteButtonId = "#deletePrevSchool"+prevSchoolRows;
+
+			$(prevDeleteButtonId).show();
+
 		});
 
 
 		$('#initialVisitRecords').on("click",".deleteVisitRow",function() {
 			$('#initialVisitRecords tbody tr').slice(-4).remove();
 			visitRows --;
-		});
+		
+			var prevDeleteButtonId = "#deleteVisitButton"+visitRows;
+
+			$(prevDeleteButtonId).show();
+			});
 
 		$('#reset').click(function() {
 				var rowsToDelete = visitRows * -4;
 				$('#initialVisitRecords tbody tr').slice(rowsToDelete).remove();
 
 				visitRows = 0;
+
+		});
+
+		$('#resetPrevSchool').click(function() {
+				var rowsToDelete = prevSchoolRows * -5;
+				$('#previousSchoolRows tbody tr').slice(rowsToDelete).remove();
+
+				prevSchoolRows = 0;
+
+
 
 		});
 
