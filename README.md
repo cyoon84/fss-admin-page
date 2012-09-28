@@ -16,13 +16,14 @@
 
 ## Working lists - as of September 28 ##
 
-- Add a new student, user can add initial visit records and previous schools when adding a new student
+- Add a new student 
+	> User can add initial visit records and previous schools when adding a new student
 - Search for students
 - Update, Delete students information
-	For deleting a student, user can choose to permanently delete the record from the database or make it inactive for a time being (can be active again)
+	> For deleting a student, user can choose to permanently delete the record from the database or make it inactive for a time being (can be active again)
 - Add / edit/ delete new visit record for each students
 - Add a reminder and follow up on a reminder. When user followed up, it will show it under 'previous reminder' section. From 'previous reminder' section, user can choose to clear it out
-- Master list of students registered in the database
+- Master list of students registered in the database (making use of DataTables - http://datatables.net/blog/Twitter_Bootstrap_2)
 - Login / logout (making use of JQuery Session Plugin - https://github.com/AlexChittock/JQuery-Session-Plugin ) - making the site more secure
 
 ## Working in progress - as of September 28 ##
