@@ -41,6 +41,7 @@
 			'how_hear_us' => $row['how_hear_us'],
 			'referred_by' => $row['referred_by'],
 			'current_school' => $row['current_school'],
+			'current_program' => $row['current_program'],
 			'current_school_strt_dt' => $row['current_school_strt_dt'],
 			'current_school_end_dt' => $row['current_school_end_dt'],
 			'updt_reason' => $row['updt_reason'],

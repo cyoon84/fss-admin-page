@@ -84,7 +84,7 @@
 	
 			</select>
 			<a href="showAllStudent.html" class="btn btn-primary btn-small">Go back to the list</a>
-			<button type="submit" class="btn btn-primary btn-small" id="updButton">Update</button>
+			<button type="submit" class="btn btn-primary btn-small" id="updButton">Update personal info</button>
 			<button type="submit" class="btn btn-primary btn-small" id="addVisit">Add new visit</button>
 			<button type="submit" class="btn btn-primary btn-small" id="addReminder">Add a reminder</button>
 			<button type="submit" class="btn btn-primary btn-danger" id="delButton">Delete</button>
@@ -215,15 +215,36 @@
 					</div>
 				</div>
 			</div>
-		
 
 			 <div class="accordion-group">
 				<div class="accordion-heading">
 					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-					<h2>Visit Record</h2>
+					<h2>Previous Schools</h2>
 					</a>
 				</div>
 				<div id="collapseTwo" class="accordion-body collapse in">
+					<div class="accordion-inner" id="viewPrevSchools">
+						<table class="table" id="prevSchoolList">
+							<thead>
+								<th style="width:35%"> School Name </th>
+								<th style="width:35%"> Program Name </th>
+								<th style="width:15%"> Start Date </th>
+								<th style="width:15%"> End Date </th>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>		
+
+			 <div class="accordion-group">
+				<div class="accordion-heading">
+					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
+					<h2>Visit Record</h2>
+					</a>
+				</div>
+				<div id="collapseThree" class="accordion-body collapse in">
 					<div class="accordion-inner" id="viewVisitRecord">
 					</div>
 				</div>
@@ -231,11 +252,11 @@
 
 			<div class="accordion-group">
 				<div class="accordion-heading">
-					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
+					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFour">
 					<h2>Reminders</h2>
 					</a>
 				</div>
-				<div id="collapseThree" class="accordion-body collapse in">
+				<div id="collapseFour" class="accordion-body collapse in">
 					<div class="accordion-inner" id="viewReminders">
 						<h4>Needs to follow up</h4>
 						<br>

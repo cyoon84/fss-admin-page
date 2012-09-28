@@ -56,7 +56,7 @@ function loadTable(category) {
 
 				var date_added_str = resp[i].date_added.substring(0,10);
 
-				resultTable.fnAddData([koreanNameLink,resp[i].name_eng,resp[i].email, resp[i].phone_no,active_stat, date_added_str]);
+				resultTable.fnAddData([koreanNameLink,resp[i].name_eng,resp[i].date_birth,resp[i].email, resp[i].phone_no,active_stat, date_added_str]);
 			}
 		}
 	});

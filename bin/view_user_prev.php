@@ -30,6 +30,7 @@
 			'referred_by' => $row['$referred_by'],
 			'korea_agency' => $row['korea_agency'],
 			'current_school' => $row['current_school'],
+			'current_program' => $row['current_program'],
 			'current_school_strt_dt' => $row['current_school_strt_dt'],
 			'current_school_end_dt' => $row['current_school_end_dt'],
 			'updt_reason' => $row['updt_reason'],

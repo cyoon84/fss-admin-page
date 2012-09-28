@@ -26,6 +26,7 @@
 		$result_out[] = array(
 			'student_id' => $row['studentId'],
 			'version' => $row['version'],
+			'date_birth' => $row['date_birth'],
 			'name_eng' => $row['name_eng'],
 			'name_kor' => $row['name_kor'],
 			'active_indicator' => $row['active_indicator'],

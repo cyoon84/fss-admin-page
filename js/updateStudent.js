@@ -102,7 +102,14 @@
 				cache: false,
 				data:data_studentID,
 				success: function(resp) {
-					$('#newNameEngText').val(resp[0].name_eng);
+
+					var existing_eng_name = resp[0].name_eng;
+					var indexComma_eng_name = existing_eng_name.indexOf(",");
+					var existing_eng_last_name = existing_eng_name.substring(0,indexComma_eng_name).toUpperCase();
+					var existing_eng_first_name = existing_eng_name.substring(indexComma_eng_name+2).toUpperCase();
+
+					$('#newFNameEngText').val(existing_eng_first_name);
+					$('#newLNameEngText').val(existing_eng_last_name);
 					$('#newNameKorText').val(resp[0].name_kor);
 					$('#existingGender').append(resp[0].gender);
 					existingGender = resp[0].gender;
@@ -130,6 +137,8 @@
 					$('#newKoreaAgencyText').val(resp[0].korea_agency);
 
 					$('#newSchoolText').val(resp[0].current_school);
+
+					$('#newPgmName').val(resp[0].current_program);
 
 					$('#referrerNameText_new').val(resp[0].referred_by);
 
@@ -172,7 +181,11 @@
 		//when 'update' button is clicked
 		$('#updButton').click(function() {
 			var new_korean_name = $('#newNameKorText').val();
-			var new_eng_name = $('#newNameEngText').val();
+			var new_eng_first_name = $('#newFNameEngText').val().toUpperCase();
+			var new_eng_last_name = $('#newLNameEngText').val().toUpperCase();
+
+			var new_eng_name = new_eng_last_name +", "+new_eng_first_name;
+
 			var new_email = $('#newEmailText').val();
 			var new_phone = $('#newPhoneText').val();
 			var new_address = $('#newAddressText').val();
@@ -216,6 +229,7 @@
 			var new_visa_exp_date = '';
 			var new_date_of_birth = '';
 			var new_school_name = $('#newSchoolText').val();
+			var new_program_name = $('#newPgmName').val();
 			var new_school_start_date = '';
 			var new_school_end_date = '';
 			var new_date_of_arrival = '';
@@ -297,6 +311,7 @@
 								 "referred_by" : new_referrer_name,
 								 "korea_agency" : new_korea_agency,
 								 "school_name": new_school_name,
+								 "current_program": new_program_name,
 								 "school_start_dt": new_school_start_date,
 								 "school_end_dt" : new_school_end_date,
 								 "update_reason" : update_reason,

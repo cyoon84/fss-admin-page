@@ -18,6 +18,8 @@
 	$new_referred_by = $_POST['referred_by'];
 	$new_korea_agency = $_POST['korea_agency'];
 	$new_school_name = $_POST['school_name'];
+	$new_program_name = $_POST['current_program'];
+
 	$new_school_start_date = $_POST['school_start_dt'];
 	$new_school_end_date = $_POST['school_end_dt'];
 	$update_reason = $_POST['update_reason'];
@@ -53,6 +55,33 @@
 		$new_school_end_date = $active_row['current_school_end_dt'];
 	}
 
+	if (($active_row['current_school'] != '') && ($new_school_name != $active_row['current_school'])) {
+		
+		$current_school = $active_row['current_school'];
+		$current_prgm = $active_row['current_program'];
+		$current_strt_dt = $active_row['current_school_strt_dt'];
+		$current_end_dt = $active_row['current_school_end_dt'];
+
+		$query="INSERT INTO student_prev_school (studentId
+									,student_info_ver
+									,prev_school_name
+									,prev_school_program
+									,prev_school_strt_dt
+									,prev_school_end_dt
+									,user_id)
+									VALUES 
+									('$id'
+									,'$latest_version'
+									,'$current_school'
+									,'$current_prgm'
+									,'$current_strt_dt'
+									,'$current_end_dt'
+									,'$updated_by')";
+		if (!mysql_query($query, $con)) {
+			die('Error: ' . mysql_error());
+		}
+	}
+
 	$new_version = $latest_version + 1;
 
 	$insert_query="INSERT INTO studentinfo (studentId
@@ -73,6 +102,7 @@
 									, referred_by
 									, korea_agency
 									, current_school
+									, current_program
 									, current_school_strt_dt
 									, current_school_end_dt
 									, updt_reason
@@ -96,6 +126,7 @@
 									,'$new_referred_by'
 									,'$new_korea_agency'
 									,'$new_school_name'
+									,'$new_program_name'
 									,'$new_school_start_date'
 									,'$new_school_end_date'
 									,'$update_reason'

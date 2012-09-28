@@ -138,6 +138,8 @@
 		reminderLoad(student_id);
 		reminder_old_Load(student_id);
 
+		prevSchoolLoad(student_id);
+
 		$('.follow_up').live('click',function() {
 			var remindId = this.id;
 							
@@ -419,6 +421,7 @@
 				+"<tr><td> How did you hear about us?</td><td>"+resp[0].how_hear_us+"</td></tr>"
 				+"<tr><td> Name of Agency in Korea</td><td>"+resp[0].korea_agency+"</td></tr>"
 				+"<tr><td> Current School</td><td>"+resp[0].current_school+"</td></tr>"
+				+"<tr><td> Current Program</td><td>"+resp[0].current_program+"</td></tr>"
 				+"<tr><td> Current School Start Date</td><td>"+resp[0].current_school_strt_dt+"</td></tr>"
 				+"<tr><td> Current School End Date</td><td>"+resp[0].current_school_end_dt+"</td></tr>"
 				+"<tr><td> Active status</td><td>"+status+"</td></tr>"
@@ -440,6 +443,7 @@
 				+"<tr><td> Referrer's name </td><td>"+resp[0].referred_by+"</td></tr>"
 				+"<tr><td> Name of Agency in Korea</td><td>"+resp[0].korea_agency+"</td></tr>"
 				+"<tr><td> Current School</td><td>"+resp[0].current_school+"</td></tr>"
+				+"<tr><td> Current Program</td><td>"+resp[0].current_program+"</td></tr>"
 				+"<tr><td> Current School Start Date</td><td>"+resp[0].current_school_strt_dt+"</td></tr>"
 				+"<tr><td> Current School End Date</td><td>"+resp[0].current_school_end_dt+"</td></tr>"
 				+"<tr><td> Active status</td><td>"+status+"</td></tr>"
@@ -552,5 +556,35 @@
 
 
 		});
+
+	}
+
+	function prevSchoolLoad(student_id) {
+		$('#prevSchoolList tbody').empty();
+
+		var input = {"student_id": student_id};
+		$.ajax({
+				type:"GET",
+				url:"bin/get_prev_schools.php",
+				dataType: "json",
+				cache: false,
+				data:input, 				
+				success:function(resp) { 					
+					if (resp.length > 0)
+					{
+						for (i=0; i!=resp.length ;i++ )
+						{
+							var school_name = resp[i].prev_school_name;
+							var school_program = resp[i].prev_school_program;
+							var school_start = resp[i].prev_school_strt_dt;
+							var school_end = resp[i].prev_school_end_dt;
+
+							$('#prevSchoolList tbody').append("<tr><td>"+school_name+"</td><td>"+school_program+"</td><td>"+school_start+"</td><td>"+school_end+"</td></tr>");
+						}
+					}
+				}
+			});
+				
+
 
 	}

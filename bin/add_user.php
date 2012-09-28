@@ -32,6 +32,8 @@
 
 	$schoolName = $_POST['current_school'];
 
+	$programName = $_POST['current_program'];
+
 	$school_strt_dt = $_POST['current_school_strt_dt'];
 
 	$school_end_dt = $_POST ['current_school_end_dt'];
@@ -39,6 +41,8 @@
 	$user_id = $_POST['user_id'];
 
 	$visitLists = $_POST['initial_visits'];
+
+	$prev_schools = $_POST['prev_schools'];
 
 	$last_id = mysql_query("select max(studentId) from studentinfo");
 	$last_id = mysql_fetch_array($last_id,MYSQL_BOTH);
@@ -64,6 +68,7 @@
 									, referred_by
 									, korea_agency
 									, current_school
+									, current_program
 									, current_school_strt_dt
 									, current_school_end_dt
 									, user_id
@@ -87,14 +92,51 @@
 									,'$referrer_name'
 									,'$korean_agency'
 									,'$schoolName'
+									,'$programName'
 									,'$school_strt_dt'
 									,'$school_end_dt'
 									,'$user_id'
 									,'Initial record')";
 
 	if (!mysql_query($query, $con)) {
-		die('Error: ' . mysql_error());
+		die('Error1: ' . mysql_error());
+	} 
+
+
+	$query="INSERT INTO student_prev_school (studentId
+									,prev_school_name
+									,prev_school_program
+									,prev_school_strt_dt
+									,prev_school_end_dt
+									,user_id)
+									VALUES ";
+
+	$filledCount = 0;
+	for ($i=0; $i!= 5; $i++) {
+		$prev_school_name = $prev_schools[$i]['prev_school_name'];
+		$prev_school_pgm = $prev_schools[$i]['prev_school_prgm'];
+		$prev_school_strt = $prev_schools[$i]['prev_school_strt_dt'];
+		$prev_school_end = $prev_schools[$i]['prev_school_end_dt'];
+	
+		if ($prev_school_name != '') {
+			$query = $query."('$new_id','$prev_school_name','$prev_school_pgm','$prev_school_strt','$prev_school_end','$user_id'),";
+			$filledCount ++;
+		}
+
 	}
+	$query = substr($query,0,-1);
+
+	if ($filledCount > 0) {
+		if (!mysql_query($query, $con)) {
+			die('Error2: ' . mysql_error());
+		} 
+	}
+
+
+
+
+
+	
 
 	$init_visit_numbers = count($visitLists);
 

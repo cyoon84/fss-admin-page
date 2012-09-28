@@ -6,7 +6,7 @@
 		
 		var current_userid = $.session.get('session_userid');
 		var visitRows = 0;
-		var prevSchoolRows = 0;
+		var prevSchoolRows = 5;
 
 		//hide error message fields for 'required' fields
 		$('.error').hide();
@@ -22,9 +22,23 @@
 		initializeDateSelector('#schoolEndDay', '#schoolEndMonth');
 		initializeDateSelector('#visaIssueDay', '#visaIssueMonth');
 
-		initializeDateSelector('#prevStartDay1', '#prevStartMonth1');
-		initializeDateSelector('#prevEndDay1', '#prevEndMonth1');
 
+		initializeDateSelector('#prevStartDay1', '#prevStartMonth1');
+		initializeDateSelector('#prevEndDay1','#prevEndMonth1');
+		
+		initializeDateSelector('#prevStartDay2', '#prevStartMonth2');
+		initializeDateSelector('#prevEndDay2','#prevEndMonth2');
+		
+		initializeDateSelector('#prevStartDay3', '#prevStartMonth3');
+		initializeDateSelector('#prevEndDay3','#prevEndMonth3');
+		
+		initializeDateSelector('#prevStartDay4', '#prevStartMonth4');
+		initializeDateSelector('#prevEndDay4','#prevEndMonth4');
+		
+		initializeDateSelector('#prevStartDay5', '#prevStartMonth5');
+		initializeDateSelector('#prevEndDay5','#prevEndMonth5');
+		
+		
 		//when 'add' button is clicked
 		$('#addButton').click(function() {
 			$('.error').hide();
@@ -39,7 +53,11 @@
 			var schoolEndDT = "";
 
 			//fields to be validated
-			var engName = $('#nameEng').val();
+			var engFName = $('#nameEngFName').val().toUpperCase();
+			var engLName = $('#nameEngLName').val().toUpperCase();
+
+			var engName = engLName+", "+engFName;
+
 			var korName = $('#nameKor').val();
 			var address = $('#address').val();
 
@@ -76,6 +94,8 @@
 			var visaType = $('#visaType').val();
 
 			var schoolName = $('#schoolName').val();
+
+			var programName = $('#pgmName').val();
 
 			var korAgencyName = $('#korAgencyName').val();
 			
@@ -132,11 +152,12 @@
 							"address" : address, "arrival_date" : doa, 
 							"visa_type" : visaType, "visa_issue_date" : visaIssueDate, 
 							"visa_exp_date" : visaExpiryDate, "korean_agency" : korAgencyName,
-							"current_school" : schoolName, "current_school_strt_dt" : schoolStartDT, 
+							"current_school" : schoolName, "current_program" : programName, 
+							"current_school_strt_dt" : schoolStartDT, 
 							"source_to_FSS" : sourceToFSS, "referrer_name" : referrerName,
 							"user_id" : current_userid,
 							"current_school_end_dt" : schoolEndDT,
-							"initial_visits": []};
+							"initial_visits": [], "prev_schools": []};
 		
 
 			if (visitRows > 0)
@@ -158,8 +179,12 @@
 					var visitPurposeVal = $(visitPurposeId).val();
 					var visitNoteVal = $(visitNoteId).val();
 
-					var visitDateString = visitYearVal+"-"+visitMonthVal+"-"+visitDayVal;
-
+					if (visitYearVal == '')
+					{
+						var visitDateString = '';
+					} else {
+						var visitDateString = visitYearVal+"-"+visitMonthVal+"-"+visitDayVal;
+					}
 
 
 					var list = {"visitDate": visitDateString, "visitPurpose": visitPurposeVal, "visitNote" : visitNoteVal};
@@ -169,6 +194,53 @@
 				}
 
 			}
+
+			if (prevSchoolRows > 0)
+			{
+				for (i=0;i != prevSchoolRows ; i++ )
+				{
+					var idnum = i+1;
+					var prevSchoolNameId = '#prevSchoolName'+idnum;
+					var prevProgramId = '#prevPrgmName'+idnum;
+					var prevSchoolStartYearId = '#prevStartYear'+idnum;
+					var prevSchoolStartMonthId = '#prevStartMonth'+idnum;
+					var prevSchoolStartDayId = '#prevStartDay'+idnum;
+
+					var prevSchoolEndYearId = '#prevEndYear'+idnum;
+					var prevSchoolEndMonthId = '#prevEndMonth'+idnum;
+					var prevSchoolEndDayId = '#prevEndDay'+idnum;
+
+					var prevSchoolName = $(prevSchoolNameId).val();
+					var prevSchoolPgm = $(prevProgramId).val();
+
+					var prevSchoolStartYear = $(prevSchoolStartYearId).val();
+					var prevSchoolStartMonth = $(prevSchoolStartMonthId).val();
+					var prevSchoolStartDay = $(prevSchoolStartDayId).val();
+					
+					var prevSchoolEndYear = $(prevSchoolEndYearId).val();
+					var prevSchoolEndMonth = $(prevSchoolEndMonthId).val();
+					var prevSchoolEndDay = $(prevSchoolEndDayId).val();
+
+					if (prevSchoolStartYear == '')
+					{
+						var prevSchoolStartDate = '';
+					} else {
+						var prevSchoolStartDate = prevSchoolStartYear+"-"+prevSchoolStartMonth+"-"+prevSchoolStartDay;
+					}
+
+					if (prevSchoolEndYear == '')
+					{
+						var prevSchoolEndDate = '';
+					} else {
+						var prevSchoolEndDate = prevSchoolEndYear+"-"+prevSchoolEndMonth+"-"+prevSchoolEndDay;
+					}
+					
+
+					var list = {"prev_school_name" : prevSchoolName, "prev_school_prgm" : prevSchoolPgm, "prev_school_strt_dt": prevSchoolStartDate, "prev_school_end_dt" : prevSchoolEndDate};
+
+					dataInsert.prev_schools.push(list);
+				}
+			}
 		
 			$.ajax({
 				type: "POST",
@@ -176,14 +248,83 @@
 				data:dataInsert,
 				cache: false,	
 				success: function(resp) {
-					newId = resp;
-					$('#addSuccess').modal('toggle');
+					if (isNaN(resp))
+					{
+						alert(resp);
+					} else {
+						newId = resp;
+						$('#addSuccess').modal('toggle');
+					}
 				}
 			});
 
 			return false;
 
 			
+		});
+
+		$('#prevSchoolName1').keydown(function() {
+			$('#prevPrgmName1').prop('disabled', false);
+			$('#prevStartMonth1').prop('disabled',false);
+			$('#prevStartDay1').prop('disabled',false);
+			$('#prevStartYear1').prop('disabled',false);
+
+			$('#prevEndMonth1').prop('disabled',false);
+			$('#prevEndDay1').prop('disabled',false);
+			$('#prevEndYear1').prop('disabled',false);
+			$('#prevSchoolName2').prop('disabled', false);
+
+		});
+
+		$('#prevSchoolName2').keydown(function() {
+			$('#prevPrgmName2').prop('disabled', false);
+			$('#prevStartMonth2').prop('disabled',false);
+			$('#prevStartDay2').prop('disabled',false);
+			$('#prevStartYear2').prop('disabled',false);
+
+			$('#prevEndMonth2').prop('disabled',false);
+			$('#prevEndDay2').prop('disabled',false);
+			$('#prevEndYear2').prop('disabled',false);
+			$('#prevSchoolName3').prop('disabled', false);
+
+		});
+
+		$('#prevSchoolName3').keydown(function() {
+			$('#prevPrgmName3').prop('disabled', false);
+			$('#prevStartMonth3').prop('disabled',false);
+			$('#prevStartDay3').prop('disabled',false);
+			$('#prevStartYear3').prop('disabled',false);
+
+			$('#prevEndMonth3').prop('disabled',false);
+			$('#prevEndDay3').prop('disabled',false);
+			$('#prevEndYear3').prop('disabled',false);
+			$('#prevSchoolName4').prop('disabled', false);
+
+		});
+
+		$('#prevSchoolName4').keydown(function() {
+			$('#prevPrgmName4').prop('disabled', false);
+			$('#prevStartMonth4').prop('disabled',false);
+			$('#prevStartDay4').prop('disabled',false);
+			$('#prevStartYear4').prop('disabled',false);
+
+			$('#prevEndMonth4').prop('disabled',false);
+			$('#prevEndDay4').prop('disabled',false);
+			$('#prevEndYear4').prop('disabled',false);
+			$('#prevSchoolName5').prop('disabled', false);
+
+		});
+
+		$('#prevSchoolName5').keydown(function() {
+			$('#prevPrgmName5').prop('disabled', false);
+			$('#prevStartMonth5').prop('disabled',false);
+			$('#prevStartDay5').prop('disabled',false);
+			$('#prevStartYear5').prop('disabled',false);
+
+			$('#prevEndMonth5').prop('disabled',false);
+			$('#prevEndDay5').prop('disabled',false);
+			$('#prevEndYear5').prop('disabled',false);
+
 		});
 
 		$('#viewStudent').click(function() {
@@ -235,27 +376,8 @@
 
 				prevSchoolRows++;
 
-				$('#previousSchoolRows tbody').append('<tr><td rowspan="5" style="width:5%">'+prevSchoolRows+'</td>'
-						+'<td style="width:25%"> Previous School Name</td>'
-						+'<td> <input type="text" id="prevSchoolName'+prevSchoolRows+'" name="prevSchoolName'+prevSchoolRows+'"></td></tr>'
-						+'<tr><td> Previous School Program</td><td> <input type="text" id="prevSchoolName'+prevSchoolRows+'" name="prevSchoolName'+prevSchoolRows+'"></td></tr>'
-						+'<tr><td> Previous School Start Date</td><td><select class="span2" id="prevStartMonth'+prevSchoolRows+'" name="prevStartMonth'+prevSchoolRows+'"></select>'
-						+'<select class="span2" id="prevStartDay'+prevSchoolRows+'" name="prevStartDay'+prevSchoolRows+'"></select>'
-						+'<input class="span2" id="prevStartYear'+prevSchoolRows+'" name="prevStartYear'+prevSchoolRows+'" placeholder="year (yyyy)"></td></tr>'
-						+'<tr><td> Previous School End Date</td><td><select class="span2" id="prevEndMonth'+prevSchoolRows+'" name="prevEndMonth'+prevSchoolRows+'"></select>'
-						+'<select class="span2" id="prevEndDay'+prevSchoolRows+'" name="prevEndDay'+prevSchoolRows+'"></select>'
-						+'<input class="span2" id="prevEndYear'+prevSchoolRows+'" name="prevEndYear'+prevSchoolRows+'" placeholder="year (yyyy)"></td></tr>'
-						+'<tr><td  style="text-align:right" colspan="2"><button class="deletePrevSchool" id="deletePrevSchool'+prevSchoolRows+'">Delete the last row</button></td></tr>');
 				
-				var start_day_selector_id = "#prevStartDay"+prevSchoolRows;
-				var start_month_selector = "#prevStartMonth"+prevSchoolRows;
 
-				initializeDateSelector(start_day_selector_id, start_month_selector);
-
-				var end_day_selector_id = "#prevEndDay"+prevSchoolRows;
-				var end_month_selector = "#prevEndMonth"+prevSchoolRows;
-
-				initializeDateSelector(end_day_selector_id, end_month_selector);
 				
 				var oneBeforeRow = prevSchoolRows - 1;
 
@@ -271,17 +393,6 @@
 			}
 		});
 
-		$('#previousSchoolRows').on("click",".deletePrevSchool",function() {
-
-			$('#previousSchoolRows tbody tr').slice(-5).remove();
-							
-			prevSchoolRows --;
-
-			var prevDeleteButtonId = "#deletePrevSchool"+prevSchoolRows;
-
-			$(prevDeleteButtonId).show();
-
-		});
 
 
 		$('#initialVisitRecords').on("click",".deleteVisitRow",function() {
@@ -301,15 +412,6 @@
 
 		});
 
-		$('#resetPrevSchool').click(function() {
-				var rowsToDelete = prevSchoolRows * -5;
-				$('#previousSchoolRows tbody tr').slice(rowsToDelete).remove();
-
-				prevSchoolRows = 0;
-
-
-
-		});
 
 	});
 
@@ -317,8 +419,8 @@
 	function initializeDateSelector(id_day, id_month) {
 		var months = new Array("January","February","March","April","May","June","July","August","September","October","November","December");
 
-		$(id_month).append('<option value=0>-----------------</option>');
-		$(id_day).append('<option value=0>-----------</option>');
+		$(id_month).append('<option value=00>-----------------</option>');
+		$(id_day).append('<option value=00>-----------</option>');
 
 		for (i=0; i!= months.length ; i++ )
 		{
