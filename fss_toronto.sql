@@ -42,32 +42,12 @@ CREATE TABLE IF NOT EXISTS `studentinfo` (
   `visa_issue_date` varchar(10) NOT NULL,
   `visa_exp_date` varchar(10) NOT NULL,
   `how_hear_us` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `referred_by` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `referred_by` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `korea_agency` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `current_school` varchar(50) NOT NULL,
-  `current_program` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `current_program` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `current_school_strt_dt` varchar(10) NOT NULL,
   `current_school_end_dt` varchar(10) NOT NULL,
-  `prev_school_name1` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `prev_school_program1` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `prev_school_start_date_1` varchar(10) NOT NULL,
-  `prev_school_end_dt1` varchar(10) NOT NULL,
-  `prev_school_name2` varchar(50) NOT NULL,
-  `prev_school_program2` varchar(50) NOT NULL,
-  `prev_school_strt_dt2` varchar(10) NOT NULL,
-  `prev_school_end_dt2` varchar(10) NOT NULL,
-  `prev_school_name3` varchar(50) NOT NULL,
-  `prev_school_program3` varchar(50) NOT NULL,
-  `prev_school_strt_dt3` varchar(10) NOT NULL,
-  `prev_school_end_dt3` varchar(10) NOT NULL,
-  `prev_school_name4` varchar(50) NOT NULL,
-  `prev_school_program4` varchar(50) NOT NULL,
-  `prev_school_strt_dt4` varchar(10) NOT NULL,
-  `prev_school_end_dt4` varchar(10) NOT NULL,
-  `prev_school_name5` varchar(50) NOT NULL,
-  `prev_school_program5` varchar(50) NOT NULL,
-  `prev_school_strt_dt5` varchar(10) NOT NULL,
-  `prev_school_end_dt5` varchar(10) NOT NULL,
   `updt_reason` varchar(100) DEFAULT NULL,
   `user_id` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `date_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -89,9 +69,8 @@ CREATE TABLE IF NOT EXISTS `studentreminder` (
   `follow_up_ind` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
   `follow_up_date` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `date_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `user_id` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`reminderIndex`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
 
 
 --
@@ -105,34 +84,26 @@ CREATE TABLE IF NOT EXISTS `studentvisit` (
   `visit_purpose` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `visit_note` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `add_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `user_id` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`visit_index`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
-
---
--- Table structure for table `userlist`
---
-
-CREATE TABLE IF NOT EXISTS `userlist` (
-  `user_no` int(5) NOT NULL AUTO_INCREMENT,
-  `user_id` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
-  `pwd` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `first_name` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
-  `last_name` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`user_id`),
-  KEY `user_no` (`user_no`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `userlist` - test user id
---
-
-INSERT INTO `userlist` (`user_no`, `user_id`, `pwd`, `first_name`, `last_name`, `email`) VALUES
-(1, 'test', 'cc03e747a6afbbcbf8be7668acfebee5', 'test', 'test', 'aaa@bb.com');
-
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=0 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+--
+-- Table structure for table `student_prev_school`
+--
+
+CREATE TABLE IF NOT EXISTS `student_prev_school` (
+  `prevSchoolIndex` int(5) NOT NULL AUTO_INCREMENT,
+  `studentId` int(5) NOT NULL,
+  `student_info_ver` int(5) NOT NULL DEFAULT '0',
+  `prev_school_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `prev_school_program` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `prev_school_strt_dt` varchar(10) NOT NULL,
+  `prev_school_end_dt` varchar(10) NOT NULL,
+  `user_id` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `date_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`prevSchoolIndex`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0 ;
