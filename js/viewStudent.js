@@ -45,7 +45,7 @@
 		}		
 
 		var today_str = getTodayDateString(today_date);
-	
+		
 		var current_userid = $.session.get('session_userid');
 		
 
@@ -175,6 +175,28 @@
 						
 				}
 			});
+		});
+
+		$('.undo_old_follow_up').live('click',function() {
+			var remindId = this.id;
+			$.ajax({
+				type:"POST",
+				url:"bin/undo_reminder_record.php",
+				cache: false,
+				data:{"reminderIndex": remindId, "student_id": student_id},
+				success:function(resp) {
+					
+						reminder_old_Load(student_id);
+						reminderLoad(student_id);
+						
+
+						
+				}
+
+
+			});
+
+
 		});
 
 
@@ -390,14 +412,19 @@
 		var today_year = today_date_obj.getFullYear();
 		var today_month = today_date_obj.getMonth()+1;
 		var today_day = today_date_obj.getDate();
-	
-		if (today_month >= 10)
-		{
-			var today_str = today_year + "-"+today_month+ "-"+today_day;
-		} else {
-			var today_str = today_year + "-0"+today_month + "-"+today_day;
 
+		if (today_month < 10)
+		{
+			today_month = "0"+today_month; 
 		}
+
+		if (today_day < 10)
+		{
+			today_day = "0"+today_day;
+		}
+		
+		var today_str = today_year + "-"+today_month+ "-"+today_day;
+		
 
 		return today_str;
 
@@ -544,11 +571,13 @@
 							var follow_up_date =  $.evalJSON(encode_row).follow_up_date;
 							var follow_up_userid = $.evalJSON(encode_row).user_id;
 
-							$('#remindTable_old tbody').append("<tr><td>"+ follow_up_date + "</td><td>" + remindReason+ "</td><td>"+follow_up_userid+"<td><input type='button' value='Delete' class='clear_old_follow_up' id='"+resp[i].reminderIndex+"'></td></tr>"); 
+							$('#remindTable_old tbody').append("<tr><td>"+ follow_up_date + "</td><td>" + remindReason+ "</td><td>"+follow_up_userid+
+																"<td><input type='button' value='Undo' class='undo_old_follow_up' id='"+resp[i].reminderIndex+"'></td>"+
+																"<td><input type='button' value='Delete' class='clear_old_follow_up' id='"+resp[i].reminderIndex+"'></td></tr>"); 
 							
 						}
 					} else {
-						$('#remindTable_old tbody').append("<tr><td colspan='4'><center><h3>There is no reminder for this student</h3></center></td></tr>");
+						$('#remindTable_old tbody').append("<tr><td colspan='5'><center><h3>There is no reminder for this student</h3></center></td></tr>");
 					}
 
 					
@@ -582,6 +611,8 @@
 
 							$('#prevSchoolList tbody').append("<tr><td>"+school_name+"</td><td>"+school_program+"</td><td>"+school_start+"</td><td>"+school_end+"</td><td><a href='editPrevSchool.html?id="+prev_school_id+"'>Edit / Delete </a></td> </tr>");
 						}
+					} else {
+						$('#prevSchoolList tbody').append("<tr><td colspan='5'><h3 style='text-align:center'> No previous school found for this student</h3></td></tr>");
 					}
 				}
 			});
