@@ -122,7 +122,7 @@
 					alert(resp);
 					$('#existing_visit_purpose').empty();
 					$('#existing_visit_purpose').append(visit_purpose);
-					$('#visit_purpose').val('');
+					$('#visit_purpose').val(visit_purpose);
 				}
 			});
 

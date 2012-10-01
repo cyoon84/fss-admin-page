@@ -578,8 +578,9 @@
 							var school_program = resp[i].prev_school_program;
 							var school_start = resp[i].prev_school_strt_dt;
 							var school_end = resp[i].prev_school_end_dt;
+							var prev_school_id = resp[i].prevSchoolIndex;
 
-							$('#prevSchoolList tbody').append("<tr><td>"+school_name+"</td><td>"+school_program+"</td><td>"+school_start+"</td><td>"+school_end+"</td></tr>");
+							$('#prevSchoolList tbody').append("<tr><td>"+school_name+"</td><td>"+school_program+"</td><td>"+school_start+"</td><td>"+school_end+"</td><td><a href='editPrevSchool.html?id="+prev_school_id+"'>Edit / Delete </a></td> </tr>");
 						}
 					}
 				}
