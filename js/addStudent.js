@@ -7,6 +7,7 @@
 		var current_userid = $.session.get('session_userid');
 		var visitRows = 0;
 		var prevSchoolRows = 0;
+		var prevVisaRows = 0;
 
 		//hide error message fields for 'required' fields
 		$('.error').hide();
@@ -157,7 +158,7 @@
 							"source_to_FSS" : sourceToFSS, "referrer_name" : referrerName,
 							"user_id" : current_userid,
 							"current_school_end_dt" : schoolEndDT,
-							"initial_visits": [], "prev_schools": []};
+							"initial_visits": [], "prev_schools": [], "prev_visa":[]};
 		
 
 			if (visitRows > 0)
@@ -226,6 +227,11 @@
 						var prevSchoolStartDate = '';
 					} else {
 						var prevSchoolStartDate = prevSchoolStartYear+"-"+prevSchoolStartMonth+"-"+prevSchoolStartDay;
+
+						if (prevSchoolStartDate.length != 10)
+						{
+							prevSchoolStartDate = '';
+						}
 					}
 
 					if (prevSchoolEndYear == '')
@@ -233,12 +239,71 @@
 						var prevSchoolEndDate = '';
 					} else {
 						var prevSchoolEndDate = prevSchoolEndYear+"-"+prevSchoolEndMonth+"-"+prevSchoolEndDay;
+
+						if (prevSchoolEndDate.length != 10)
+						{
+							prevSchoolEndDate = '';
+						}
 					}
 					
 
 					var list = {"prev_school_name" : prevSchoolName, "prev_school_prgm" : prevSchoolPgm, "prev_school_strt_dt": prevSchoolStartDate, "prev_school_end_dt" : prevSchoolEndDate};
 
 					dataInsert.prev_schools.push(list);
+				}
+			}
+
+
+			if (prevVisaRows > 0)
+			{
+				for (i=0;i!=5 ;i++ )
+				{
+					var idnum = i+1;
+					var visaTypeID = '#prevVisaType'+idnum;
+					var issueDateMonth = '#prevVisaIssueMonth'+idnum;
+					var issueDateDay = '#prevVisaIssueDay'+idnum;
+					var issueDateYear = '#prevVisaIssueYear'+idnum;
+
+					var expireDateMonth = '#prevVisaExpireMonth'+idnum;
+					var expireDateDay = '#prevVisaExpireDay'+idnum;
+					var expireDateYear = '#prevVisaExpireYear'+idnum;
+
+					var visaType_val = $(visaTypeID).val();
+					var issueDateMonth_val = $(issueDateMonth).val();
+					var issueDateDay_val = $(issueDateDay).val();
+					var issueDateYear_val = $(issueDateYear).val();
+
+					var expireDateMonth_val = $(expireDateMonth).val();
+					var expireDateDay_val = $(expireDateDay).val();
+					var expireDateYear_val = $(expireDateYear).val();
+
+					if (issueDateYear_val == '')
+					{
+						var prevIssueDate = '';
+					} else {
+						var prevIssueDate = issueDateYear_val +"-"+ issueDateMonth_val+"-"+issueDateDay_val;
+
+						if (prevIssueDate.length != 10)
+						{
+							prevIssueDate = '';
+						}
+					}
+
+					if (expireDateYear_val == '')
+					{
+						var prevExpireDate = '';
+					} else {
+						var prevExpireDate = expireDateYear_val+"-"+expireDateMonth_val+"-"+expireDateDay_val;
+						
+						if (prevExpireDate.length != 10)
+						{
+							prevExpireDate = '';
+						}
+					}
+
+					var list = {"prev_visa_type" : visaType_val, "prev_issue_date" : prevIssueDate, "prev_expire_date": prevExpireDate};
+
+					dataInsert.prev_visa.push(list);
 				}
 			}
 		
@@ -336,7 +401,7 @@
 
 			visitRows++;
 
-			$('#initialVisitRecords tbody').append('<tr><td rowspan="4" style="width:5%">'+visitRows+'<td style="width:25%"> Visit Date<td><select class="span2" id="visitMonth'+visitRows+'" name="visitMonth"></select>'
+			$('#initialVisitRecords tbody').append('<tr><td rowspan="4" style="width:5%">'+visitRows+'<td style="width:25%"> Visit Date *<td><select class="span2" id="visitMonth'+visitRows+'" name="visitMonth"></select>'
 						+'<select class="span2" id="visitDay'+visitRows+'" name="visitDay"></select>'
 						+'<input class="span2" id="visitYear'+visitRows+'" placeholder="year (yyyy)" name="visitYear">'
 			+'</tr><tr><td> Visit Purpose<td> <input class="span3" type="text" id="visitPurpose'+visitRows+'"></tr><tr><td> Note<td> <textarea rows="3" id="visitNote'+visitRows+'" class="span5"></textarea></tr><tr><td colspan=3 style="text-align:right"><button class="deleteVisitRow" id="deleteVisitButton'+visitRows+'">Delete the last row</button></tr>');
@@ -355,6 +420,8 @@
 				$(prevDeleteButtonId).hide();
 			}
 
+			
+			return false;
 			
 		});
 
@@ -380,7 +447,15 @@
 					+"<input class='span2' id='prevEndYear"+prevSchoolRows+"' name='prevEndYear1"+prevSchoolRows+"' placeholder='year (yyyy)'></td></tr>"
 					+"<tr><td colspan='3' style='text-align:right'><button class='deletePrevSchoolRow' id='deletePrevSchool"+prevSchoolRows+"'>Delete the last row</button></tr>");
 
+				var start_day_selector_id = "#prevStartDay"+prevSchoolRows;
+				var start_month_selector_id = "#prevStartMonth"+prevSchoolRows;
 
+				initializeDateSelector(start_day_selector_id, start_month_selector_id);
+
+				var end_day_selector_id = "#prevEndDay"+prevSchoolRows;
+				var end_month_selector_id = "#prevEndMonth"+prevSchoolRows;
+
+				initializeDateSelector(end_day_selector_id, end_month_selector_id);
 				
 				var oneBeforeRow = prevSchoolRows - 1;
 
@@ -397,12 +472,55 @@
 			return false;
 		});
 
+		$('#addMorePrevVisaRow').click(function() {
+			if (prevVisaRows < 5)
+			{
+				prevVisaRows ++;
+				$('#previousVisaRows tbody').append("<tr><td rowspan='4' style='width:5%'>"+prevVisaRows+"</td>"
+				+"<td style='width:25%'>Previous visa type *</td> <td><select class='span2' id='prevVisaType"+prevVisaRows+"' name='prevVisaType"+prevVisaRows+"'></select></td></tr>"
+				+"<tr><td>Previous visa issued date</td><td><select class='span2' id='prevVisaIssueMonth"+prevVisaRows+"' name='prevVisaIssueMonth"+prevVisaRows+"'></select>"
+				+"<select class='span2' id='prevVisaIssueDay"+prevVisaRows+"' name='prevVisaIssueDay"+prevVisaRows+"'></select>"
+				+"<input class='span2' id='prevVisaIssueYear"+prevVisaRows+"' name='prevVisaIssueYear"+prevVisaRows+"' placeholder='year (yyyy)'></td></tr>"
+				+"<tr><td>Previous visa expiry date</td><td><select class='span2' id='prevVisaExpireMonth"+prevVisaRows+"' name='prevVisaExpireMonth"+prevVisaRows+"'></select>"
+				+"<select class='span2' id='prevVisaExpireDay"+prevVisaRows+"' name='prevVisaExpireDay"+prevVisaRows+"'></select>"
+				+"<input class='span2' id='prevVisaExpireYear"+prevVisaRows+"' name='prevVisaExpireYear"+prevVisaRows+"' placeholder='year (yyyy)'></td></tr>"
+				+"<tr><td colspan='3' style='text-align:right'><button class='deletePrevVisaRow' id ='deletePrevVisaRow"+prevVisaRows+"'>Delete the last row</button></tr>");
+
+				var visaTypeSelector = '#prevVisaType'+prevVisaRows;
+
+				$(visaTypeSelector).append('<option value=0>-----------</option>');
+				$(visaTypeSelector).append('<option>Study</option><option>Working Holiday</option><option>Visitor</option><option>Co-op</option>');
+				
+				var issue_day_selector_id = "#prevVisaIssueDay"+prevVisaRows;
+				var issue_month_selector_id = "#prevVisaIssueMonth"+prevVisaRows;
+
+				initializeDateSelector(issue_day_selector_id, issue_month_selector_id);
+
+				var expire_day_selector_id = "#prevVisaExpireDay"+prevVisaRows;
+				var expire_month_selector_id = "#prevVisaExpireMonth"+prevVisaRows;
+
+				initializeDateSelector(expire_day_selector_id, expire_month_selector_id);
+
+				var oneBeforeRow = prevVisaRows - 1;
+
+				if (oneBeforeRow > 0)
+				{
+					var prevDeleteButtonId = "#deletePrevVisaRow"+oneBeforeRow;
+
+					$(prevDeleteButtonId).hide();
+				}
+			}
+			return false;
+		});
+
 		$('#previousSchoolRows').on("click",".deletePrevSchoolRow",function() {
 			$('#previousSchoolRows tbody tr').slice(-5).remove();
 			prevSchoolRows--;
 
 			var prevDeleteButtonId = '#deletePrevSchool'+prevSchoolRows;
 			$(prevDeleteButtonId).show();
+
+			return false;
 
 		});
 
@@ -413,13 +531,49 @@
 			var prevDeleteButtonId = "#deleteVisitButton"+visitRows;
 
 			$(prevDeleteButtonId).show();
+
+			return false;
+		});
+
+		$('#previousVisaRows').on("click",".deletePrevVisaRow",function() {
+			$('#previousVisaRows tbody tr').slice(-4).remove();
+
+			prevVisaRows --;
+
+			var prevDeleteButtonId = "#deletePrevVisaRow"+prevVisaRows;
+
+			$(prevDeleteButtonId).show();
+
+			return false;
+
 		});
 
 		$('#reset').click(function() {
-				var rowsToDelete = visitRows * -4;
-				$('#initialVisitRecords tbody tr').slice(rowsToDelete).remove();
+			var rowsToDelete = visitRows * -4;
+			$('#initialVisitRecords tbody tr').slice(rowsToDelete).remove();
 
-				visitRows = 0;
+			visitRows = 0;
+
+			return false;
+
+		});
+
+		$('#resetVisa').click(function() {
+			var rowsToDelete = prevVisaRows * -4;
+
+			$('#previousVisaRows tbody tr').slice(rowsToDelete).remove();
+
+			prevVisaRows = 0;
+
+			return false;
+		});
+
+		$('#resetSchool').click(function() {
+			var rowsToDelete = prevSchoolRows * -5;
+			$('#previousSchoolRows tbody tr').slice(rowsToDelete).remove();
+
+			prevSchoolRows = 0;
+			return false;
 
 		});
 
@@ -454,5 +608,5 @@
 			}
 		}
 		
-
+		return false;
 	};

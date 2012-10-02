@@ -14,17 +14,28 @@
 	$query = "DELETE from studentvisit where studentID = '$id'";
 	
 	if (!mysql_query($query, $con)) {
-		die('Error: ' . mysql_error());
+		die('Error2: ' . mysql_error());
 	}
 	
 	$query = "DELETE from studentreminder where studentID = '$id'";
 	
 	if (!mysql_query($query, $con)) {
-		die('Error: ' . mysql_error());
+		die('Error3: ' . mysql_error());
 	}
 
+	$query = "DELETE from student_prev_school where studentID = '$id'";
+
+	if (!mysql_query($query, $con)) {
+		die('Error4: ' . mysql_error());
+	}
 	echo "Record deleted successfully";
 	
+	$query = "DELETE from student_prev_visa where studentID = '$id'";
+
+	if (!mysql_query($query, $con)) {
+		die('Error5: ' . mysql_error());
+	}
+	echo "Record deleted successfully";
 
 	mysql_close($con);
 ?>

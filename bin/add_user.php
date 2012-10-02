@@ -44,6 +44,8 @@
 
 	$prev_schools = $_POST['prev_schools'];
 
+	$prev_visas = $_POST['prev_visa'];
+
 	$last_id = mysql_query("select max(studentId) from studentinfo");
 	$last_id = mysql_fetch_array($last_id,MYSQL_BOTH);
 	$last_id = $last_id[0];
@@ -132,10 +134,34 @@
 		} 
 	}
 
+	$filledCount_visa = 0;
 
+	$query3="INSERT INTO student_prev_visa (studentId
+									,prev_visa_type
+									,prev_visa_issue_date
+									,prev_visa_expire_date
+									,user_id)
+									VALUES ";
 
+	for ($i=0; $i!=5; $i++) {
+		$prev_visa_type = $prev_visas[$i]['prev_visa_type'];
+		$prev_visa_issue_date = $prev_visas[$i]['prev_issue_date'];
+		$prev_visa_expire_date = $prev_visas[$i]['prev_expire_date'];
 
+		if ($prev_visa_type != '' && $prev_visa_type != '0') {
+			$query3 = $query3."('$new_id','$prev_visa_type','$prev_visa_issue_date','$prev_visa_expire_date','$user_id'),";
+			$filledCount_visa ++;
+		}
 
+	}
+
+	$query3 = substr($query3,0,-1);
+
+	if ($filledCount_visa > 0) {
+		if (!mysql_query($query3, $con)) {
+			die('Error3: ' . mysql_error());
+		} 
+	}
 	
 
 	$init_visit_numbers = count($visitLists);
@@ -169,7 +195,7 @@
 		
 		
 		if (!mysql_query($query, $con)) {
-			die('Error: ' . mysql_error());
+			die('Error4: ' . mysql_error());
 		}
 
 

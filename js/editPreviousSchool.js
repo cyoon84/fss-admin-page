@@ -105,12 +105,16 @@
 
 			if (new_school_start_date.length != 10)
 			{
+				$('label#new_SchoolStartYear_error').show();
 				new_school_start_date = existing_start_date ;
+				
 			}
 
 			if (new_school_end_date.length != 10)
 			{
+				$('label#new_SchoolEndYear_error').show();
 				new_school_end_date = existing_end_date;
+				
 			}
 
 			var newPrevSchoolName = $('#newSchool').val();

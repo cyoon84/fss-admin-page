@@ -130,7 +130,15 @@
 							<tr>
 							<td width="25%"> Visit Date</td>
 							<td>
-								<div id="visitTodayDate"></div>
+									<input type="radio" name="visitDate" value="today" class="dateVisitRadio"> Use today's date <br> <div id="visitTodayDate"></div>
+									<input type="radio" name="visitDate" value="chooseDate" class="dateVisitRadio"> Select own date
+								<div id="chooseDate" style="margin-top:10px">
+									<select class="span2" id="visitMonth" name="visitMonth"></select>
+									<select class="span2" id="visitDay" name="visitDay"></select>
+									<input style="width:100px" id="visitYear" placeholder="year (yyyy)" name="visitYear">
+									<label class="error" for="visitYear" id="visitYear_error"> This field is required </label>
+									<label class="error" for="visitYear" id="visitDate_error"> Please choose both month, day and enter year </label>
+								</div>
 							</td>
 							</tr>
 							<tr>

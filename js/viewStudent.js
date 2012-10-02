@@ -7,7 +7,11 @@
 	var status = '';
 
 	$(function() {
+
+		var visitDateOpt = '';
+
 		$('.error').hide();
+		$('#chooseDate').hide();
 		$('#saveVisitSuccess').hide();
 		//function to get parameter (id #) from the url
 		$.urlParam = function(name){
@@ -50,7 +54,7 @@
 		var current_userid = $.session.get('session_userid');
 		
 
-		$('#visitTodayDate').append(today_str+ " (today)");
+		$('#visitTodayDate').append("&nbsp;&nbsp;&nbsp;"+today_str);
 
 		var student_id = $.urlParam('id');
 
@@ -65,6 +69,7 @@
 		var data_studentID = {"studentId": student_id, "is_hidden": is_hidden};
 		var new_reminder_date ='';
 
+		initializeDateSelector("#visitDay","#visitMonth");
 		
 		if (is_hidden == 'Y')
 		{
@@ -124,7 +129,7 @@
 							$('#visitRecordTable tbody').append('<tr><td rowspan="5" width="10%">'+visitNum+ '</td><td width="20%"> Visit Date </td><td>' + resp[i].visit_date+ '</td></tr>'
 							+'<tr><td> Visit Purpose</td><td>'+ resp[i].visit_purpose+ '</tr><tr><td> Notes<td>' + resp[i].visit_note + '</td></tr>'
 							+'<tr><td> Added by </td><td>'+ resp[i].user_id+ '</td></tr>' 
-							+'<tr><td colspan="2"><a href="editVisitRecord.html?visit_id='+resp[i].visit_index+'&student_id='+student_id+'">Edit / Delete this record</a> </td></tr>');
+							+'<tr><td colspan="2"><a class="btn btn-small btn-primary" href="editVisitRecord.html?visit_id='+resp[i].visit_index+'&student_id='+student_id+'">Edit / Delete this record</a> </td></tr>');
 						}
 		
 
@@ -333,6 +338,16 @@
 
 		});
 
+		$('.dateVisitRadio').change(function() {
+			visitDateOpt = $('input:radio[name=visitDate]:checked').val();
+			if (visitDateOpt == 'chooseDate')
+			{
+				$('#chooseDate').show();
+			} else {
+				$('#chooseDate').hide();
+			}
+
+		});
 
 
 		$('#toActive').click(function() {
@@ -378,7 +393,34 @@
 			var visit_purpose = $('#visit_purpose').val();
 			var visit_note = $('#visit_note').val();
 			
-			var visit_date = today_str;
+			if (visitDateOpt == 'today')
+			{
+				var visit_date = today_str;
+			} else {
+				var visit_date_month = $('#visitMonth').val();
+				var visit_date_day = $('#visitDay').val();
+				var visit_date_year = $('#visitYear').val();
+
+				if (visit_date_year == '')
+				{
+					$('label#visitYear_error').show();
+					$('input#visitYear').focus();
+					return false;
+				} else {
+					var visit_date = visit_date_year+"-"+visit_date_month+"-"+visit_date_day;
+
+					if (visit_date.length != 10)
+					{
+						$('label#visitDate_error').show();
+						return false;
+					} 
+					
+					
+
+				}
+
+			}
+			
 
 			if (visit_purpose == "")
 			{
@@ -540,7 +582,7 @@
 								{
 									$('#remindTable tbody').append("<tr><td><p style='color:red'>"+ (-1* diff_days) + " days passed</p></td><td>" + remindReason+ "</td><td>" +remindDate+ "</td><td><input type='button' value='followed up' class='follow_up' id='"+resp[i].reminderIndex+"'></td><td><a class='btn btn-small' href='editReminder.html?id="+resp[i].reminderIndex+"'>Edit/Delete</a></td></tr>"); 
 								} else {
-									$('#remindTable tbody').append("<tr'><td>"+ diff_days + "</td><td>" + remindReason+ "</td><td>" +remindDate+ "</td><td><input type='button' value='followed up' class='follow_up' id='"+resp[i].reminderIndex+"'></td><td><a class='btn btn-small' href='editReminder.html?id="+resp[i].reminderIndex+"'>Edit/Delete</td></tr>"); 
+									$('#remindTable tbody').append("<tr'><td>"+ diff_days + "</td><td>" + remindReason+ "</td><td>" +remindDate+ "</td><td><input type='button' value='followed up' class='follow_up' id='"+resp[i].reminderIndex+"'></td><td><a class='btn btn-primary btn-small' href='editReminder.html?id="+resp[i].reminderIndex+"'>Edit/Delete</td></tr>"); 
 								}
 								
 							
@@ -621,7 +663,7 @@
 							var school_end = resp[i].prev_school_end_dt;
 							var prev_school_id = resp[i].prevSchoolIndex;
 
-							$('#prevSchoolList tbody').append("<tr><td>"+school_name+"</td><td>"+school_program+"</td><td>"+school_start+"</td><td>"+school_end+"</td><td><a href='editPrevSchool.html?id="+prev_school_id+"'>Edit / Delete </a></td> </tr>");
+							$('#prevSchoolList tbody').append("<tr><td>"+school_name+"</td><td>"+school_program+"</td><td>"+school_start+"</td><td>"+school_end+"</td><td><a class='btn btn-primary btn-small' href='editPrevSchool.html?id="+prev_school_id+"'>Edit / Delete </a></td> </tr>");
 						}
 					} else {
 						$('#prevSchoolList tbody').append("<tr><td colspan='5'><h3 style='text-align:center'> No previous school found for this student</h3></td></tr>");
@@ -632,3 +674,33 @@
 
 
 	}
+
+	function initializeDateSelector(id_day, id_month) {
+			var months = new Array("January","February","March","April","May","June","July","August","September","October","November","December");
+
+			$(id_month).append('<option value=00>-----------------</option>');
+			$(id_day).append('<option value=00>-----------</option>');
+
+			for (i=0; i!= months.length ; i++ )
+			{
+				var actualmonth = i+1;
+				if (actualmonth < 10)
+				{
+					$(id_month).append('<option value=0'+actualmonth+'>'+months[i]+'</option>');
+				} else {
+					$(id_month).append('<option value='+actualmonth+'>'+months[i]+'</option>');
+				}
+			}
+
+			for (i=1; i!= 32  ; i++ )
+			{
+				if (i < 10)
+				{
+					$(id_day).append('<option>0'+i+'</option>');
+				} else {
+					$(id_day).append('<option>'+i+'</option>');
+				}
+			}
+			
+			return false;
+		};
