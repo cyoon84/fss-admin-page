@@ -4,6 +4,7 @@
 */
 	var today_date = new Date();
 		
+	var status = '';
 
 	$(function() {
 		$('.error').hide();
@@ -64,8 +65,7 @@
 		var data_studentID = {"studentId": student_id, "is_hidden": is_hidden};
 		var new_reminder_date ='';
 
-		var status = '';
-
+		
 		if (is_hidden == 'Y')
 		{
 			$('#updButton').hide();
@@ -177,6 +177,11 @@
 			});
 		});
 
+		$('#closewindow').click(function() {
+			window.close();
+			
+		});
+
 		$('.undo_old_follow_up').live('click',function() {
 			var remindId = this.id;
 			$.ajax({
@@ -276,9 +281,17 @@
 				$('input#remindYear').focus();
  				 return false;				
 			} else {
+				
 				var remindMonth = $('#remindMonth').val();
 				var remindDay = $('#remindDay').val();
 				new_reminder_date = remindYear+"-"+remindMonth+"-"+remindDay;
+
+				if (new_reminder_date.length < 10)
+				{
+					$('label#remind_error').show();
+					$('input#remindMonth').focus();
+ 					 return false;
+				}
 
 			}
 
@@ -521,20 +534,19 @@
 														
 								var remind_date_obj=new Date(remind_year, remind_month, remind_day);
 							
-								var today_ms = today_date.getTime();
-								var remind_ms = remind_date_obj.getTime();
-							
-								var diff_ms = Math.abs(remind_ms - today_ms);
+								var diff_days = Math.ceil((remind_date_obj - today_date) / (1000*60*60*24));
 
-								var diff_days = Math.round(diff_ms / ONE_DAY) + 1;
-							
-								$('#remindTable tbody').append("<tr'><td>"+ diff_days + "</td><td>" + remindReason+ "</td><td>" +remindDate+ "</td><td><input type='button' value='followed up' class='follow_up' id='"+resp[i].reminderIndex+"'></td></tr>"); 
-							
+								if (diff_days < 0)
+								{
+									$('#remindTable tbody').append("<tr><td><p style='color:red'>"+ (-1* diff_days) + " days passed</p></td><td>" + remindReason+ "</td><td>" +remindDate+ "</td><td><input type='button' value='followed up' class='follow_up' id='"+resp[i].reminderIndex+"'></td><td><a class='btn btn-small' href='editReminder.html?id="+resp[i].reminderIndex+"'>Edit/Delete</a></td></tr>"); 
+								} else {
+									$('#remindTable tbody').append("<tr'><td>"+ diff_days + "</td><td>" + remindReason+ "</td><td>" +remindDate+ "</td><td><input type='button' value='followed up' class='follow_up' id='"+resp[i].reminderIndex+"'></td><td><a class='btn btn-small' href='editReminder.html?id="+resp[i].reminderIndex+"'>Edit/Delete</td></tr>"); 
+								}
 								
 							
 						}
 					} else {
-						$('#remindTable tbody').append("<tr><td colspan='4'><center><h3>There is no reminder for this student</h3></center></td></tr>");
+						$('#remindTable tbody').append("<tr><td colspan='5'><center><h3>There is no reminder for this student</h3></center></td></tr>");
 					}
 
 					

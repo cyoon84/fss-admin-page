@@ -6,7 +6,7 @@
 		
 		var current_userid = $.session.get('session_userid');
 		var visitRows = 0;
-		var prevSchoolRows = 5;
+		var prevSchoolRows = 0;
 
 		//hide error message fields for 'required' fields
 		$('.error').hide();
@@ -197,7 +197,7 @@
 
 			if (prevSchoolRows > 0)
 			{
-				for (i=0;i != prevSchoolRows ; i++ )
+				for (i=0;i != 5 ; i++ )
 				{
 					var idnum = i+1;
 					var prevSchoolNameId = '#prevSchoolName'+idnum;
@@ -263,18 +263,6 @@
 			
 		});
 
-		$('#prevSchoolName1').keydown(function() {
-			$('#prevPrgmName1').prop('disabled', false);
-			$('#prevStartMonth1').prop('disabled',false);
-			$('#prevStartDay1').prop('disabled',false);
-			$('#prevStartYear1').prop('disabled',false);
-
-			$('#prevEndMonth1').prop('disabled',false);
-			$('#prevEndDay1').prop('disabled',false);
-			$('#prevEndYear1').prop('disabled',false);
-			$('#prevSchoolName2').prop('disabled', false);
-
-		});
 
 		$('#prevSchoolName2').keydown(function() {
 			$('#prevPrgmName2').prop('disabled', false);
@@ -370,6 +358,9 @@
 			
 		});
 
+
+
+
 		$('#addMorePrevSchoolRow').click(function() {
 
 			if (prevSchoolRows < 5) {
@@ -377,6 +368,18 @@
 				prevSchoolRows++;
 
 				
+				$('#previousSchoolRows tbody').append("<tr><td rowspan='5' style='width:5%'>"+prevSchoolRows+"</td>"
+					+"<td style='width:25%'> Previous School Name</td>"
+					+"<td> <input class='nameField' type='text' id='prevSchoolName"+prevSchoolRows+"' name='prevSchoolName"+prevSchoolRows+"'></td></tr>"
+					+"<tr><td> Previous School Program</td><td> <input type='text' id='prevPrgmName"+prevSchoolRows+"' name='prevPrgmName"+prevSchoolRows+"'></td></tr>"
+					+"<tr><td> Previous School Start Date</td><td><select class='span2' id='prevStartMonth"+prevSchoolRows+"' name='prevStartMonth"+prevSchoolRows+"'></select>"
+					+"<select class='span2' id='prevStartDay"+prevSchoolRows+"' name='prevStartDay"+prevSchoolRows+"'></select>"
+					+"<input class='span2' id='prevStartYear"+prevSchoolRows+"' name='prevStartYear"+prevSchoolRows+"' placeholder='year (yyyy)'></td></tr>"
+					+"<tr><td> Previous School End Date</td><td><select class='span2' id='prevEndMonth"+prevSchoolRows+"' name='prevEndMonth1"+prevSchoolRows+"'></select>"
+					+"<select class='span2' id='prevEndDay"+prevSchoolRows+"' name='prevEndDay"+prevSchoolRows+"'></select>"
+					+"<input class='span2' id='prevEndYear"+prevSchoolRows+"' name='prevEndYear1"+prevSchoolRows+"' placeholder='year (yyyy)'></td></tr>"
+					+"<tr><td colspan='3' style='text-align:right'><button class='deletePrevSchoolRow' id='deletePrevSchool"+prevSchoolRows+"'>Delete the last row</button></tr>");
+
 
 				
 				var oneBeforeRow = prevSchoolRows - 1;
@@ -391,9 +394,17 @@
 				
 
 			}
+			return false;
 		});
 
+		$('#previousSchoolRows').on("click",".deletePrevSchoolRow",function() {
+			$('#previousSchoolRows tbody tr').slice(-5).remove();
+			prevSchoolRows--;
 
+			var prevDeleteButtonId = '#deletePrevSchool'+prevSchoolRows;
+			$(prevDeleteButtonId).show();
+
+		});
 
 		$('#initialVisitRecords').on("click",".deleteVisitRow",function() {
 			$('#initialVisitRecords tbody tr').slice(-4).remove();
@@ -402,7 +413,7 @@
 			var prevDeleteButtonId = "#deleteVisitButton"+visitRows;
 
 			$(prevDeleteButtonId).show();
-			});
+		});
 
 		$('#reset').click(function() {
 				var rowsToDelete = visitRows * -4;

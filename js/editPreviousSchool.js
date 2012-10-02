@@ -1,5 +1,5 @@
 /**
-* editVisitRecord.js - edit / delete visit record for each students
+* editReminder.js - edit / delete visit record for each students
 *
 */
 	

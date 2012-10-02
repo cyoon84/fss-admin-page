@@ -95,7 +95,7 @@
 		<h1> Add a new student</h1>
 		(* is required)
 		<br>
-		<div class="span8 well well-large" style="margin-top:10px">
+		<div class="span8 well well-large" style="margin-top:10px; margin-left:0px">
 		
 			<h2>Current information</h2>
 
@@ -239,82 +239,45 @@
 			</form>
 		</div>
 
-		<div class="span8 well well-large" style="margin-top:10px" id="addPrevSchools">
+		<div class="span8 well well-large" style="margin-top:10px; margin-left:0px" id="addPrevSchools">
 			<h2>Add previous schools</h2> 
-			Add up to 5 previous schools<br>
+			Add up to 5 previous schools
 			<br>
+			<br>
+			<form class="form-inline">
+				<button class='btn btn-primary' id='addMorePrevSchoolRow'> Add more previous schools</button>
+				<button class='btn btn-primary' id='resetSchool'> Remove all rows</button>
+			</form>
 			<table class="table" id="previousSchoolRows">
 				<thead>
 				</thead>
 				<tbody>
-					<tr>
-					<td rowspan="4" style="width:5%">1</td>
-					<td style="width:25%"> Previous School Name</td>
-					<td> <input class="nameField" type="text" id="prevSchoolName1" name="prevSchoolName1"></td></tr>
-					<tr><td> Previous School Program</td><td> <input type="text" id="prevPrgmName1" name="prevPrgmName1" disabled></td></tr>
-					<tr><td> Previous School Start Date</td><td><select class="span2" id="prevStartMonth1" name="prevStartMonth1" disabled></select>
-					<select class="span2" id="prevStartDay1" name="prevStartDay1" disabled></select>
-					<input class="span2" id="prevStartYear1" name="prevStartYear1" placeholder="year (yyyy)" disabled></td></tr>
-					<tr><td> Previous School End Date</td><td><select class="span2" id="prevEndMonth1" name="prevEndMonth1" disabled></select>
-					<select class="span2" id="prevEndDay1" name="prevEndDay1" disabled></select>
-					<input class="span2" id="prevEndYear1" name="prevEndYear1" placeholder="year (yyyy)" disabled></td>
-					</tr>
-					<tr>
-					<td rowspan="4" style="width:5%">2</td>
-					<td style="width:25%"> Previous School Name</td>
-					<td> <input class="nameField" type="text" id="prevSchoolName2" name="prevSchoolName2" disabled></td></tr>
-					<tr><td> Previous School Program</td><td> <input type="text" id="prevPrgmName2" name="prevPrgmName2" disabled></td></tr>
-					<tr><td> Previous School Start Date</td><td><select class="span2" id="prevStartMonth2" name="prevStartMonth2" disabled></select>
-					<select class="span2" id="prevStartDay2" name="prevStartDay2" disabled></select>
-					<input class="span2" id="prevStartYear2" name="prevStartYear2" placeholder="year (yyyy)" disabled></td></tr>
-					<tr><td> Previous School End Date</td><td><select class="span2" id="prevEndMonth2" name="prevEndMonth2" disabled></select>
-					<select class="span2" id="prevEndDay2" name="prevEndDay2" disabled></select>
-					<input class="span2" id="prevEndYear2" name="prevEndYear2" placeholder="year (yyyy)" disabled></td>
-					</tr>
-					<tr>
-					<td rowspan="4" style="width:5%">3</td>
-					<td style="width:25%"> Previous School Name</td>
-					<td> <input class="nameField" type="text" id="prevSchoolName3" name="prevSchoolName3" disabled></td></tr>
-					<tr><td> Previous School Program</td><td> <input type="text" id="prevPrgmName3" name="prevPrgmName3" disabled></td></tr>
-					<tr><td> Previous School Start Date</td><td><select class="span2" id="prevStartMonth3" name="prevStartMonth3" disabled></select>
-					<select class="span2" id="prevStartDay3" name="prevStartDay3" disabled></select>
-					<input class="span2" id="prevStartYear3" name="prevStartYear3" placeholder="year (yyyy)" disabled></td></tr>
-					<tr><td> Previous School End Date</td><td><select class="span2" id="prevEndMonth3" name="prevEndMonth3" disabled></select>
-					<select class="span2" id="prevEndDay3" name="prevEndDay3" disabled></select>
-					<input class="span2" id="prevEndYear3" name="prevEndYear3" placeholder="year (yyyy)" disabled></td>
-					</tr>
-					<tr>
-					<td rowspan="4" style="width:5%">4</td>
-					<td style="width:25%"> Previous School Name</td>
-					<td> <input class="nameField" type="text" id="prevSchoolName4" name="prevSchoolName4" disabled></td></tr>
-					<tr><td> Previous School Program</td><td> <input type="text" id="prevPrgmName4" name="prevPrgmName4" disabled></td></tr>
-					<tr><td> Previous School Start Date</td><td><select class="span2" id="prevStartMonth4" name="prevStartMonth4" disabled></select>
-					<select class="span2" id="prevStartDay4" name="prevStartDay4" disabled></select>
-					<input class="span2" id="prevStartYear4" name="prevStartYear4" placeholder="year (yyyy)" disabled></td></tr>
-					<tr><td> Previous School End Date</td><td><select class="span2" id="prevEndMonth4" name="prevEndMonth4" disabled></select>
-					<select class="span2" id="prevEndDay4" name="prevEndDay4" disabled></select>
-					<input class="span2" id="prevEndYear4" name="prevEndYear4" placeholder="year (yyyy)" disabled></td>
-					</tr>
-					<tr>
-					<td rowspan="4" style="width:5%">5</td>
-					<td style="width:25%"> Previous School Name</td>
-					<td> <input class="nameField" type="text" id="prevSchoolName5" name="prevSchoolName5" disabled></td></tr>
-					<tr><td> Previous School Program</td><td> <input type="text" id="prevPrgmName5" name="prevPrgmName5" disabled></td></tr>
-					<tr><td> Previous School Start Date</td><td><select class="span2" id="prevStartMonth5" name="prevStartMonth5" disabled></select>
-					<select class="span2" id="prevStartDay5" name="prevStartDay5" disabled></select>
-					<input class="span2" id="prevStartYear5" name="prevStartYear5" placeholder="year (yyyy)" disabled></td></tr>
-					<tr><td> Previous School End Date</td><td><select class="span2" id="prevEndMonth5" name="prevEndMonth5" disabled></select>
-					<select class="span2" id="prevEndDay5" name="prevEndDay5" disabled></select>
-					<input class="span2" id="prevEndYear5" name="prevEndYear5" placeholder="year (yyyy)" disabled></td>
-					</tr>
 				</tbody>
 
 			</table>
 		</div>
 		
+		<div class="span8 well well-large" style="margin-top:10px; margin-left:0px" id="addPrevVisa">
+			<h2>Add previous visas</h2> 
+			Add up to 5 previous visas
+			<br>
+			<br>
+			<form class="form-inline">
+				<button class='btn btn-primary' id='addMorePrevVisaRow'> Add more previous visas</button>
+				<button class='btn btn-primary' id='resetVisa'> Remove all rows</button>
+			</form>
+			<table class="table" id="previousVisaRows">
+				<thead>
+				</thead>
+				<tbody>
+				</tbody>
 
-		<div class="span8 well well-large" style="margin-top:10px" id="addInitialVisit">
+			</table>
+		</div>
+
+		<div class="span8 well well-large" style="margin-top:10px; margin-left:0px" id="addInitialVisit">
 			<h2>Add visit records</h2>
+			<br>
 			<br>
 			<button class='btn btn-primary' id='addMoreVisitRow'> Add more visit records</button>
 			<button class='btn btn-primary' id='reset'> Remove all rows</button>
@@ -330,6 +293,8 @@
 			</table>
 
 		</div>
+
+
 
 		<div class="span8" id="add_submitbuttonarea">
 			<button type="submit" class="btn btn-primary btn-large" id="addButton"> Add a new student </button>

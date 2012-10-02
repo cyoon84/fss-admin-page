@@ -12,7 +12,9 @@ $(function() {
 		"sPaginationType": "bootstrap",
 		"oLanguage": {
 			"sLengthMenu": "_MENU_ records per page"
-		}
+		},
+		"aaSorting": [[6,'desc'],[0,'asc'],[1,'asc']]
+		
 	} );
 
 	
@@ -47,10 +49,12 @@ function loadTable(category) {
 
 				if (resp[i].active_indicator == 'Y')
 				{
+				//	koreanNameLink = "<a href=viewStudent_2.html?id="+resp[i].student_id+"&hidden=N class='viewRec' id='"+resp[i].student_id+"'>"+resp[i].name_kor+"</a>"
 					koreanNameLink = "<a href=viewStudent.html?id="+resp[i].student_id+"&hidden=N>"+resp[i].name_kor+"</a>"
 					active_stat = "Active";
 				} else {
 					koreanNameLink = "<a href=viewStudent.html?id="+resp[i].student_id+"&hidden=Y>"+resp[i].name_kor+"</a>"
+				//	koreanNameLink = "<a href=viewStudent_2.html?id="+resp[i].student_id+"&hidden=N class='viewRec' id='"+resp[i].student_id+"'>"+resp[i].name_kor+"</a>"
 					active_stat = "Inactive"; 
 				}
 
@@ -59,6 +63,17 @@ function loadTable(category) {
 				resultTable.fnAddData([koreanNameLink,resp[i].name_eng,resp[i].date_birth,resp[i].email, resp[i].phone_no,active_stat, date_added_str]);
 			}
 		}
+	});
+
+
+	$('#result').on("click",".viewRec",function() {
+		var nWin = window.open($(this).prop('href'),'','height=800,width=1100');
+		if (window.focus)
+		{
+			nWin.focus();
+		}
+		return false;
+
 	});
 
 

@@ -100,12 +100,13 @@
 					<div class="modal-body" id="modal-body">
 					<table class="table">
 					<tr>
-					<td>Reminder date
+					<td>Reminder date <br>(required)
 					<td>
 						<select id="remindMonth" name="remindMonth" style="width:100px"></select>
 						<select id="remindDay" name="remindDay" style="width:70px"></select>
 						<input  id="remindYear" placeholder="year (yyyy)" name="remindYear" style="width:100px">
 						<label class="error" for="remindYear" id="remindYear_error">This field is required </label>
+						<label class="error" for="remindYear" id="remind_error">Please select all month / day / year values </label>
 					</tr>
 					<tr>
 					<td>Reason 
@@ -203,7 +204,7 @@
 				
 		<br>
 
-		<div class="accordion span8" id="accordion2">
+		<div class="accordion span8" id="accordion2" style="margin-left:0px">
 			 <div class="accordion-group">
 				<div class="accordion-heading">
 					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
@@ -265,10 +266,11 @@
 						<table class='table' id='remindTable'>
 						<thead>
 							<tr>
-							<th style="width:15%">Days left</th>
+							<th style="width:20%">Days left</th>
 							<th style="width:45%">Reason</th>
-							<th style="width:20%"> Follow up by date </th> 
-							<th style="width:20%"> <i class="icon-check"></i>&nbsp;Mark follow up</th>
+							<th style="width:15%"> By date </th> 
+							<th style="width:10%"> <i class="icon-check"></i>&nbsp;Mark</th>
+							<th style="width:10%">Edit/Delete</th>
 							</tr>
 						</thead>
 						<tbody>

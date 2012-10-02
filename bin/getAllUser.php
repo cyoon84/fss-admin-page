@@ -8,7 +8,7 @@
 
 		$query = "SELECT * from studentinfo a inner join 
 			(SELECT `studentId`,max(`version`)  as max_version FROM `studentinfo` group by `studentId`) e 
-			where a.studentId = e.studentId and a.version = e.max_version  ";
+			where a.studentId = e.studentId and a.version = e.max_version ";
 
 	} else {
 		$query = "SELECT * from studentinfo a inner join 
