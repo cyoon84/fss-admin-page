@@ -57,7 +57,12 @@
 			var engFName = $('#nameEngFName').val().toUpperCase();
 			var engLName = $('#nameEngLName').val().toUpperCase();
 
-			var engName = engLName+", "+engFName;
+			if (engFName == '' && engLName == '')
+			{
+				var engName = '';
+			} else {
+				var engName = engLName+", "+engFName;
+			}
 
 			var korName = $('#nameKor').val();
 			var address = $('#address').val();
@@ -488,7 +493,7 @@
 
 				var visaTypeSelector = '#prevVisaType'+prevVisaRows;
 
-				$(visaTypeSelector).append('<option value=0>-----------</option>');
+				$(visaTypeSelector).append('<option>Unknown</option>');
 				$(visaTypeSelector).append('<option>Study</option><option>Working Holiday</option><option>Visitor</option><option>Co-op</option>');
 				
 				var issue_day_selector_id = "#prevVisaIssueDay"+prevVisaRows;

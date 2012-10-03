@@ -145,6 +145,8 @@
 
 		prevSchoolLoad(student_id);
 
+		prevVisaLoad(student_id);
+		
 		$('.follow_up').live('click',function() {
 			var remindId = this.id;
 							
@@ -672,6 +674,38 @@
 			});
 				
 
+
+	}
+
+	function prevVisaLoad(student_id) {
+		$('#prevVisaList tbody').empty();
+
+		var input = {"student_id": student_id, "criteria": "all"};
+		$.ajax({
+				type:"GET",
+				url:"bin/get_prev_visa.php",
+				dataType: "json",
+				cache: false,
+				data:input, 				
+				success:function(resp) {
+					if (resp.length > 0)
+					{
+						for (i=0; i!=resp.length ;i++ )
+						{
+							var visa_type = resp[i].prev_visa_type;
+							var visa_issue_date = resp[i].prev_visa_issue_date;
+							var visa_expire_date = resp[i].prev_visa_expire_date;
+							var prev_visa_id = resp[i].prevVisaIndex;
+
+							$('#prevVisaList tbody').append("<tr><td>"+visa_type+"</td><td>"+visa_issue_date+"</td><td>"+visa_expire_date+"</td><td><a class='btn btn-primary btn-small' href='editPrevVisa.html?id="+prev_visa_id+"'>Edit / Delete </a></td> </tr>");
+						}
+					} else {
+						$('#prevVisaList tbody').append("<tr><td colspan='4'><h3 style='text-align:center'> No previous visa found for this student</h3></td></tr>");
+					}
+				}
+			});
+				
+		return false;
 
 	}
 

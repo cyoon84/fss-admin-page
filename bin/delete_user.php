@@ -28,7 +28,6 @@
 	if (!mysql_query($query, $con)) {
 		die('Error4: ' . mysql_error());
 	}
-	echo "Record deleted successfully";
 	
 	$query = "DELETE from student_prev_visa where studentID = '$id'";
 

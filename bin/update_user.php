@@ -55,7 +55,11 @@
 		$new_school_end_date = $active_row['current_school_end_dt'];
 	}
 
-	if (($active_row['current_school'] != '') && ($new_school_name != $active_row['current_school'])) {
+	if ((($new_school_name != $active_row['current_school']) || 
+		 ($new_program_name != $active_row['current_program']) ||
+		 ($new_school_start_date != $active_row['current_school_strt_dt'])  || 
+		 ($new_school_end_date != $active_row['current_school_end_dt'])) && 
+		 ($active_row['current_school'] != '')) {
 		
 		$current_school = $active_row['current_school'];
 		$current_prgm = $active_row['current_program'];
@@ -80,6 +84,24 @@
 		if (!mysql_query($query, $con)) {
 			die('Error: ' . mysql_error());
 		}
+	}
+
+	if ($new_visa_issue_date != $active_row['visa_issue_date'] ||
+		$new_visa_exp_date != $active_row['visa_exp_date'] ||
+		$new_visa_type != $active_row['visa_type']) {
+		
+
+		$current_visa_type = $active_row['visa_type'];
+		$current_visa_issue_date = $active_row['visa_issue_date'];
+		$current_visa_exp_date = $active_row['visa_exp_date'];
+
+		$query = "INSERT INTO student_prev_visa (studentId, student_info_ver, prev_visa_type, prev_visa_issue_date, prev_visa_expire_date, user_id) 
+					VALUES ('$id','$latest_version','$current_visa_type','$current_visa_issue_date','$current_visa_exp_date', '$updated_by')";
+
+		if (!mysql_query($query, $con)) {
+			die('Error: ' . mysql_error());
+		}
+
 	}
 
 	$new_version = $latest_version + 1;

@@ -184,7 +184,12 @@
 			var new_eng_first_name = $('#newFNameEngText').val().toUpperCase();
 			var new_eng_last_name = $('#newLNameEngText').val().toUpperCase();
 
-			var new_eng_name = new_eng_last_name +", "+new_eng_first_name;
+			if (new_eng_first_name == '' && new_eng_last_name == '')
+			{
+				new_eng_name = '';
+			} else {
+				var new_eng_name = new_eng_last_name +", "+new_eng_first_name;
+			}
 
 			var new_email = $('#newEmailText').val();
 			var new_phone = $('#newPhoneText').val();
