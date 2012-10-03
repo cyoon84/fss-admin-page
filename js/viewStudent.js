@@ -465,27 +465,7 @@
 	});
 
 
-	function getTodayDateString(today_date_obj) {
-		var today_year = today_date_obj.getFullYear();
-		var today_month = today_date_obj.getMonth()+1;
-		var today_day = today_date_obj.getDate();
 
-		if (today_month < 10)
-		{
-			today_month = "0"+today_month; 
-		}
-
-		if (today_day < 10)
-		{
-			today_day = "0"+today_day;
-		}
-		
-		var today_str = today_year + "-"+today_month+ "-"+today_day;
-		
-
-		return today_str;
-
-	}
 
 	function fillInfoTable(resp) {
 		var formatted_address = resp[0].address.replace(/\r\n|\r|\n/g,"<br />");
@@ -544,7 +524,7 @@
 
 		$('#remindTable tbody').empty();
 
-		var data_follow_up = {"student_id": student_id, "follow_up": 'N'};
+		var data_follow_up = {"student_id": student_id, "follow_up": 'N', "action": "all"};
 		$.ajax({
 				type:"GET",
 				url:"bin/get_reminder_record.php",
@@ -604,7 +584,7 @@
 
 		$('#remindTable_old tbody').empty();
 
-		var data_follow_up = {"student_id": student_id, "follow_up": 'Y'};
+		var data_follow_up = {"student_id": student_id, "follow_up": 'Y', "action": "all"};
 		$.ajax({
 				type:"GET",
 				url:"bin/get_reminder_record.php",

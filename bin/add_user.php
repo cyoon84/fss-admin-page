@@ -165,6 +165,7 @@
 	
 
 	$init_visit_numbers = count($visitLists);
+	$filledCount_visit = 0;
 
 	if ($init_visit_numbers > 0) {
 		$visit_date = $visitLists[0]['visitDate'];
@@ -183,21 +184,25 @@
 									,'$visit_note'
 									,'$user_id')";
 		for ($i = 1; $i != $init_visit_numbers; $i++) {
+
 			$visit_date = $visitLists[$i]['visitDate'];
 			$visit_purpose = $visitLists[$i]['visitPurpose'];
 			$visit_note = $visitLists[$i]['visitNote'];
 
-			$query = $query. ",('$new_id','$visit_date','$visit_purpose','$visit_note','$user_id')";
-			
+			if ($visit_date != '') {
+
+				$query = $query. ",('$new_id','$visit_date','$visit_purpose','$visit_note','$user_id')";
+				$filledCount_visit++;
+			}
 				
 		}
 
 		
-		
-		if (!mysql_query($query, $con)) {
-			die('Error4: ' . mysql_error());
+		if ($filledCount_visit > 0) {
+			if (!mysql_query($query, $con)) {
+				die('Error4: ' . mysql_error());
+			}
 		}
-
 
 	}
 	

@@ -27,3 +27,25 @@
 		
 		return false;
 	};
+
+	function getTodayDateString(today_date_obj) {
+		var today_year = today_date_obj.getFullYear();
+		var today_month = today_date_obj.getMonth()+1;
+		var today_day = today_date_obj.getDate();
+
+		if (today_month < 10)
+		{
+			today_month = "0"+today_month; 
+		}
+
+		if (today_day < 10)
+		{
+			today_day = "0"+today_day;
+		}
+		
+		var today_str = today_year + "-"+today_month+ "-"+today_day;
+		
+
+		return today_str;
+
+	}

@@ -492,7 +492,7 @@
 				+"<tr><td colspan='3' style='text-align:right'><button class='deletePrevVisaRow' id ='deletePrevVisaRow"+prevVisaRows+"'>Delete the last row</button></tr>");
 
 				var visaTypeSelector = '#prevVisaType'+prevVisaRows;
-
+				$(visaTypeSelector).append('<option value=0>-------------</option>');
 				$(visaTypeSelector).append('<option>Unknown</option>');
 				$(visaTypeSelector).append('<option>Study</option><option>Working Holiday</option><option>Visitor</option><option>Co-op</option>');
 				

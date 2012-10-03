@@ -86,9 +86,10 @@
 		}
 	}
 
-	if ($new_visa_issue_date != $active_row['visa_issue_date'] ||
-		$new_visa_exp_date != $active_row['visa_exp_date'] ||
-		$new_visa_type != $active_row['visa_type']) {
+	if (($new_visa_issue_date != $active_row['visa_issue_date'] ||
+		 $new_visa_exp_date != $active_row['visa_exp_date'] ||
+		 $new_visa_type != $active_row['visa_type'])  &&
+		($active_row['visa_type']!= 'Unknown')){
 		
 
 		$current_visa_type = $active_row['visa_type'];

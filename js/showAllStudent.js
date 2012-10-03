@@ -31,7 +31,7 @@ $(function() {
 
 function loadTable(category) {
 		
-	var loadTableCond = {"category": category};
+	var loadTableCond = {"category": category, "action": "all"};
 
 	resultTable.fnClearTable();
 
