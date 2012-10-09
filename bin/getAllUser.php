@@ -41,6 +41,12 @@
 		}
 	}
 
+	if ($action == 'get_new_student_list') {
+
+
+
+	}
+
 	if ($action == 'visa_expiry_daterange_count') {
 		$start_date = $_GET['start_date'];
 		$end_date = $_GET['end_date'];
@@ -55,6 +61,28 @@
 				'visa_expiry_count' => $row['visa_expiry_count']
 			);
 		}
+	}
+
+	if ($action == 'visa_expiry_daterange_contents') {
+		$start_date = $_GET['start_date'];
+		$end_date = $_GET['end_date'];
+		$query = "SELECT studentId, name_eng, name_kor, visa_type, visa_issue_date, visa_exp_date from studentinfo where active_indicator = 'Y' and visa_exp_date between '$start_date' and '$end_date'";
+		$result = mysql_query($query, $con);
+
+		$result_out = array();
+		while ($row = mysql_fetch_array($result)) {
+
+			$result_out[] = array(
+				'studentId' => $row['studentId'],
+				'name_eng' => $row['name_eng'],
+				'name_kor' => $row['name_kor'],
+				'visa_type' => $row['visa_type'],
+				'visa_issue_date' => $row['visa_issue_date'],
+				'visa_exp_date' => $row['visa_exp_date']
+			);
+		}
+
+
 	}
 
 

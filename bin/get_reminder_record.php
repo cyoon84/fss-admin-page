@@ -33,6 +33,7 @@
 				'user_id' => $row['user_id']
 			);
 		}
+		echo json_encode($result_out);
 
 	}	
 
@@ -50,14 +51,14 @@
 			);
 		}
 
-		
+		echo json_encode($result_out);
 	}
 
 
 	if ($action == 'by_date_contents') {
 		$start_date = $_GET['start_date'];
 		$end_date = $_GET['end_date'];
-		$query = "select a.studentId, b.name_kor, b.name_eng, a.remindReason, a.remindDate from studentreminder a inner join studentinfo b on a.studentId = b.studentId where a.follow_up_ind = 'N' and a.remindDate between '$start_date' and '$end_date' order by a.remindDate desc";
+		$query = "select a.studentId, b.name_kor, b.name_eng, a.remindReason, a.remindDate from studentreminder a inner join studentinfo b on a.studentId = b.studentId where a.follow_up_ind = 'N' and b.active_indicator = 'Y' and a.remindDate between '$start_date' and '$end_date' order by a.remindDate desc";
 
 		$result = mysql_query($query, $con);
 
@@ -71,8 +72,9 @@
 				'remindReason' => $row['remindReason']
 			);
 		}
+		echo json_encode($result_out);
 	}
-	echo json_encode($result_out);
+	
 	
 	mysql_close($con);
 ?>   

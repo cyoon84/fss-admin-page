@@ -11,7 +11,7 @@
 <script src="js/checklogin.js"></script>
 <script src="js/common_functions.js"></script>
 <script src="js/date.js"></script>
-<script src="js/index.js"></script>
+<script src="js/add_announcement.js"></script>
 
 </head>
 
@@ -79,58 +79,41 @@
 			</div>
 		</div>
 		<div class="span9" style="margin-top:10px">
-			<div class="span9 well" style=" margin-bottom:10px; margin-left:0px">
-				<h1> Announcements </h1>
-				<br>
 			
-				
-				<div class="span9" id="announcementArea" style="margin-left:0px">
-				
-				</div>
-			</div>
+			<div class="span9 well well-large" style="margin-left:0px">
+				<h3>Write a new announcement</h3>
+				(* is required)
+				<br><br>
+				<table class="table" style="width:100%">
+				<thead>
+				</thead>
+				<tbody>
+					<tr>
+					<td style="width:15%"> Date </td>
+					<td> <div id="todayDate"> </div> </td>
+					</tr>
+
+					<tr>
+					<td> Title *</td>
+					<td> <input type="text" id="announcementTitle" class="span5">
+					<label class="error" for="announcementTitle" id="noTitle">Please enter texts </label></td>
+					</tr>
+
+					<tr>
+					<td> Contents *<br>
+					(up to 2000 letters) </td>
+					<td> <textarea rows="10" class="span7" id="announcementBody"> </textarea> 
+					<label class="error" for="announcementBody" id="noText">Please enter texts </label>
+					<label class="error" for="announcementBody" id="limitExceed">Limit Exceeded (> 2000 words) </label>
+					</td>
+					</tr>
+					<tr>
+					<td colspan="2" style="text-align:right"><button class="btn btn-large btn-primary" id="addNew"> Save</td>
+					</tr>
 
 
-			<div class="row" >
-				<div class="span4" style="margin-top:10px">
-					<h3> Visa Expiring Students </h3>(within next 30 days)<br><br>
-					<table border="0" id="visaDueDisplay" style="width:100%">
-						<tr>
-						<td id='visaNumber' class='indexTableNumber'>
-						<td id='visaMessage' class='indexTableMessage'>
-						</tr>
-					</table>
-				</div>
-
-				<div class="span5" style="margin-top:10px">
-					<h3> Student reminders </h3>(within next 7 days) <br><br>
-						<table border="0" id="reminderDueDisplay" style="width:100%">
-						<tr>
-						<td id='reminderNumber' class='indexTableNumber'>
-						<td id='reminderMessage' class='indexTableMessage'>
-						</tr>
-						</table>
-
-				</div>
-
-			</div>
-
-			<div class="row">
-				<div class="span4" style="margin-top:10px">
-					<h3> Statistics for the past 7 days</h3><br>
-						<table border="0" id="statsDisplay" style="width:100%">
-						<tr>
-							<td id='newAddedNumber' class='indexTableNumber'><h1>20</h1>
-							<td id='newAddedMessage' class='indexTableMessage'>20 new students have been added to the system.
-						</tr>
-						<tr>
-							<td id='newVisitNumber' class='indexTableNumber'><h1>20</h1>
-							<td id='newVisitMessage' class='indexTableMessage'>20 new visit records have been created to the system.						
-						</table>					
-				</div>
-
-				<div class="span4" style="margin-top:10px">
-
-				</div>
+				</tbody>
+			
 			</div>
 		</div>
 	</div>

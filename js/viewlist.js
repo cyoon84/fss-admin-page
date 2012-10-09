@@ -48,6 +48,35 @@
 		
 			});
 		}
+
+		if (show_by == 'visadate')
+		{
+			$('#title').append("<h3>List of students whose visas are expiring within 30 days</h3>");
+			end_date = Date.parse('+30 days');
+			end_date_str = getTodayDateString(end_date);
+			var date_range = {"start_date": today_str, "end_date": end_date_str, "action": "visa_expiry_daterange_contents"};
+			$('#result thead').append("<tr><th style='width:20%'>Student Name </th> <th style='width:40%'>Visa Type</th> <th style='width:20%'> Visa Issue Date </th><th style='width:20%'>Visa Expiry Date</th> </tr>");
+		
+			$.ajax({
+				type:"GET",
+				url:"bin/getAllUser.php",
+				data: date_range,
+				dataType: "json",
+				success: function(resp) {
+					for (i=0; i!= resp.length ; i++ )
+					{
+						if (resp[i].name_eng == '')
+						{
+							$('#result tbody').append("<tr><td><a href='viewStudent.html?id="+resp[i].studentId+"&hidden=N'>"+resp[i].name_kor+"</td><td>"+resp[i].visa_type+"</td><td>"+resp[i].visa_issue_date+"</td><td>"+resp[i].visa_exp_date+"</td></tr>");
+						} else {
+							$('#result tbody').append("<tr><td><a href='viewStudent.html?id="+resp[i].studentId+"&hidden=N'>"+resp[i].name_kor+"("+resp[i].name_eng+")</a></td><td>"+resp[i].visa_type+"</td><td>"+resp[i].visa_issue_date+"</td><td>"+resp[i].visa_exp_date+"</td></tr>");
+
+						}
+					}
+				}
+		
+			});		
+		}
 		
 		$('#daterange').append("From: " + today_str+ " To: " + end_date_str);
 
