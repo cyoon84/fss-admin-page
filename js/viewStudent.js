@@ -469,6 +469,7 @@
 
 	function fillInfoTable(resp) {
 		var formatted_address = resp[0].address.replace(/\r\n|\r|\n/g,"<br />");
+		var formatted_note = resp[0].note.replace(/\r\n|\r|\n/g,"<br />");
 		if (resp[0].referred_by == '')
 		{
 			$('#viewArea').append("<table class='table'><tr><td style='width:25%'>Name (Korean) </td><td>"+resp[0].name_kor+"</td></tr>" 
@@ -489,6 +490,7 @@
 				+"<tr><td> Current School Start Date</td><td>"+resp[0].current_school_strt_dt+"</td></tr>"
 				+"<tr><td> Current School End Date</td><td>"+resp[0].current_school_end_dt+"</td></tr>"
 				+"<tr><td> Active status</td><td>"+status+"</td></tr>"
+				+"<tr><td> Note</td><td>"+formatted_note+"</td></tr>"
 				+"<tr><td> Update reason </td><td>"+resp[0].updt_reason+"</td></tr>"
 				+"<tr><td> Added / updated by </td><td>"+resp[0].user_id+"</td></tr></table>");
 		} else {
@@ -511,6 +513,7 @@
 				+"<tr><td> Current School Start Date</td><td>"+resp[0].current_school_strt_dt+"</td></tr>"
 				+"<tr><td> Current School End Date</td><td>"+resp[0].current_school_end_dt+"</td></tr>"
 				+"<tr><td> Active status</td><td>"+status+"</td></tr>"
+				+"<tr><td> Note</td><td>"+formatted_note+"</td></tr>"
 				+"<tr><td> Update reason </td><td>"+resp[0].updt_reason+"</td></tr>"
 				+"<tr><td> Added / updated by </td><td>"+resp[0].user_id+"</td></tr></table>");
 

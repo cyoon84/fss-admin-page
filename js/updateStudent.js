@@ -122,8 +122,11 @@
 					var existing_address = resp[0].address;
 					existing_address = existing_address.replace(/<br\s*[\/]?>/gi, "\n");
 
+					var existing_note = resp[0].note;
+					existing_note  = existing_note.replace(/<br\s*[\/]?>/gi, "\n");
+
 					$('#newAddressText').val(existing_address);
-					
+					$('#new_note').val(existing_note);
 					$('#existingDOA').append(resp[0].arrival_dt);
 					$('#existingVisaType').append(resp[0].visa_type);
 					existingVisaType = resp[0].visa_type;
@@ -263,6 +266,8 @@
 			var sEnDay  = $('#new_schoolEndDay').val();
 			var sEnMonth= $('#new_schoolEndMonth').val();
 			var sEnYear = $('#new_schoolEndYear').val();
+
+			var note = $('#new_note').val();
 			
 			var new_visa_issue_date = '';
 			var new_korea_agency = $('#newKoreaAgencyText').val();
@@ -319,6 +324,7 @@
 								 "current_program": new_program_name,
 								 "school_start_dt": new_school_start_date,
 								 "school_end_dt" : new_school_end_date,
+								 "note": note,
 								 "update_reason" : update_reason,
 								 "updated_by": current_userid
 								};

@@ -22,6 +22,9 @@
 
 	$new_school_start_date = $_POST['school_start_dt'];
 	$new_school_end_date = $_POST['school_end_dt'];
+
+	$new_note = $_POST['note'];
+
 	$update_reason = $_POST['update_reason'];
 	$updated_by = $_POST['updated_by'];
 
@@ -128,6 +131,7 @@
 									, current_program
 									, current_school_strt_dt
 									, current_school_end_dt
+									, note
 									, updt_reason
 									, user_id) 
 									VALUES 
@@ -152,6 +156,7 @@
 									,'$new_program_name'
 									,'$new_school_start_date'
 									,'$new_school_end_date'
+									,'$new_note'
 									,'$update_reason'
 									,'$updated_by')";
 

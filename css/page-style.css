@@ -68,8 +68,13 @@ url('../fonts/helveticaneueltstd-roman-webfont.eot') format('embedded-opentype')
 	width:15%;
 }
 
+
 .indexTableMessage{
 	width:85%; 
 	vertical-align:text-top
 }
 
+.pastDue {
+	color:red;
+
+}

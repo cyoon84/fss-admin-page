@@ -17,7 +17,8 @@
 		var today_str = getTodayDateString(new Date());
 		var end_date_str = '';
 		var end_date = '';
-		
+		var start_date = '';
+		var start_date_str = '';
 
 		if (show_by == 'remind')
 		{
@@ -40,7 +41,35 @@
 						{
 							$('#result tbody').append("<tr><td><a href='viewStudent.html?id="+resp[i].studentId+"&hidden=N'>"+resp[i].name_kor+"</td><td>"+resp[i].remindReason+"</td><td>"+resp[i].remindDate+"</td></tr>");
 						} else {
-							$('#result tbody').append("<tr><td><a href='viewStudent.html?id="+resp[i].studentId+"&hidden=N'>"+resp[i].name_kor+"("+resp[i].name_eng+")</a></td><td>"+resp[i].remindReason+"</td><td>"+resp[i].remindDate+"</td></tr>");
+							$('#result tbody').append("<tr><td><a href='viewStudent.html?id="+resp[i].studentId+"&hidden=N'>"+resp[i].name_kor+"<br>("+resp[i].name_eng+")</a></td><td>"+resp[i].remindReason+"</td><td>"+resp[i].remindDate+"</td></tr>");
+
+						}
+					}
+				}
+		
+			});
+		}
+
+		if (show_by == 'remindPastDue')
+		{
+			$('#title').append("<h3>Past due reminders</h3>");
+			$('#result thead').append("<tr><th style='width:20%'>Student Name </th> <th style='width:65%'>Remind Reason</th> <th style='width:15%'> Follow up by date </th> </tr>");
+
+			var date_range = {"start_date": today_str, "action": "by_past_due_contents"};
+
+			$.ajax({
+				type:"GET",
+				url:"bin/get_reminder_record.php",
+				data: date_range,
+				dataType: "json",
+				success: function(resp) {
+					for (i=0; i!= resp.length ; i++ )
+					{
+						if (resp[i].name_eng == '')
+						{
+							$('#result tbody').append("<tr><td><a href='viewStudent.html?id="+resp[i].studentId+"&hidden=N'>"+resp[i].name_kor+"</td><td>"+resp[i].remindReason+"</td><td>"+resp[i].remindDate+"</td></tr>");
+						} else {
+							$('#result tbody').append("<tr><td><a href='viewStudent.html?id="+resp[i].studentId+"&hidden=N'>"+resp[i].name_kor+"<br>("+resp[i].name_eng+")</a></td><td>"+resp[i].remindReason+"</td><td>"+resp[i].remindDate+"</td></tr>");
 
 						}
 					}
@@ -69,7 +98,7 @@
 						{
 							$('#result tbody').append("<tr><td><a href='viewStudent.html?id="+resp[i].studentId+"&hidden=N'>"+resp[i].name_kor+"</td><td>"+resp[i].visa_type+"</td><td>"+resp[i].visa_issue_date+"</td><td>"+resp[i].visa_exp_date+"</td></tr>");
 						} else {
-							$('#result tbody').append("<tr><td><a href='viewStudent.html?id="+resp[i].studentId+"&hidden=N'>"+resp[i].name_kor+"("+resp[i].name_eng+")</a></td><td>"+resp[i].visa_type+"</td><td>"+resp[i].visa_issue_date+"</td><td>"+resp[i].visa_exp_date+"</td></tr>");
+							$('#result tbody').append("<tr><td><a href='viewStudent.html?id="+resp[i].studentId+"&hidden=N'>"+resp[i].name_kor+"<br>("+resp[i].name_eng+")</a></td><td>"+resp[i].visa_type+"</td><td>"+resp[i].visa_issue_date+"</td><td>"+resp[i].visa_exp_date+"</td></tr>");
 
 						}
 					}
@@ -77,8 +106,80 @@
 		
 			});		
 		}
+
+		if (show_by == 'newAdd')
+		{
+			$('#title').append("<h3>List of newly added students</h3>");
+			start_date = Date.parse('-7 days');
+			start_date_str = getTodayDateString(start_date);
+			var date_range = {"start_date": start_date_str, "end_date": today_str, "action": "new_added_students_contents"};
+
+			$('#result thead').append("<tr><th style='width:30%'>Student Name </th> <th style='width:15%'>Date of Birth</th> <th style='width:40%'> Email </th><th style='width:20%'>Added Date</th> </tr>");
 		
-		$('#daterange').append("From: " + today_str+ " To: " + end_date_str);
+			$.ajax({
+				type:"GET",
+				url:"bin/getAllUser.php",
+				data: date_range,
+				dataType: "json",
+				success: function(resp) {
+					for (i=0; i!= resp.length ; i++ )
+					{
+						var date_add_dates = resp[i].date_added.substring(0,10);
+						if (resp[i].name_eng == '')
+						{
+							$('#result tbody').append("<tr><td><a href='viewStudent.html?id="+resp[i].studentId+"&hidden=N'>"+resp[i].name_kor+"</td><td>"+resp[i].date_birth+"</td><td>"+resp[i].email+"</td><td>"+date_add_dates+"</td></tr>");
+						} else {
+							$('#result tbody').append("<tr><td><a href='viewStudent.html?id="+resp[i].studentId+"&hidden=N'>"+resp[i].name_kor+"<br>("+resp[i].name_eng+")</a></td><td>"+resp[i].date_birth+"</td><td>"+resp[i].email+"</td><td>"+date_add_dates+"</td></tr>");
+
+						}
+					}
+				}
+		
+			});
+		}
+
+		if (show_by == 'newVisit')
+		{
+			$('#title').append("<h3>List of visited students</h3>");
+			start_date = Date.parse('-7 days');
+			start_date_str = getTodayDateString(start_date);
+			var date_range = {"start_date": start_date_str, "end_date": today_str, "action": "new_visit_contents"};
+
+			$('#result thead').append("<tr><th style='width:30%'>Student Name </th>  <th style='width:55%'> Visit Purpose </th><th style='width:15%'>Visit Date</th></tr>");
+		
+			$.ajax({
+				type:"GET",
+				url:"bin/getAllUser.php",
+				data: date_range,
+				dataType: "json",
+				success: function(resp) {
+					for (i=0; i!= resp.length ; i++ )
+					{
+						if (resp[i].name_eng == '')
+						{
+							$('#result tbody').append("<tr><td><a href='viewStudent.html?id="+resp[i].studentId+"&hidden=N'>"+resp[i].name_kor+"</td><td>"+resp[i].visit_purpose+"</td><td>"+resp[i].visit_date+"</td></tr>");
+						} else {
+							$('#result tbody').append("<tr><td><a href='viewStudent.html?id="+resp[i].studentId+"&hidden=N'>"+resp[i].name_kor+"<br>("+resp[i].name_eng+")</a></td><td>"+resp[i].visit_purpose+"</td><td>"+resp[i].visit_date+"</td></tr>");
+						}
+					}
+				}
+		
+			});
+		}
+		
+		if (show_by != 'newAdd' && show_by != 'newVisit')
+		{
+			if (show_by != 'remindPastDue')
+			{
+				$('#daterange').append("From: " + today_str+ " To: " + end_date_str);
+			} else {
+				$('#daterange').append("As of: " +today_str);
+			}
+			
+		} else {
+				$('#daterange').append("From: " + start_date_str+ " To: " +today_str);
+		}
+		
 
 
 	});

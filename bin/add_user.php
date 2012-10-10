@@ -38,6 +38,8 @@
 
 	$school_end_dt = $_POST ['current_school_end_dt'];
 
+	$note = $_POST ['note'];
+	
 	$user_id = $_POST['user_id'];
 
 	$visitLists = $_POST['initial_visits'];
@@ -73,6 +75,7 @@
 									, current_program
 									, current_school_strt_dt
 									, current_school_end_dt
+									, note
 									, user_id
 									, updt_reason) 
 									VALUES 
@@ -97,6 +100,7 @@
 									,'$programName'
 									,'$school_strt_dt'
 									,'$school_end_dt'
+									,'$note'
 									,'$user_id'
 									,'Initial record')";
 
@@ -196,13 +200,10 @@
 			}
 				
 		}
-
-		
-		if ($filledCount_visit > 0) {
-			if (!mysql_query($query, $con)) {
+		if (!mysql_query($query, $con)) {
 				die('Error4: ' . mysql_error());
-			}
 		}
+		
 
 	}
 	

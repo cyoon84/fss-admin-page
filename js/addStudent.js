@@ -107,6 +107,9 @@
 			
 			var sourceToFSS = $('#sourceToFSS').val();
 
+			var note = $('#note').val();
+			
+
 			if (sourceToFSS == 0)
 			{
 				sourceToFSS = '';
@@ -162,7 +165,7 @@
 							"current_school_strt_dt" : schoolStartDT, 
 							"source_to_FSS" : sourceToFSS, "referrer_name" : referrerName,
 							"user_id" : current_userid,
-							"current_school_end_dt" : schoolEndDT,
+							"current_school_end_dt" : schoolEndDT, "note" : note,
 							"initial_visits": [], "prev_schools": [], "prev_visa":[]};
 		
 
