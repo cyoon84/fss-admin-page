@@ -14,7 +14,28 @@
 - Can record visit record of each students, also able to edit / delete
 - Add a reminder for each students (e.g. not to forget to follow up with students for some important businesses such as visa extension, etc)
 
-## Working lists - as of October 9 ##
+## Working lists - as of October 10 ##
+
+- Front page shows recent announcement lists, and some statistics 
+- View and write announcements
+- Add a new student 
+: User can add initial visit records, previous schools, visas when adding a new student
+- Search for students
+- Update, Delete students information
+: For deleting a student, user can choose to permanently delete the record from the database or make it inactive for a time being (can be active again)
+- Add / edit/ delete new visit record for each students
+- Add a reminder and follow up on a reminder. When user followed up, it will show it under 'previous reminder' section. From 'previous reminder' section, user can choose to clear it out
+- Master list of students registered in the database (making use of DataTables - http://datatables.net/blog/Twitter_Bootstrap_2)
+- Login / logout (making use of JQuery Session Plugin - https://github.com/AlexChittock/JQuery-Session-Plugin ) - making the site more secure
+
+## Working in progress - as of October 10##
+- Few other enhancements requested by FSS Toronto Agency
+- Writing comments on announcement
+- Front page enhancement
+
+---
+
+Working lists - as of October 9
 
 - Add a new student 
 : User can add initial visit records, previous schools, visas when adding a new student
@@ -26,12 +47,11 @@
 - Master list of students registered in the database (making use of DataTables - http://datatables.net/blog/Twitter_Bootstrap_2)
 - Login / logout (making use of JQuery Session Plugin - https://github.com/AlexChittock/JQuery-Session-Plugin ) - making the site more secure
 
-## Working in progress - as of October 9##
+Working in progress - as of October 9
 - Few other enhancements requested by FSS Toronto Agency
 - Add / view announcements
 - Front page enhancement
 
----
 
 Working lists - as of September 28
 
