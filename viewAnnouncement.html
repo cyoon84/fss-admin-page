@@ -4,14 +4,18 @@
 <link href="css/bootstrap.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/page-style.css" rel="stylesheet">
+<link href="css/datepicker.css" rel="stylesheet">
+<link href="css/DT_bootstrap.css" rel="stylesheet">
 <script src="http://code.jquery.com/jquery-1.8.0.js"></script>
 <script src="js/bootstrap-dropdown.js"></script>
 <script src="js/bootstrap-modal.js"></script>
 <script src="js/jquery.session.js"></script>
+<script src="js/jquery.dataTables.js"></script>
+<script src="js/DT_bootstrap.js"></script>
 <script src="js/checklogin.js"></script>
 <script src="js/common_functions.js"></script>
 <script src="js/date.js"></script>
-<script src="js/index.js"></script>
+<script src="js/viewAnnouncement.js"></script>
 
 </head>
 
@@ -65,7 +69,7 @@
 				 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display: block; position: static; margin-bottom: 5px; *width: 180px;">
 					<li><a tabindex="-1" href="index.html"><i class="icon-home"></i>&nbsp;Home</a></li>
 					<li class="divider"></li>
-					<li><a tabindex="-1" href="#"><i class="icon-comment"></i>&nbsp;View announcements</a></li>
+					<li><a tabindex="-1" href="viewAnnouncement.html?id=all"><i class="icon-comment"></i>&nbsp;View announcements</a></li>
 					<li><a tabindex="-1" href="add_announcement.html"><i class="icon-pencil"></i>&nbsp;Write a new announcement</a></li>
 					<li class="divider"></li>
 					<li><a tabindex="-1" href="addStudent.html"><i class="icon-user"></i>&nbsp;Add a new student</a></li>
@@ -79,6 +83,70 @@
 			</div>
 		</div>
 		<div class="span9" style="margin-top:10px">
+			<div class="span9" id="announcementViewArea">
+			<h3>View Announcement </h3>
+			<hr>
+				<table style="width:100%" class="table table-bordered" id="announcementView">
+				<tr>
+				<td> Title
+				<td colspan="3" id="title" class="dataArea">
+				</tr>
+				<tr>
+				<td style="width:15%">User Id
+				<td style="width:35%" id="userId" class="dataArea">
+				<td style="width:15%">Date
+				<td style="width:35%" id="addedDate" class="dataArea">
+				</tr>
+				<tr>
+				<td> Contents
+				<td colspan="3" id="contents" class="dataArea">
+				</tr>
+				</tr>
+
+				</table>
+			</div>
+
+			<div class="span9" id="commentArea" style="margin-top:10px">
+				<h3>Comments</h3>
+				<hr>
+				<table class="table table-bordered" id="commentTable" style="width:85%">
+				<thead>
+					<th style="width:15%"> User Id </th>
+					<th style="width:55%"> Comment </th>
+					<th style="width:15%"> Date/ time</th>
+					<th style="width:15%"> Edit / Delete </th>
+				</thead>
+				<tbody>
+				<td colspan="4" style="text-align:center"> <h3>No comments for this announcement</h3></td>
+				<tbody>
+				</table>
+				
+				<table class="table" style="width:85%">
+				<tr>
+					<td style="width:80%"> <textarea id="comment" style="width:100%" rows="4" placeholder="Write a comment here"></textarea>
+					<td style="width:20%"> <button id="addComment" class="btn btn-medium btn-primary">Add Comment</button>
+				</tr>
+				</table>
+			</div>
+
+			<div class="span9" id="announcementList" style="margin-top:20px">
+			<h3>Announcement Listing</h3>
+				<table cellpadding="0" cellspacing="0" border="0" class="table table-bordered" id="announcementTable">
+				<thead>
+					<tr>
+						<th style="width:10%">No.</th>
+						<th style="width:60%">Title</th>
+						<th style="width:15%">User ID</th>
+						<th style="width:15%">Date</th>
+					</tr>
+				</thead>
+				<tbody>
+		
+				</tbody>
+				</table>
+			</div>
+	
+
 		</div>
 	</div>
 </div>

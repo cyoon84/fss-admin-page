@@ -19,8 +19,7 @@
 			return results[1] || 0;
 		}
 
-		$('#viewArea').empty();
-
+		
 		var months = new Array("January","February","March","April","May","June","July","August","September","October","November","December");
 		
 		$('#remindMonth').append('<option value=0>-----------------</option>');
@@ -332,7 +331,7 @@
 				dataType: "json",
 				data:data_studentID,
 				success: function(resp) {
-					$('#viewArea').empty();
+					$('.viewTable_elem').empty();
 					fillInfoTable(resp);
 				}
 			});
@@ -470,57 +469,31 @@
 	function fillInfoTable(resp) {
 		var formatted_address = resp[0].address.replace(/\r\n|\r|\n/g,"<br />");
 		var formatted_note = resp[0].note.replace(/\r\n|\r|\n/g,"<br />");
-		if (resp[0].referred_by == '')
-		{
-			$('#viewArea').append("<table class='table'><tr><td style='width:25%'>Name (Korean) </td><td>"+resp[0].name_kor+"</td></tr>" 
-				+"<tr><td> Name (English)</td><td>"+resp[0].name_eng+"</td></tr>"
-				+"<tr><td> Gender </td><td>"+resp[0].gender+"</td></tr>"
-				+"<tr><td> Date of birth</td><td>"+resp[0].birthdate+"</td></tr>"
-				+"<tr><td> E-mail address</td><td>"+resp[0].email+"</td></tr>"
-				+"<tr><td> Phone</td><td>"+resp[0].phone+"</td></tr>"
-				+"<tr><td> Current Address</td><td>"+formatted_address+"</td></tr>"
-				+"<tr><td> Date of Arrival</td><td>"+resp[0].arrival_dt+"</td></tr>"
-				+"<tr><td> Visa Type</td><td>"+resp[0].visa_type+"</td></tr>"
-				+"<tr><td> Visa Issue Date</td><td>"+resp[0].visa_issue_date+"</td></tr>"
-				+"<tr><td> Visa Expiry Date</td><td>"+resp[0].visa_exp_date+"</td></tr>"
-				+"<tr><td> How did you hear about us?</td><td>"+resp[0].how_hear_us+"</td></tr>"
-				+"<tr><td> Name of Agency in Korea</td><td>"+resp[0].korea_agency+"</td></tr>"
-				+"<tr><td> Current School</td><td>"+resp[0].current_school+"</td></tr>"
-				+"<tr><td> Current Program</td><td>"+resp[0].current_program+"</td></tr>"
-				+"<tr><td> Current School Start Date</td><td>"+resp[0].current_school_strt_dt+"</td></tr>"
-				+"<tr><td> Current School End Date</td><td>"+resp[0].current_school_end_dt+"</td></tr>"
-				+"<tr><td> Active status</td><td>"+status+"</td></tr>"
-				+"<tr><td> Note</td><td>"+formatted_note+"</td></tr>"
-				+"<tr><td> Update reason </td><td>"+resp[0].updt_reason+"</td></tr>"
-				+"<tr><td> Added / updated by </td><td>"+resp[0].user_id+"</td></tr></table>");
-		} else {
-			$('#viewArea').append("<table class='table'><tr><td style='width:25%'>Name (Korean) </td><td>"+resp[0].name_kor+"</td></tr>" 
-				+"<tr><td> Name (English)</td><td>"+resp[0].name_eng+"</td></tr>"
-				+"<tr><td> Gender </td><td>"+resp[0].gender+"</td></tr>"
-				+"<tr><td> Date of birth</td><td>"+resp[0].birthdate+"</td></tr>"
-				+"<tr><td> E-mail address</td><td>"+resp[0].email+"</td></tr>"
-				+"<tr><td> Phone</td><td>"+resp[0].phone+"</td></tr>"
-				+"<tr><td> Current Address</td><td>"+formatted_address+"</td></tr>"
-				+"<tr><td> Date of Arrival</td><td>"+resp[0].arrival_dt+"</td></tr>"
-				+"<tr><td> Visa Type</td><td>"+resp[0].visa_type+"</td></tr>"
-				+"<tr><td> Visa Issue Date</td><td>"+resp[0].visa_issue_date+"</td></tr>"
-				+"<tr><td> Visa Expiry Date</td><td>"+resp[0].visa_exp_date+"</td></tr>"
-				+"<tr><td> How did you hear about us?</td><td>"+resp[0].how_hear_us+"</td></tr>"
-				+"<tr><td> Referrer's name </td><td>"+resp[0].referred_by+"</td></tr>"
-				+"<tr><td> Name of Agency in Korea</td><td>"+resp[0].korea_agency+"</td></tr>"
-				+"<tr><td> Current School</td><td>"+resp[0].current_school+"</td></tr>"
-				+"<tr><td> Current Program</td><td>"+resp[0].current_program+"</td></tr>"
-				+"<tr><td> Current School Start Date</td><td>"+resp[0].current_school_strt_dt+"</td></tr>"
-				+"<tr><td> Current School End Date</td><td>"+resp[0].current_school_end_dt+"</td></tr>"
-				+"<tr><td> Active status</td><td>"+status+"</td></tr>"
-				+"<tr><td> Note</td><td>"+formatted_note+"</td></tr>"
-				+"<tr><td> Update reason </td><td>"+resp[0].updt_reason+"</td></tr>"
-				+"<tr><td> Added / updated by </td><td>"+resp[0].user_id+"</td></tr></table>");
 
+		$('#viewTable_korname').append(resp[0].name_kor);
+		$('#viewTable_engname').append(resp[0].name_eng);
+		$('#viewTable_gender').append(resp[0].gender);
+		$('#viewTable_email').append(resp[0].email);
+		$('#viewTable_birthdate').append(resp[0].birthdate);
+		$('#viewTable_phone').append(resp[0].phone);
+		$('#viewTable_address').append(formatted_address);
+		$('#viewTable_arrival').append(resp[0].arrival_dt);
+		$('#viewTable_visa').append(resp[0].visa_type);
+		$('#viewTable_visa_issue').append(resp[0].visa_issue_date);
+		$('#viewTable_visa_exp').append(resp[0].visa_exp_date);
+		$('#viewTable_how_hear_us').append(resp[0].how_hear_us);
+		$('#viewTable_referred_by').append(resp[0].referred_by);
+		$('#viewTable_korea_agency').append(resp[0].korea_agency);
+		$('#viewTable_current_school').append(resp[0].current_school);
+		$('#viewTable_current_program').append(resp[0].current_program);
+		$('#viewTable_school_strt_dt').append(resp[0].current_school_strt_dt);
+		$('#viewTable_school_end_dt').append(resp[0].current_school_end_dt);
+		$('#viewTable_act_status').append(status);
+		$('#viewTable_note').append(formatted_note);
+		$('#viewTable_updt_reason').append(resp[0].updt_reason);
+		$('#viewTable_user_id').append(resp[0].user_id);
 
-		}
-
-	}
+	};
 
 
 	function reminderLoad(student_id) {

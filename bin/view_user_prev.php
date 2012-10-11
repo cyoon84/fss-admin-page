@@ -34,6 +34,7 @@
 			'current_school_strt_dt' => $row['current_school_strt_dt'],
 			'current_school_end_dt' => $row['current_school_end_dt'],
 			'updt_reason' => $row['updt_reason'],
+			'note'=>$row['note'],
 			'user_id' => $row['user_id']
 		);
 	}
