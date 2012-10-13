@@ -36,7 +36,7 @@ $(function() {
 
 
 
-		var dataAnnouncement = {"user_id": current_userid, "title": announcement_title, "body": announcement_body};
+		var dataAnnouncement = {"user_id": current_userid, "title": announcement_title, "body": announcement_body,"action": "new_post"};
 		
 		$.ajax({
 			data: dataAnnouncement,
@@ -60,4 +60,4 @@ $(function() {
 	
 
 
-});
+});;

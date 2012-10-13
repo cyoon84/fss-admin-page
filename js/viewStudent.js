@@ -72,14 +72,12 @@
 		
 		if (is_hidden == 'Y')
 		{
-			$('#updButton').hide();
-			$('#addVisit').hide();
-			$('#addReminder').hide();
-			$('#delButton').hide();
+			$('.nonActive').show();
+			$('.activeOnly').hide();
 			status = 'Inactive';
 		} else {
-			$('#toActive').hide();
-			$('#delPermanently').hide();
+			$('.nonActive').hide();
+			$('.activeOnly').show();
 			status = 'Active';
 		}
 

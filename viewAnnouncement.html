@@ -22,17 +22,14 @@
 <body>
 
 <div class="span12" style="margin-top:10px" id="top-header">
-	<div class="row">
-		<div class="span10">
+		<div style="float:left">
 			<h3>FSS Toronto</h3>
 		</div>
 		
-	
-		<div class="span2">
-			<div id="currentUserName">
-			</div>
+
+		<div id="currentUserName" style="float:right">
+		
 		</div>
-	</div>
 
 </div>
 
@@ -62,6 +59,71 @@
 	</div>
 </div>	
 
+<div class="modal hide fade" id="deleteCommentWindow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel5" aria-hidden="true">
+	<div class="modal-header">
+		<h3 id="myModalLabel5">Delete this comment?</h3>
+	</div>
+	<div class="modal-body" id="modal-body5">
+	Proceed with the delete?
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-danger" id="deleteConfirm">Delete this comment</button>
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+	</div>
+</div>
+
+<div class="modal hide fade" id="deleteAnnouncement" tabindex="-1" role="dialog" aria-labelledby="myModalLabel6" aria-hidden="true">
+	<div class="modal-header">
+		<h3 id="myModalLabel6">Delete this announcement?</h3>
+	</div>
+	<div class="modal-body" id="modal-body6">
+	Proceed with the delete?
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-danger" id="deleteAnnouncementConfirm">Delete this comment</button>
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+	</div>
+</div>
+
+<div class="modal hide fade" id="accessDenied" tabindex="-1" role="dialog" aria-labelledby="myModalLabel7" aria-hidden="true">
+	<div class="modal-header">
+		<h3 id="myModalLabel7">Access Denied</h3>
+	</div>
+	<div class="modal-body" id="modal-body7">
+	Only the person who posted this comment can edit / delete this comment.
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+</div>
+
+
+
+<div class="modal hide fade" id="editComment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel8" aria-hidden="true">
+	<div class="modal-header">
+		<h3 id="myModalLabel8">Edit comment</h3>
+	</div>
+	<div class="modal-body" id="modal-body8">
+	Edit existing comment
+	<textarea class="span5" id="editCommentText" rows="5"></textarea>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" id="editConfirm">Edit</button>
+		<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+</div>
+
+<div class="modal hide fade" id="accessDeniedAnnouncement" tabindex="-1" role="dialog" aria-labelledby="myModalLabel9" aria-hidden="true">
+	<div class="modal-header">
+		<h3 id="myModalLabel7">Access Denied</h3>
+	</div>
+	<div class="modal-body" id="modal-body5">
+	Only the person who posted this announcement can edit / delete this announcement.
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+</div>
 <div class="span12">
 	<div class="row">
 		<div class="span3" style="margin-top:10px">
@@ -82,56 +144,56 @@
 				   </ul>
 			</div>
 		</div>
-		<div class="span9" style="margin-top:10px">
-			<div class="span9" id="announcementViewArea">
-			<h3>View Announcement </h3>
-			<hr>
-				<table style="width:100%" class="table table-bordered" id="announcementView">
-				<tr>
-				<td> Title
-				<td colspan="3" id="title" class="dataArea">
-				</tr>
-				<tr>
-				<td style="width:15%">User Id
-				<td style="width:35%" id="userId" class="dataArea">
-				<td style="width:15%">Date
-				<td style="width:35%" id="addedDate" class="dataArea">
-				</tr>
-				<tr>
-				<td> Contents
-				<td colspan="3" id="contents" class="dataArea">
-				</tr>
-				</tr>
+		<div class="span9" style="margin-top:10px;margin-left:0px">
+			<div class="span9 well-nobgcolor" id="announcementViewArea">
+				<h3><span id="title" class="dataArea"> </span> </h3>
+				<div id="infoAnnouncement" >
+					<div style="float:left">
+						<h3><small> by <span id="userId" class="dataArea"> </span> at <span id="addedDate" class="dataArea"> </span></small></h3>
+					</div>
+					<div style="float:right">
+						<form class="form-inline">
+					 		<button class="btn btn-primary btn-medium" id="editAnnouncement"> Edit</button>
+					 		<button class="btn btn-danger btn-medium" id="delAnnouncement"> Delete</button>
+						</form>
+					</div>
+				</div>
+				<div id="contentAnnouncement" style="margin-top:50px">
+				<hr>
+					<div id="contents" class="dataArea" style="min-height:200px">
 
-				</table>
+					</div>
+				</div>
+
 			</div>
 
 			<div class="span9" id="commentArea" style="margin-top:10px">
-				<h3>Comments</h3>
-				<hr>
-				<table class="table table-bordered" id="commentTable" style="width:85%">
-				<thead>
-					<th style="width:15%"> User Id </th>
-					<th style="width:55%"> Comment </th>
-					<th style="width:15%"> Date/ time</th>
-					<th style="width:15%"> Edit / Delete </th>
-				</thead>
-				<tbody>
-				<td colspan="4" style="text-align:center"> <h3>No comments for this announcement</h3></td>
-				<tbody>
-				</table>
-				
-				<table class="table" style="width:85%">
+				<table class="table" style="width:100%">
 				<tr>
 					<td style="width:80%"> <textarea id="comment" style="width:100%" rows="4" placeholder="Write a comment here"></textarea>
+						<label class="error" for="comment" id="comment_error"> This field is required </label>
 					<td style="width:20%"> <button id="addComment" class="btn btn-medium btn-primary">Add Comment</button>
 				</tr>
 				</table>
+
+				<table class="table" id="commentTable" style="width:100%">
+				<thead>
+					<th style="width:10%"> User Id </th>
+					<th style="width:60%"> Comment </th>
+					<th style="width:15%"> Date </th>
+					<th style="width:15%"> Edit / Delete </th>
+				</thead>
+				<tbody>
+				
+				</tbody>
+				</table>
+				
+
 			</div>
 
 			<div class="span9" id="announcementList" style="margin-top:20px">
 			<h3>Announcement Listing</h3>
-				<table cellpadding="0" cellspacing="0" border="0" class="table table-bordered" id="announcementTable">
+				<table cellpadding="0" cellspacing="0" border="0" class="table " id="announcementTable">
 				<thead>
 					<tr>
 						<th style="width:10%">No.</th>

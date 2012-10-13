@@ -44,17 +44,14 @@
 </div>	
 
 <div class="span12" style="margin-top:10px" id="top-header">
-	<div class="row">
-		<div class="span10">
+		<div style="float:left">
 			<h3>FSS Toronto</h3>
 		</div>
 		
-	
-		<div class="span2">
-			<div id="currentUserName">
-			</div>
+
+		<div id="currentUserName" style="float:right">
+		
 		</div>
-	</div>
 
 </div>
 
@@ -63,8 +60,11 @@
 	<div class="span3" style="margin-top:10px">
 		<div class="dropdown clearfix">
 			 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display: block; position: static; margin-bottom: 5px; *width: 180px;">
-                <li><a tabindex="-1" href="index.html"><i class="icon-home"></i>&nbsp;Home</a></li>
-                <li class="divider"></li>
+				<li><a tabindex="-1" href="index.html"><i class="icon-home"></i>&nbsp;Home</a></li>
+				<li class="divider"></li>
+				<li><a tabindex="-1" href="viewAnnouncement.html?id=all"><i class="icon-comment"></i>&nbsp;View announcements</a></li>
+				<li><a tabindex="-1" href="add_announcement.html"><i class="icon-pencil"></i>&nbsp;Write a new announcement</a></li>
+				<li class="divider"></li>
 				<li><a tabindex="-1" href="addStudent.html"><i class="icon-user"></i>&nbsp;Add a new student</a></li>
 				<li><a tabindex="-1" href="searchStudent.html"><i class="icon-search"></i>&nbsp;Search students</a></li>
 				<li><a tabindex="-1" href="showAllStudent.html"><i class="icon-th-list"></i>&nbsp;Show / search all students</a></li>
@@ -72,26 +72,48 @@
 				<li><a tabindex="-1" href="#">Metropass sale</a></li>
 				<li class="divider"></li>
 				<li><a tabindex="-1" href="#" id="logout"><i class="icon-off"></i>&nbsp;Logout</a></li>
-	          </ul>
+			   </ul>
 		</div>
 	</div>
 	<div class="span8">
 		<div id="headerViewInfo"> 
 		<h2> View Student Information</h2>
-		</div><br>
-			
-			Previous records:
-			<select id="prev_ver" class="span2" name="prev_ver">
-	
-			</select>
-			<!--<a href="showAllStudent.html" class="btn btn-primary btn-small">Go back to the list</a>-->
-			<button type="submit" class="btn btn-primary btn-small" id="updButton">Update personal info</button>
-			<button type="submit" class="btn btn-primary btn-small" id="addVisit">Add new visit</button>
-			<button type="submit" class="btn btn-primary btn-small" id="addReminder">Add a reminder</button>
-			<button type="submit" class="btn btn-primary btn-danger" id="delButton">Delete</button>
-			<button type="submit" class="btn btn-primary btn-small" id="toActive">Make this student active</button>
-			<button type="submit" class="btn btn-primary btn-danger" id="delPermanently">Permanently delete</button>
-			
+		</div>
+
+
+			<div class="navbar">
+				<div class="navbar-inner">
+					<ul class="nav">
+						<li>
+							<form class="navbar-search pull left">
+								Previous records:
+								<select id="prev_ver" class="span2" name="prev_ver"></select>
+							</form>
+						</li>
+						<li class="activeOnly">
+							<a href="#" id="updButton">Update personal info</a>
+						</li>
+						<li class="activeOnly">
+							<a href="#" id="addVisit">New Visit</a>	
+						</li>
+						<li class="activeOnly">
+							<a href="#" id="addReminder">New Reminder</a>
+						</li>
+						<li class="activeOnly">
+							<a href="#" id="delButton">Delete</a>
+						</li>
+						<li class="nonActive">
+							<a href="#" id="toActive">Make Active</a>
+						</li>
+						<li class="nonActive">
+							<a href="#" id="delPermanently">Permanently Delete</a>
+						</li>
+					</ul>
+
+				</div>
+
+			</div>
+
 			
 			<div class="modal hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				  <div class="modal-header">
@@ -211,13 +233,12 @@
 					</div>
 			</div>	
 				
-		<br>
 
 		<div class="accordion span8" id="accordion2" style="margin-left:0px">
 			 <div class="accordion-group">
 				<div class="accordion-heading">
 					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-					<h2>Personal information</h2>
+					<h4>Personal information</h4>
 					</a>
 				</div>
 				<div id="collapseOne" class="accordion-body collapse in">
@@ -319,7 +340,7 @@
 			 <div class="accordion-group">
 				<div class="accordion-heading">
 					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-					<h2>Previous Schools</h2>
+					<h4>Previous Schools</h4>
 					</a>
 				</div>
 				<div id="collapseTwo" class="accordion-body collapse in">
@@ -342,7 +363,7 @@
 			<div class="accordion-group">
 				<div class="accordion-heading">
 					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
-					<h2>Previous Visas</h2>
+					<h4>Previous Visas</h4>
 					</a>
 				</div>
 				<div id="collapseThree" class="accordion-body collapse in">
@@ -366,7 +387,7 @@
 			 <div class="accordion-group">
 				<div class="accordion-heading">
 					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFour">
-					<h2>Visit Record</h2>
+					<h4>Visit Record</h4>
 					</a>
 				</div>
 				<div id="collapseFour" class="accordion-body collapse in">
@@ -378,7 +399,7 @@
 			<div class="accordion-group">
 				<div class="accordion-heading">
 					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFive">
-					<h2>Reminders</h2>
+					<h4>Reminders</h4>
 					</a>
 				</div>
 				<div id="collapseFive" class="accordion-body collapse in">

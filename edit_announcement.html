@@ -11,7 +11,7 @@
 <script src="js/checklogin.js"></script>
 <script src="js/common_functions.js"></script>
 <script src="js/date.js"></script>
-<script src="js/add_announcement.js"></script>
+<script src="js/edit_announcement.js"></script>
 
 </head>
 
@@ -78,34 +78,29 @@
 		<div class="span9" style="margin-top:10px">
 			
 			<div class="span9 well well-large" style="margin-left:0px">
-				<h3>Write a new announcement</h3>
-				(* is required)
-				<br><br>
+				<h3>Edit an announcement</h3>
+				<br>
 				<table class="table" style="width:100%">
 				<thead>
 				</thead>
 				<tbody>
+					
 					<tr>
-					<td style="width:15%"> Date </td>
-					<td> <div id="todayDate"> </div> </td>
+					<td> Title </td>
+					<td> <input type="text" id="announcementTitle_new" class="span5"></td>
 					</tr>
 
 					<tr>
-					<td> Title *</td>
-					<td> <input type="text" id="announcementTitle" class="span5">
-					<label class="error" for="announcementTitle" id="noTitle">Please enter texts </label></td>
-					</tr>
-
-					<tr>
-					<td> Contents *<br>
+					<td> Contents <br>
 					(up to 2000 letters) </td>
-					<td> <textarea rows="10" class="span7" id="announcementBody"> </textarea> 
-					<label class="error" for="announcementBody" id="noText">Please enter texts </label>
-					<label class="error" for="announcementBody" id="limitExceed">Limit Exceeded (> 2000 words) </label>
+					<td> <textarea rows="10" class="span7" id="announcementBody_new"> </textarea> 
+					<label class="error" for="announcementBody_new" id="limitExceed">Limit Exceeded (> 2000 words) </label>
 					</td>
 					</tr>
 					<tr>
-					<td colspan="2" style="text-align:right"><button class="btn btn-large btn-primary" id="addNew"> Save</td>
+					<td colspan="2" style="text-align:right">
+						<button class="btn btn-large btn-primary" id="back"> Back</button>
+						<button class="btn btn-large btn-primary" id="update"> Save</button></td>
 					</tr>
 
 

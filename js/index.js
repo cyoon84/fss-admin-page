@@ -18,6 +18,7 @@ $(function () {
 		type:"GET",
 		url:"bin/get_reminder_record.php",
 		data: date_range,
+		cache:false,
 		dataType: "json",
 		success: function(resp) {
 			var reminders = resp[0].number_reminders;
@@ -51,6 +52,7 @@ $(function () {
 		url:"bin/getAllUser.php",
 		data: date_range_allUser,
 		dataType: "json",
+		cache:false,
 		success: function(resp) {
 			var visa_count = resp[0].visa_expiry_count;
 
@@ -97,10 +99,15 @@ $(function () {
 		url:"bin/getAnnouncement.php",
 		data:{"action":"getLatest"},
 		dataType: "json",
+		cache:false,
 		success: function(resp) {
-			for (var i=0;i!=resp.length ;i++ )
-			{
-				$('#announcementArea').append("<h3><a href='viewAnnouncement.html?id="+resp[i].announcementIndex+"'>"+resp[i].title +"</a> <small> by " +resp[i].user_id+" - posted at " + resp[i].date_added+" </small></h3>");
+			if (resp.length > 0) {
+				for (var i=0;i!=resp.length ;i++ )
+					{
+						$('#announcementArea').append("<h3><a href='viewAnnouncement.html?id="+resp[i].announcementIndex+"'>"+resp[i].title +"</a> <small> by " +resp[i].user_id+" - posted at " + resp[i].date_added+" </small></h3>");
+					}
+			} else {
+				$('#announcementArea').append("<h3>No new announcements </h3>");
 			}
 			
 
