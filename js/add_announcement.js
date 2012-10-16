@@ -44,7 +44,6 @@ $(function() {
 			url: "bin/add_announcement.php",
 			cache:false,
 			success:function(resp) {
-				alert(resp);
 				var url = "index.html";
 				window.location = url;
 			}

@@ -13,6 +13,7 @@ $(function() {
 
 
 	var announce_id = $.urlParam('id');
+	var page_go_back = $.urlParam('prev_page');
 
 
 	var loadAnnouncement = {"action": "one", "id": announce_id};
@@ -49,7 +50,7 @@ $(function() {
 			data: updateAnnouncement,
 			success:function(resp) {
 				if (resp == 'update success') {
-					var url = "viewAnnouncement.html?id="+announce_id;
+					var url = "viewAnnouncement.html?page="+page_go_back;
 					window.location = url;
 				}
 			}
@@ -59,7 +60,7 @@ $(function() {
 	});
 
 	$('#back').click(function(){
-		var url = "viewAnnouncement.html?id="+announce_id;
+		var url = "viewAnnouncement.html?page="+page_go_back;
 		window.location = url;
 	});
 

@@ -4,6 +4,7 @@
 */
 var resultTable;
 var article_userid = '';
+var page_no = 0;
 
 $(function() {
 
@@ -13,10 +14,10 @@ $(function() {
 	var deleteButtonId = '';
 	var editButtonId = '';
 
-
+	loadPagination();
 
 	var init_all = false;
-	resultTable = $('#announcementTable').dataTable( {
+/*	resultTable = $('#announcementTable').dataTable( {
 		"sDom": "<'row'<'span4'l><'span5'f>r>t<'row'<'span4'i><'span5'p>>",
 		"sPaginationType": "bootstrap",
 		"oLanguage": {
@@ -27,23 +28,22 @@ $(function() {
 
 	loadTable();
 
-	$.urlParam = function(name){
+*/	$.urlParam = function(name){
 			var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
 			return results[1] || 0;
 	}
 	
 	
-	var announce_id = $.urlParam('id');
+	page_no = $.urlParam('page');
 
 	var current_announce_id = 0;
-	if (announce_id != 'all')
-	{
-		loadAnnouncementOne(announce_id);
-		current_announce_id = announce_id;
-	} else {
-		$('#announcementViewArea').hide();
-		$('#commentArea').hide();
-	}
+	
+
+
+
+	loadAnnouncementOne(page_no);
+	
+
 	
 
 	$('#announcementTable').on("click",".viewAnnouncement",function() {
@@ -57,36 +57,6 @@ $(function() {
 	});
 
 
-	$('#addComment').click(function() {
-		var commentText = $('#comment').val();
-		if ($.trim(commentText).length == 0) {
-			$('label#comment_error').show();
-			$('#comment').focus();
- 			return false;
-		} 
-
-
-		var commentData = {"announcementIndex": current_announce_id, "body": commentText, "user_id": current_userid, "action": "new_comment"};
-
-		$.ajax({
-		 	type:"POST",
-		 	url:"bin/add_announcement.php",
-		 	dataType:"json",
-		 	data: commentData,
-		 	cache:false,
-		 	success:function(resp) {
-		 		if (!isNaN(resp)){
-		 			var comment_text_formatted = commentText.replace(/\r\n|\r|\n/g,"<br />");
-		 			$('#comment').val("");
-		 			$('#commentTable tbody').append("<tr><td>"+current_userid+"</td><td>"+comment_text_formatted+"</td><td>"+today_str+"</td><td><button class='editComment' id='editComment"+resp+"'>Edit</button><button class='deleteComment' id='deleteComment"+resp+"'>Delete</button></td></tr>");
-		 		} else {
-		 			alert(resp);
-		 		}	
-		 	}
-
-		});
-		
-	});
 
 	$('#commentTable').on('click','.editComment',function(){
 		editButtonId = this.id;
@@ -177,83 +147,164 @@ $(function() {
 	});
 
 
-	$('#editAnnouncement').click(function() {
-		if (current_userid != article_userid) {
-			$('#accessDeniedAnnouncement').modal('toggle');
-			return false;			
-		} else { 
-			var url = "edit_announcement.html?id="+current_announce_id;
-			window.location = url;		
-			return false;
-		}
-	});
-
-	$('#delAnnouncement').click(function() {
-		if (current_userid != article_userid) {
-			$('#accessDeniedAnnouncement').modal('toggle');
-			return false;			
-		} else { 
-			$('#deleteAnnouncement').modal('toggle');
-			return false;
-		}
-
-	});
-
-
-
 	$('#deleteAnnouncementConfirm').click(function() {
+			var number_article_page = $('#contentArea').children().size();
 
-		$.ajax({
-			type:"POST",
-			url:"bin/add_announcement.php",
-			data:{"action":"delete_announcement", "announcementIndex": current_announce_id},
-			cache:false,
-			success:function(resp) {
-				if (resp == 'delete success') {
-					var url = "viewAnnouncement.html?id=all";
-					window.location = url;
-				} else {
-					alert(resp);
+			$.ajax({
+				type:"POST",
+				url:"bin/add_announcement.php",
+				data:{"action":"delete_announcement", "announcementIndex": current_announce_id},
+				cache:false,
+				success:function(resp) {
+					if (resp == 'delete success') {
+						number_article_page --;
+
+						if (number_article_page == 0) {
+							var new_page = page_no - 1;
+
+							var url="viewAnnouncement.html?page="+new_page;
+						} else {
+							var url="viewAnnouncement.html?page="+page_no;
+						}
+						window.location = url;
+					} else {
+						alert(resp);
+					}
 				}
-			}
-		})
+			})
+		});
+
+
+	$('#contentArea').on('click','.editAnnouncement',function() {
+		
+		var id = this.id.substring(16);
+
+		var author_elementId = '#addedUser'+id;
+
+		var author_id = $(author_elementId).text();
+
+		if (current_userid != author_id) {
+			$('#accessDeniedAnnouncement').modal('toggle');
+			return false;			
+		} else { 
+
+			var url = "edit_announcement.html?id="+id+"&prev_page="+page_no;
+			window.location = url;
+			return false;	
+		}
+		
 	});
 
 
+	$('#contentArea').on('click','.delAnnouncement',function() {
+		var id = this.id.substring(15);
+		var author_elementId = '#addedUser'+id;
+
+		current_announce_id = id;
+
+		var author_id = $(author_elementId).text();
+
+		if (current_userid != author_id) {
+			$('#accessDeniedAnnouncement').modal('toggle');
+			return false;			
+		} else {
+			$('#deleteAnnouncement').modal('toggle');	
+			return false;
+
+		}
+	});
+
+	$('#numberPerPage').change(function() {
+		loadAnnouncementOne(1);
+		$('#pageList').empty();
+		loadPagination();
+	});
+
+	$('#contentArea').on('click','.addComment', function() {
+		var id = this.id.substring(10);
+		var labelId = 'label#comment_error'+id;
+		$(labelId).hide();
+		var comment_body_boxId = '#comment'+id;
+		var comment_text = $(comment_body_boxId).val();
+		if ($.trim(comment_text).length == 0) {
+			
+			$(labelId).show();
+			$(comment_body_boxId).focus();
+ 			return false;
+		} else {
+
+			var commentData = {"announcementIndex": id, "body": comment_text, "user_id": current_userid, "action": "new_comment"};
+
+			$.ajax({
+			 	type:"POST",
+			 	url:"bin/add_announcement.php",
+			 	dataType:"json",
+			 	data: commentData,
+			 	cache:false,
+			 	success:function(resp) {
+			 		if (!isNaN(resp)){
+			 			var comment_text_formatted = comment_text.replace(/\r\n|\r|\n/g,"<br />");
+			 			var commentListId = '#commentList'+id;
+			 			$(comment_body_boxId).val("");
+			 			$(commentListId).append("<p>"+comment_text_formatted+" by "+ "<small>"+ current_userid+" at " + today_str +"</small></p>")
+			 			//$('#commentTable tbody').append("<tr><td>"+current_userid+"</td><td>"+comment_text_formatted+"</td><td>"+today_str+"</td><td><button class='editComment' id='editComment"+resp+"'>Edit</button><button class='deleteComment' id='deleteComment"+resp+"'>Delete</button></td></tr>");
+			 		} else {
+			 			alert(resp);
+			 		}	
+			 	}
+
+			});
+
+
+		} 
+	}); 
 
 });
 
-function loadTable() {
-		
-	var loadTableCond = {"action": "all"};
 
-	resultTable.fnClearTable();
-
+function loadPagination() {
+	var per_page = $('#numberPerPage').val();
 
 	$.ajax({
 		type:"GET",
 		url:"bin/getAnnouncement.php",
-		dataType:"json",
-		cache: false,
-		data: loadTableCond,
+		data: {"action":"getPageNumber", "per_page": per_page},
+		cache:false,
 		success:function(resp) {
-			max = resp[0].announcementIndex;
-			for (var i =0;i!= resp.length ;i++ )
-			{
-				var date_added_parsed = resp[i].date_added.substring(0,10);
-				resultTable.fnAddData([resp[i].announcementIndex,"<a class='viewAnnouncement' id='"+resp[i].announcementIndex+"'>"+resp[i].title+"</a>",resp[i].user_id, date_added_parsed]);
+			if (page_no != 1) {
+				var prev_page_no = page_no - 1; 
+				$('#pageList').append('<li><a href="viewAnnouncement.html?page='+prev_page_no+'">&laquo;</a></li>');
+			} else {
+				$('#pageList').append('<li><a href="#">&laquo;</a></li>');
 			}
-				
-			
+
+			for (var i=0; i!= resp; i++) {
+				var pageNo = i+1;
+				$('#pageList').append('<li><a href="viewAnnouncement.html?page='+pageNo+'">'+pageNo+'</a></li>');
+
+			}
+			if (page_no != resp) {	
+				var next_page = resp + 1;
+				$('#pageList').append('<li><a href="viewAnnouncement.html?page='+next_page+'">&raquo;</a></li>');
+			} else {
+				$('#pageList').append('<li><a href="#">&raquo;</a></li>');
+			}
 		}
+
+
 	});
+
 };
 
-function loadAnnouncementOne(id) {
-		$('.dataArea').empty();
-		$('#commentTable tbody').empty();
 
-		var loadAnnouncement = {"action": "one", "id": id};
+
+function loadAnnouncementOne(page_no) {
+		$('#contentArea').empty();
+		//$('#commentTable tbody').empty();
+
+		var per_page = $('#numberPerPage').val();
+
+		var loadAnnouncement = {"action": "page", "page": page_no, "per_page": per_page};
 		
 		$.ajax({
 			type:"GET",
@@ -262,26 +313,48 @@ function loadAnnouncementOne(id) {
 			cache: false,
 			data: loadAnnouncement,
 			success:function(resp) {
+				
+				for  (var i =0; i!= resp.length; i++) {
+					var contents_edit = resp[i].announcement[0].body[0].body.replace(/\r\n|\r|\n/g,"<br />");	
+					var comments_count = resp[i].announcement[0].comments.length;
 
-				var contents_edit = resp[0].body[0].body.replace(/\r\n|\r|\n/g,"<br />");	
+					$('#contentArea').append(
+						'<div class="span9 well-nobgcolor" id="article'+resp[i].announcement[0].body[0].announcementIndex+'" style="margin-left:0px">'
+						+'<h3><span class="dataArea">'+resp[i].announcement[0].body[0].title+'</span> </h3>'
+						+'<div id="infoAnnouncement" >'
+						+'<div style="float:left"><h3><small> by <span class="dataArea" id="addedUser'+resp[i].announcement[0].body[0].announcementIndex+'">'+resp[i].announcement[0].body[0].user_id+'</span> at <span id="addedDate" class="dataArea">'+resp[i].announcement[0].body[0].date_added+' </span> | Comments('+comments_count+')</small></h3>'
+						+'</div>'
+						+'<div style="float:right">'
+						+'<form class="form-inline">'
+					 	+'<input type="submit" class="editAnnouncement" id="editAnnouncement'+resp[i].announcement[0].body[0].announcementIndex+'" value="Edit">&nbsp;'
+					 	+'<input type="submit" class="delAnnouncement" id="delAnnouncement'+  resp[i].announcement[0].body[0].announcementIndex+'" value="Delete"> '
+						+'</form></div>'
+						+'</div>'
+						+'<div style="margin-top:50px">'
+						+'<hr>'
+						+'<div class="dataArea" style="min-height:200px">'+contents_edit+'</div></div></div>'
+						+'<div class="writeComment span9" style="margin-left:0px"> <div class="commentList" id="commentList'+resp[i].announcement[0].body[0].announcementIndex+'"></div><table class="table" style="width:100%">'
+						+'<tr><td style="width:80%"> <textarea class="writeCommentArea" id="comment'+resp[i].announcement[0].body[0].announcementIndex+'" style="width:100%" rows="4" placeholder="Write a comment here"></textarea>'
+						+'<label class="error" for="comment" id="comment_error'+resp[i].announcement[0].body[0].announcementIndex+'" style="display:none"> This field is required </label>'
+						+'<td style="width:20%"> <input type="submit" class="addComment btn btn-primary" id="addComment'+resp[i].announcement[0].body[0].announcementIndex+'" value="Add comment"></tr></table>'
+						+'</div>'
 
-				$('#userId').append(resp[0].body[0].user_id);
-				$('#addedDate').append(resp[0].body[0].date_added);
-				$('#title').append(resp[0].body[0].title);
-				$('#contents').append(contents_edit);
-				article_userid = resp[0].body[0].user_id;
-			
-				if (resp[0].comments.length > 0) {
-					for (var i = 0; i!= resp[0].comments.length; i++) {
-						var comment_date = resp[0].comments[i].date_added.substring(0,10);
+					);
 
-						var comment_body = resp[0].comments[i].comment_body.replace(/\r\n|\r|\n/g,"<br />");
-						var comment_index = resp[0].comments[i].comment_index;
 
-						$('#commentTable tbody').append("<tr><td>"+resp[0].comments[i].user_id+"</td><td>"+comment_body+"</td><td>"+comment_date+"</td><td><button class='editComment' id='editComment"+comment_index+"'>Edit</button><button class='deleteComment' id='deleteComment"+comment_index+"'>Delete</button></td></tr>");
+					if (comments_count > 0) {
+						var comment_list = resp[i].announcement[0].comments;
 
+						for (var j = 0; j != comments_count; j++) {
+							var comment_text_formatted = comment_list[j].comment_body.replace(/\r\n|\r|\n/g,"<br />");	
+							var user_id = comment_list[j].user_id;
+							var date = comment_list[j].date_added.substring(0,10);
+							var commentListId = '#commentList'+comment_list[j].announcementIndex;
+							$(commentListId).append("<p>"+comment_text_formatted+" <small> by "+ user_id+" at " + date +"</small> [Edit] [Delete]</p><hr>");
+
+						}
 					}
-				} 
+				}
 			}
 		});
 

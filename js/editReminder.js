@@ -13,8 +13,8 @@
 
 		var current_userid = $.session.get('session_userid');
 
-		var existing_start_date = '';
-		var new_start_date = '';
+		var existing_remind_date = '';
+
 		var version = 0;
 
 		var months = new Array("January","February","March","April","May","June","July","August","September","October","November","December");
@@ -47,6 +47,7 @@
 		
 		var data_reminder_index = {"reminderIndex":reminder_id};
 
+
 		$.ajax({
 				type:"GET",
 				url: "bin/get_reminder_one.php",
@@ -58,8 +59,8 @@
 					var existing_remindReason = resp[0].remindReason;
 
 					existing_remindReason = existing_remindReason.replace(/<br\s*[\/]?>/gi, "\n");
-					
-					$('#existing_remind_date').append(resp[0].remindDate); 					
+					existing_remind_date = resp[0].remindDate;
+					$('#existing_remind_date').append(existing_remind_date); 					
 					$('#newRemindReason').val(existing_remindReason);
 
 				}		
@@ -76,7 +77,7 @@
 
 		//when user wants to update visit date
 
-		$('#saveReminderlEdit').click(function() {
+		$('#saveReminderEdit').click(function() {
 			$('.error').hide();
 			var newRemindDay  = $('#new_remindDay').val();
 			var newRemindMonth= $('#new_remindMonth').val();
@@ -92,17 +93,14 @@
 			//if new_school_start_date.length is not 10, that means the user did not give full date detail, then don't update start date
 
 			
-			if (newRemindYear == '')
-			{
-				$('label#remindYear_error').show();
-				$('input#remindYear').focus();
-				return false;
-			}
-
 			if (new_remind_date.length != 10)
 			{
-				$('label#remind_error').show();
- 				 return false;
+				if (new_remind_date != '-0-0') { //if -0-0 then user did not choose any new date values
+					$('label#remind_error').show();
+ 					 return false;
+ 				} else {
+ 					new_remind_date = existing_remind_date;
+ 				}
 			}
 
 			var remind_reason = $('#newRemindReason').val();

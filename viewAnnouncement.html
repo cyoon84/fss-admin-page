@@ -10,6 +10,7 @@
 <script src="js/bootstrap-dropdown.js"></script>
 <script src="js/bootstrap-modal.js"></script>
 <script src="js/jquery.session.js"></script>
+<script src="js/jquery.json-2.3.js"></script>
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/DT_bootstrap.js"></script>
 <script src="js/checklogin.js"></script>
@@ -141,33 +142,23 @@
 					<li><a tabindex="-1" href="#">Metropass sale</a></li>
 					<li class="divider"></li>
 					<li><a tabindex="-1" href="#" id="logout"><i class="icon-off"></i>&nbsp;Logout</a></li>
-				   </ul>
+				 </ul>
 			</div>
 		</div>
 		<div class="span9" style="margin-top:10px;margin-left:0px">
-			<div class="span9 well-nobgcolor" id="announcementViewArea">
-				<h3><span id="title" class="dataArea"> </span> </h3>
-				<div id="infoAnnouncement" >
-					<div style="float:left">
-						<h3><small> by <span id="userId" class="dataArea"> </span> at <span id="addedDate" class="dataArea"> </span></small></h3>
-					</div>
-					<div style="float:right">
-						<form class="form-inline">
-					 		<button class="btn btn-primary btn-medium" id="editAnnouncement"> Edit</button>
-					 		<button class="btn btn-danger btn-medium" id="delAnnouncement"> Delete</button>
-						</form>
-					</div>
-				</div>
-				<div id="contentAnnouncement" style="margin-top:50px">
-				<hr>
-					<div id="contents" class="dataArea" style="min-height:200px">
-
-					</div>
-				</div>
+			<h3>View Announcements</h3>
+			Show # of announcements per page
+			<select id="numberPerPage" class="span2">
+				<option value="1"> 1</option>
+				<option value="5"> 5</option>
+				<option value="10"> 10 </option>
+				<option value="15"> 15 </option>
+			</select>
+			<div id="contentArea">
 
 			</div>
 
-			<div class="span9" id="commentArea" style="margin-top:10px">
+<!-- 			<div class="span9" id="commentArea" style="margin-top:10px">
 				<table class="table" style="width:100%">
 				<tr>
 					<td style="width:80%"> <textarea id="comment" style="width:100%" rows="4" placeholder="Write a comment here"></textarea>
@@ -175,8 +166,9 @@
 					<td style="width:20%"> <button id="addComment" class="btn btn-medium btn-primary">Add Comment</button>
 				</tr>
 				</table>
+			</div> -->
 
-				<table class="table" id="commentTable" style="width:100%">
+<!-- 				<table class="table" id="commentTable" style="width:100%">
 				<thead>
 					<th style="width:10%"> User Id </th>
 					<th style="width:60%"> Comment </th>
@@ -186,29 +178,34 @@
 				<tbody>
 				
 				</tbody>
-				</table>
+				</table> -->
 				
 
-			</div>
+			
 
-			<div class="span9" id="announcementList" style="margin-top:20px">
+<!-- 			<div class="span9" id="announcementList" style="margin-top:20px">
 			<h3>Announcement Listing</h3>
 				<table cellpadding="0" cellspacing="0" border="0" class="table " id="announcementTable">
-				<thead>
-					<tr>
-						<th style="width:10%">No.</th>
-						<th style="width:60%">Title</th>
-						<th style="width:15%">User ID</th>
-						<th style="width:15%">Date</th>
-					</tr>
-				</thead>
-				<tbody>
-		
-				</tbody>
+					<thead>
+						<tr>
+							<th style="width:10%">No.</th>
+							<th style="width:60%">Title</th>
+							<th style="width:15%">User ID</th>
+							<th style="width:15%">Date</th>
+						</tr>
+					</thead>
+					<tbody>
+			
+					</tbody>
 				</table>
-			</div>
-	
 
+			</div> -->
+	
+			<div class="pagination pagination-centered">
+				  <ul id="pageList">
+
+				  </ul>
+			</div>
 		</div>
 	</div>
 </div>

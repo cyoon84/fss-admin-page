@@ -519,7 +519,7 @@
 							var encode_row = $.toJSON(resp[i]);
 							var follow_up_ind = $.evalJSON(encode_row).follow_up_ind;
 							var remindDate_str = $.evalJSON(encode_row).remindDate;
-							var remindReason = $.evalJSON(encode_row).remindReason;
+							var remindReason = $.evalJSON(encode_row).remindReason.replace(/\r\n|\r|\n/g,"<br />");
 							var remindDate = $.evalJSON(encode_row).remindDate;
 							var follow_up_date =  $.evalJSON(encode_row).follow_up_date;
 
@@ -576,7 +576,7 @@
 							var encode_row = $.toJSON(resp[i]);
 							var follow_up_ind = $.evalJSON(encode_row).follow_up_ind;
 							var remindDate_str = $.evalJSON(encode_row).remindDate;
-							var remindReason = $.evalJSON(encode_row).remindReason;
+							var remindReason = $.evalJSON(encode_row).remindReason.replace(/\r\n|\r|\n/g,"<br />");
 							var remindDate = $.evalJSON(encode_row).remindDate;
 							var follow_up_date =  $.evalJSON(encode_row).follow_up_date;
 							var follow_up_userid = $.evalJSON(encode_row).user_id;
