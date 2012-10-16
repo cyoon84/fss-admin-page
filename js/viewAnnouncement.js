@@ -14,6 +14,8 @@ $(function() {
 	var deleteButtonId = '';
 	var editButtonId = '';
 
+	var announcementId_clicked = 0;
+
 	loadPagination();
 
 	var init_all = false;
@@ -58,52 +60,15 @@ $(function() {
 
 
 
-	$('#commentTable').on('click','.editComment',function(){
-		editButtonId = this.id;
-
-
-		var editButtonId_edited = '#'+editButtonId;
-
-		var user_id_comment = $(editButtonId_edited).parent().parent().find('td:first').html();
-
-		var existing_comment = $(editButtonId_edited).parent().parent().find('td').eq(1).html();
-
-		if (current_userid != user_id_comment) {
-			$('#accessDenied').modal('toggle');
-			return false;
-		} else {
-			existing_comment = existing_comment.replace(/<br\s*[\/]?>/gi, "\n");
-			$('#editCommentText').val(existing_comment);
-			$('#editComment').modal('toggle');
-		}
-
-
-	});
-
-	$('#commentTable').on('click','.deleteComment',function() {
-		deleteButtonId = this.id;
-
-		var deleteButtonId_edited = '#'+deleteButtonId;
-
-		var user_id_comment = $(deleteButtonId_edited).parent().parent().find('td:first').html();
-
-		if (current_userid != user_id_comment) {
-			$('#accessDenied').modal('toggle');
-			return false;
-		} else {
-			$('#deleteCommentWindow').modal('toggle');
-		}
-	});
-
-
 	$('#editConfirm').click(function() {
 		var new_comment_text = $('#editCommentText').val();
 
 
-		var editButtonId_edited = '#'+editButtonId;
+		var commentLine_edited = '#commentLine'+editButtonId;
 
-		var comment_id = editButtonId_edited.substring(11);
 		var new_comment_text_formatted = new_comment_text.replace(/\r\n|\r|\n/g,"<br />");
+
+		var comment_id = editButtonId;
 
 		$.ajax({
 			type:"POST",
@@ -112,9 +77,13 @@ $(function() {
 			cache:false,
 			success: function(resp) {
 				if (resp == 'update success') {
+					var x = '#'+announcementId_clicked;
+
 					$('#editComment').modal('hide');
-					$(editButtonId_edited).parent().parent().remove();
-					$('#commentTable tbody').append("<tr><td>"+current_userid+"</td><td>"+new_comment_text_formatted+"</td><td>"+today_str+"</td><td><button class='editComment' id='"+editButtonId+"'>Edit</button><button class='deleteComment' id='"+deleteButtonId+"'>Delete</button></td></tr>");
+					
+					$(x).append("<p class='commentLine' id='commentLine"+comment_id+"'><span id='comment_text_body"+comment_id+"'>"+new_comment_text_formatted+"</span> <small> by <span id='user_id_comment"+comment_id+"'>" + current_userid+"</span> at " + today_str+ "</small> <a href='#' class='editComment' id='editComment"+comment_id+"'>[Edit]</a>  [Delete]</p><hr>");
+					
+					$(commentLine_edited).remove();
 				} else {
 					alert(resp);
 				}
@@ -220,6 +189,33 @@ $(function() {
 		loadPagination();
 	});
 
+
+	$('#contentArea').on('click','.editComment',function() {
+		var comment_id = this.id.substring(11);
+
+		editButtonId = comment_id;
+
+
+		announcementId_clicked = $(this).parent().parent().attr("id");
+
+		var user_id_area = '#user_id_comment'+comment_id;
+
+		var comment_body_area_elem ='#comment_text_body'+comment_id;
+
+		var user_id_comment = $(user_id_area).html();
+
+		var existing_comment = $(comment_body_area_elem).html();
+
+		if (current_userid != user_id_comment) {
+			$('#accessDenied').modal('toggle');
+			return false;
+		} else {
+			existing_comment = existing_comment.replace(/<br\s*[\/]?>/gi, "\n");
+			$('#editCommentText').val(existing_comment);
+			$('#editComment').modal('toggle');
+		}
+	});
+
 	$('#contentArea').on('click','.addComment', function() {
 		var id = this.id.substring(10);
 		var labelId = 'label#comment_error'+id;
@@ -246,8 +242,8 @@ $(function() {
 			 			var comment_text_formatted = comment_text.replace(/\r\n|\r|\n/g,"<br />");
 			 			var commentListId = '#commentList'+id;
 			 			$(comment_body_boxId).val("");
-			 			$(commentListId).append("<p>"+comment_text_formatted+" by "+ "<small>"+ current_userid+" at " + today_str +"</small></p>")
-			 			//$('#commentTable tbody').append("<tr><td>"+current_userid+"</td><td>"+comment_text_formatted+"</td><td>"+today_str+"</td><td><button class='editComment' id='editComment"+resp+"'>Edit</button><button class='deleteComment' id='deleteComment"+resp+"'>Delete</button></td></tr>");
+
+			 			$(commentListId).append("<p class='commentLine' id='commentLine"+resp+"'><span id='comment_text_body"+resp+"'>"+comment_text_formatted+"</span> by <span id='user_id_comment"+resp+"'>" + current_userid+"</span> at " + today_str+ "</small> <a href='#' class='editComment' id='editComment"+resp+"'>[Edit]</a>  [Delete]</p><hr>");
 			 		} else {
 			 			alert(resp);
 			 		}	
@@ -350,7 +346,7 @@ function loadAnnouncementOne(page_no) {
 							var user_id = comment_list[j].user_id;
 							var date = comment_list[j].date_added.substring(0,10);
 							var commentListId = '#commentList'+comment_list[j].announcementIndex;
-							$(commentListId).append("<p>"+comment_text_formatted+" <small> by "+ user_id+" at " + date +"</small> [Edit] [Delete]</p><hr>");
+							$(commentListId).append("<p class='commentLine' id='commentLine"+comment_list[j].comment_index+"'><span id='comment_text_body"+comment_list[j].comment_index+"'>"+comment_text_formatted+"</span> <small> by <span id='user_id_comment"+comment_list[j].comment_index+"'>" + user_id+"</span> at " + date +"</small> <a href='#' class='editComment' id='editComment"+comment_list[j].comment_index+"'>[Edit]</a>  [Delete]</p><hr>");
 
 						}
 					}
