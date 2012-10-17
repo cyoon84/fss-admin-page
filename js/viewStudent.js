@@ -521,6 +521,7 @@
 							var remindDate_str = $.evalJSON(encode_row).remindDate;
 							var remindReason = $.evalJSON(encode_row).remindReason.replace(/\r\n|\r|\n/g,"<br />");
 							var remindDate = $.evalJSON(encode_row).remindDate;
+							var user_id = $.evalJSON(encode_row).user_id;
 							var follow_up_date =  $.evalJSON(encode_row).follow_up_date;
 
 								
@@ -536,15 +537,15 @@
 
 								if (diff_days < 0)
 								{
-									$('#remindTable tbody').append("<tr><td><p style='color:red'>"+ (-1* diff_days) + " days passed</p></td><td>" + remindReason+ "</td><td>" +remindDate+ "</td><td><input type='button' value='followed up' class='follow_up' id='"+resp[i].reminderIndex+"'></td><td><a class='btn btn-small' href='editReminder.html?id="+resp[i].reminderIndex+"'>Edit/Delete</a></td></tr>"); 
+									$('#remindTable tbody').append("<tr><td><p style='color:red'>"+ (-1* diff_days) + " days passed</p></td><td>" + remindReason+ "</td><td>"+ user_id+"</td><td>" +remindDate+ "</td><td><input type='button' value='followed up' class='follow_up' id='"+resp[i].reminderIndex+"'></td><td><a class='btn btn-small' href='editReminder.html?id="+resp[i].reminderIndex+"'>Edit/Delete</a></td></tr>"); 
 								} else {
-									$('#remindTable tbody').append("<tr'><td>"+ diff_days + "</td><td>" + remindReason+ "</td><td>" +remindDate+ "</td><td><input type='button' value='followed up' class='follow_up' id='"+resp[i].reminderIndex+"'></td><td><a class='btn btn-primary btn-small' href='editReminder.html?id="+resp[i].reminderIndex+"'>Edit/Delete</td></tr>"); 
+									$('#remindTable tbody').append("<tr'><td>"+ diff_days + "</td><td>" + remindReason+ "</td><td>"+user_id+"</td><td>" +remindDate+ "</td><td><input type='button' value='followed up' class='follow_up' id='"+resp[i].reminderIndex+"'></td><td><a class='btn btn-primary btn-small' href='editReminder.html?id="+resp[i].reminderIndex+"'>Edit/Delete</td></tr>"); 
 								}
 								
 							
 						}
 					} else {
-						$('#remindTable tbody').append("<tr><td colspan='5'><center><h3>There is no reminder for this student</h3></center></td></tr>");
+						$('#remindTable tbody').append("<tr><td colspan='6'><center><h3>There is no reminder for this student</h3></center></td></tr>");
 					}
 
 					

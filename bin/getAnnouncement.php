@@ -103,18 +103,6 @@
 		}
 
 		
-		//get comments
-		/*$query2 = "SELECT * from announcements_comments where announcementIndex = '$id' order by date_added asc";
-		
-
-		$comment_list = array();
-
-
-
-
-		$result_out[] = array('body' => $body, 'comments' => $comment_list);
-*/
-		
 		echo json_encode($result_out);
 
 
@@ -124,14 +112,17 @@
 	if ($action == 'one') {
 		$id = $_GET['id'];
 
+
 		$result_out = array();
 
-		$body = array();
+		
 
 		$query = "SELECT * from announcements where announcementIndex = '$id'";
 		$result = mysql_query($query, $con);
 
 		$row = mysql_fetch_array($result);
+
+		$body = array();	
 		$body[] = array(
 				'announcementIndex' => $row['announcementIndex'],
 				'user_id' => $row['user_id'],
@@ -140,13 +131,13 @@
 				'date_added' => $row['date_added']
 		);
 
+		$id = $row['announcementIndex'];
 
-		//get comments
-		$query2 = "SELECT * from announcements_comments where announcementIndex = '$id' order by date_added asc";
-		$result2 = mysql_query($query2,$con);
+		$query2 = "SELECT * from announcements_comments where announcementIndex ='$id' order by date_added asc";
 
 		$comment_list = array();
 
+		$result2 = mysql_query($query2,$con);
 
 		while ($row2 = mysql_fetch_array($result2)) {
 			$comment_list[] = array(
@@ -155,15 +146,19 @@
 				'user_id' => $row2['user_id'],
 				'comment_body' => $row2['comment_body'],
 				'date_added' => $row2['date_added']
+			
 			);
 
-		}		
+		}
 
-		$result_out[] = array('body' => $body, 'comments' => $comment_list);
+		$record = array();
+		$record[] = array('body' => $body, 'comments' => $comment_list);
 
+		$result_out[] = array('announcement' => $record);
+	
 
+		
 		echo json_encode($result_out);
-
 
 	}
 	

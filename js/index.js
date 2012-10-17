@@ -104,7 +104,7 @@ $(function () {
 			if (resp.length > 0) {
 				for (var i=0;i!=resp.length ;i++ )
 					{
-						$('#announcementArea').append("<h3><a href='viewAnnouncement.html?id="+resp[i].announcementIndex+"'>"+resp[i].title +"</a> <small> by " +resp[i].user_id+" - posted at " + resp[i].date_added+" </small></h3>");
+						$('#announcementArea').append("<h3><a href='viewAnnouncement.html?page=latest&id="+resp[i].announcementIndex+"'>"+resp[i].title +"</a> <small> by " +resp[i].user_id+" - posted at " + resp[i].date_added+" </small></h3>");
 					}
 			} else {
 				$('#announcementArea').append("<h3>No new announcements </h3>");

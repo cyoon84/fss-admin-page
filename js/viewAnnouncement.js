@@ -9,6 +9,10 @@ var page_no = 0;
 $(function() {
 
 	$('.error').hide();
+	$.urlParam = function(name){
+			var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
+			return results[1] || 0;
+	}
 	var current_userid = $.session.get('session_userid');
 	var today_str = getTodayDateString(new Date());
 	var deleteButtonId = '';
@@ -16,24 +20,12 @@ $(function() {
 
 	var announcementId_clicked = 0;
 
-	loadPagination();
+
+
 
 	var init_all = false;
-/*	resultTable = $('#announcementTable').dataTable( {
-		"sDom": "<'row'<'span4'l><'span5'f>r>t<'row'<'span4'i><'span5'p>>",
-		"sPaginationType": "bootstrap",
-		"oLanguage": {
-			"sLengthMenu": "_MENU_ records per page"
-		},
-		"aaSorting": [[0,'desc']]
-	});
 
-	loadTable();
 
-*/	$.urlParam = function(name){
-			var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
-			return results[1] || 0;
-	}
 	
 	
 	page_no = $.urlParam('page');
@@ -42,8 +34,21 @@ $(function() {
 	
 
 
+	if (page_no == 'latest') {
+		$('#numberPerPage').hide();
+		$('#numberPageTitle').empty();
+		$('#numberPageTitle').append("To show all announcements, please select 'View Announcement' on the left")
 
-	loadAnnouncementOne(page_no);
+		var selectedId = $.urlParam('id');
+		loadPage(page_no,'latestOnly', selectedId)
+
+	} else {
+		loadPagination();
+		loadPage(page_no);
+	}
+
+
+	
 	
 
 	
@@ -54,7 +59,7 @@ $(function() {
 			$('#announcementViewArea').show();
 			$('#commentArea').show();
 		}
-		loadAnnouncementOne(this.id);
+		loadPage(this.id);
 		current_announce_id = this.id;
 	});
 
@@ -94,9 +99,14 @@ $(function() {
 
 	$('#deleteConfirm').click(function() {
 		
-		var comment_id = deleteButtonId.substring(13);
-		var deleteButtonId_edited = '#'+deleteButtonId;
+		var comment_id = editButtonId;
+		var commentLine_removed = '#commentLine'+editButtonId;
 
+		var announcementId = announcementId_clicked.substring(11);
+
+		var comment_count_area = '#commentCount'+ announcementId;
+
+		
 		$.ajax({
 			type:"POST",
 			url:"bin/add_announcement.php",
@@ -104,9 +114,19 @@ $(function() {
 			cache:false,
 			success:function(resp) {
 				if (resp == 'delete success') {
+					var x = '#'+announcementId_clicked;
+
 					$('#deleteCommentWindow').modal('hide');
 
-					$(deleteButtonId_edited).parent().parent().remove();
+					var comment_count = parseInt($(comment_count_area).html(),10);
+
+					comment_count--;
+
+					$(comment_count_area).empty();
+
+					$(comment_count_area).append(comment_count);
+
+					$(commentLine_removed).remove();
 				}
 			}	
 			
@@ -216,6 +236,31 @@ $(function() {
 		}
 	});
 
+
+	$('#contentArea').on('click','.delComment',function() {
+		var comment_id = this.id.substring(10);
+
+		editButtonId = comment_id;
+
+
+		announcementId_clicked = $(this).parent().parent().attr("id");
+
+
+		var user_id_area = '#user_id_comment'+comment_id;
+
+		var comment_body_area_elem ='#comment_text_body'+comment_id;
+
+		var user_id_comment = $(user_id_area).html();
+
+
+		if (current_userid != user_id_comment) {
+			$('#accessDenied').modal('toggle');
+			return false;
+		} else {
+			$('#deleteCommentWindow').modal('toggle');
+		}
+	});
+
 	$('#contentArea').on('click','.addComment', function() {
 		var id = this.id.substring(10);
 		var labelId = 'label#comment_error'+id;
@@ -231,6 +276,10 @@ $(function() {
 
 			var commentData = {"announcementIndex": id, "body": comment_text, "user_id": current_userid, "action": "new_comment"};
 
+			var comment_count_area = '#commentCount'+ id;
+
+
+
 			$.ajax({
 			 	type:"POST",
 			 	url:"bin/add_announcement.php",
@@ -243,7 +292,18 @@ $(function() {
 			 			var commentListId = '#commentList'+id;
 			 			$(comment_body_boxId).val("");
 
-			 			$(commentListId).append("<p class='commentLine' id='commentLine"+resp+"'><span id='comment_text_body"+resp+"'>"+comment_text_formatted+"</span> by <span id='user_id_comment"+resp+"'>" + current_userid+"</span> at " + today_str+ "</small> <a href='#' class='editComment' id='editComment"+resp+"'>[Edit]</a>  [Delete]</p><hr>");
+			 			$(commentListId).append("<p class='commentLine' id='commentLine"+resp+"'><span id='comment_text_body"+resp+"'>"+comment_text_formatted+"</span> <small> by <span id='user_id_comment"+resp+"'>" + current_userid+"</span> at " + today_str+ "</small> <a href='#' class='editComment' id='editComment"+resp+"'>[Edit]</a> <a href='#' class='delComment' id='delComment"+resp+"'>[Delete]</a></p><hr>");
+
+
+						var comment_count = parseInt($(comment_count_area).html(),10);
+
+						comment_count++;
+
+						$(comment_count_area).empty();
+
+						$(comment_count_area).append(comment_count);
+
+
 			 		} else {
 			 			alert(resp);
 			 		}	
@@ -294,13 +354,16 @@ function loadPagination() {
 
 
 
-function loadAnnouncementOne(page_no) {
+function loadPage(page_no, condition,selectedId) {
 		$('#contentArea').empty();
-		//$('#commentTable tbody').empty();
 
-		var per_page = $('#numberPerPage').val();
+		if (condition == 'latestOnly') {
+			var loadAnnouncement = {"action": "one", "id": selectedId};			
+		} else {
+			var per_page = $('#numberPerPage').val();
 
-		var loadAnnouncement = {"action": "page", "page": page_no, "per_page": per_page};
+			var loadAnnouncement = {"action": "page", "page": page_no, "per_page": per_page};
+		}
 		
 		$.ajax({
 			type:"GET",
@@ -316,9 +379,9 @@ function loadAnnouncementOne(page_no) {
 
 					$('#contentArea').append(
 						'<div class="span9 well-nobgcolor" id="article'+resp[i].announcement[0].body[0].announcementIndex+'" style="margin-left:0px">'
-						+'<h3><span class="dataArea">'+resp[i].announcement[0].body[0].title+'</span> </h3>'
+						+'<h3><span class="dataArea" id="titleArea'+resp[i].announcement[0].body[0].announcementIndex+'">'+resp[i].announcement[0].body[0].title+'</span> </h3>'
 						+'<div id="infoAnnouncement" >'
-						+'<div style="float:left"><h3><small> by <span class="dataArea" id="addedUser'+resp[i].announcement[0].body[0].announcementIndex+'">'+resp[i].announcement[0].body[0].user_id+'</span> at <span id="addedDate" class="dataArea">'+resp[i].announcement[0].body[0].date_added+' </span> | Comments('+comments_count+')</small></h3>'
+						+'<div style="float:left"><h3><small> by <span class="dataArea" id="addedUser'+resp[i].announcement[0].body[0].announcementIndex+'">'+resp[i].announcement[0].body[0].user_id+'</span> at <span id="addedDate" class="dataArea">'+resp[i].announcement[0].body[0].date_added+' </span> | Comments (<span id="commentCount'+resp[i].announcement[0].body[0].announcementIndex+'">'+comments_count+'</span>)</small></h3>'
 						+'</div>'
 						+'<div style="float:right">'
 						+'<form class="form-inline">'
@@ -346,7 +409,7 @@ function loadAnnouncementOne(page_no) {
 							var user_id = comment_list[j].user_id;
 							var date = comment_list[j].date_added.substring(0,10);
 							var commentListId = '#commentList'+comment_list[j].announcementIndex;
-							$(commentListId).append("<p class='commentLine' id='commentLine"+comment_list[j].comment_index+"'><span id='comment_text_body"+comment_list[j].comment_index+"'>"+comment_text_formatted+"</span> <small> by <span id='user_id_comment"+comment_list[j].comment_index+"'>" + user_id+"</span> at " + date +"</small> <a href='#' class='editComment' id='editComment"+comment_list[j].comment_index+"'>[Edit]</a>  [Delete]</p><hr>");
+							$(commentListId).append("<p class='commentLine' id='commentLine"+comment_list[j].comment_index+"'><span id='comment_text_body"+comment_list[j].comment_index+"'>"+comment_text_formatted+"</span> <small> by <span id='user_id_comment"+comment_list[j].comment_index+"'>" + user_id+"</span> at " + date +"</small> <a href='#' class='editComment' id='editComment"+comment_list[j].comment_index+"'>[Edit]</a>  <a href='#' class='delComment' id='delComment"+comment_list[j].comment_index+"'> [Delete]</a></p><hr>");
 
 						}
 					}
