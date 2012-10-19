@@ -172,7 +172,7 @@ $(function() {
 
 		var author_id = $(author_elementId).text();
 
-		if (current_userid != author_id) {
+		if (current_userid.toLowerCase() != author_id.toLowerCase()) {
 			$('#accessDeniedAnnouncement').modal('toggle');
 			return false;			
 		} else { 
@@ -193,7 +193,7 @@ $(function() {
 
 		var author_id = $(author_elementId).text();
 
-		if (current_userid != author_id) {
+		if (current_userid.toLowerCase() != author_id.toLowerCase()) {
 			$('#accessDeniedAnnouncement').modal('toggle');
 			return false;			
 		} else {
@@ -226,7 +226,7 @@ $(function() {
 
 		var existing_comment = $(comment_body_area_elem).html();
 
-		if (current_userid != user_id_comment) {
+		if (current_userid.toLowerCase() != user_id_comment.toLowerCase()) {
 			$('#accessDenied').modal('toggle');
 			return false;
 		} else {
@@ -253,7 +253,7 @@ $(function() {
 		var user_id_comment = $(user_id_area).html();
 
 
-		if (current_userid != user_id_comment) {
+		if (current_userid.toLowerCase() != user_id_comment.toLowerCase()) {
 			$('#accessDenied').modal('toggle');
 			return false;
 		} else {
