@@ -204,7 +204,7 @@ $(function() {
 	});
 
 	$('#numberPerPage').change(function() {
-		loadAnnouncementOne(1);
+		loadPage(1);
 		$('#pageList').empty();
 		loadPagination();
 	});

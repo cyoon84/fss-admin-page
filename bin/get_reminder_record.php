@@ -63,13 +63,14 @@
 	if ($action == 'by_date_contents') {
 		$start_date = $_GET['start_date'];
 		$end_date = $_GET['end_date'];
-		$query = "select a.studentId, b.name_kor, b.name_eng, a.remindReason, a.remindDate from studentreminder a inner join studentinfo b on a.studentId = b.studentId where a.follow_up_ind = 'N' and b.active_indicator = 'Y' and a.remindDate between '$start_date' and '$end_date' order by a.remindDate desc";
+		$query = "select a.studentId, b.name_kor, b.name_eng, a.reminderIndex, a.remindReason, a.remindDate from studentreminder a inner join studentinfo b on a.studentId = b.studentId where a.follow_up_ind = 'N' and b.active_indicator = 'Y' and a.remindDate between '$start_date' and '$end_date' order by a.remindDate desc";
 
 		$result = mysql_query($query, $con);
 
 		$result_out = array();
 		while ($row = mysql_fetch_array($result)) {
 			$result_out[] = array(
+				'reminderIndex' => $row['reminderIndex'],
 				'studentId' => $row['studentId'],
 				'name_kor' => $row['name_kor'],
 				'name_eng' => $row['name_eng'],
@@ -83,13 +84,14 @@
 
 	if ($action == 'by_past_due_contents') {
 		$start_date = $_GET['start_date'];
-		$query = "select a.studentId, b.name_kor, b.name_eng, a.remindReason, a.remindDate from studentreminder a inner join studentinfo b on a.studentId = b.studentId where a.follow_up_ind = 'N' and b.active_indicator = 'Y' and a.remindDate < '$start_date' order by a.remindDate desc";
+		$query = "select a.studentId, b.name_kor, b.name_eng, a.reminderIndex, a.remindReason, a.remindDate from studentreminder a inner join studentinfo b on a.studentId = b.studentId where a.follow_up_ind = 'N' and b.active_indicator = 'Y' and a.remindDate < '$start_date' order by a.remindDate desc";
 
 		$result = mysql_query($query, $con);
 
 		$result_out = array();
 		while ($row = mysql_fetch_array($result)) {
 			$result_out[] = array(
+				'reminderIndex' => $row['reminderIndex'],
 				'studentId' => $row['studentId'],
 				'name_kor' => $row['name_kor'],
 				'name_eng' => $row['name_eng'],

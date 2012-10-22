@@ -471,7 +471,7 @@
 		$('#viewTable_korname').append(resp[0].name_kor);
 		$('#viewTable_engname').append(resp[0].name_eng);
 		$('#viewTable_gender').append(resp[0].gender);
-		$('#viewTable_email').append(resp[0].email);
+		$('#viewTable_email').append("<a href='send_email.html?email="+resp[0].email+"'>"+resp[0].email+"</a>");
 		$('#viewTable_birthdate').append(resp[0].birthdate);
 		$('#viewTable_phone').append(resp[0].phone);
 		$('#viewTable_address').append(formatted_address);
