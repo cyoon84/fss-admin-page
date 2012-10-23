@@ -146,6 +146,22 @@
 
 	}
 
+	if ($action == 'check_duplicate_init') {
+		$name_kor = $_GET['name_kor'];
+
+
+		$query = "SELECT name_kor, date_birth from studentinfo where name_kor = '$name_kor'";
+
+		$result = mysql_query($query, $con);
+
+		$num_rows = mysql_num_rows ($result);
+
+
+		$row = mysql_fetch_array($result);
+
+		$result_out[] = array('count'=> $num_rows, 'name_kor' => $row['name_kor'], 'date_birth' => $row['date_birth']);
+	}
+
 
 	echo json_encode($result_out);
 	

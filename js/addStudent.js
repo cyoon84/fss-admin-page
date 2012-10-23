@@ -2,6 +2,9 @@
 * addStudent.js - add a new student record
 *
 */
+
+	var countRec = 0;
+
 	$(function() {
 		
 		var current_userid = $.session.get('session_userid');
@@ -122,37 +125,73 @@
 				$('label#nameKor_error').show();
 				$('input#nameKor').focus();
  				 return false;
- 			}
+ 			} 
 			
 
 			if (dobYear != "")
 			{
-				dob = dobYear +"-"+dobMonth+"-"+dobDay; 
-			}
+				if (dobYear.length != 4 || isNaN(dobYear)) {
+					$('label#dobYear_error').show();
+					$('input#dobYear').focus();
+					return false;						
+				} else {
+					dob = dobYear +"-"+dobMonth+"-"+dobDay; 
+				}
+			} 
 
 			if (doaYear != "")
 			{
-				doa = doaYear +"-"+doaMonth+"-"+doaDay;
+				if (doaYear.length != 4 || isNaN(doaYear)) {
+					$('label#doaYear_error').show();
+					$('input#doaYear').focus();
+					return false;						
+				} else {				
+					doa = doaYear +"-"+doaMonth+"-"+doaDay;
+				}
 			}
 
 			if (visaIssueYear != "")
 			{
-				visaIssueDate = visaIssueYear +"-"+visaIssueMonth+"-"+visaIssueDay;
+				if (visaIssueYear.length != 4 || isNaN(visaIssueYear)) {
+					$('label#visaIssueYear_error').show();
+					$('input#visaIssueYear').focus();
+					return false;						
+				} else {				
+					visaIssueDate = visaIssueYear +"-"+visaIssueMonth+"-"+visaIssueDay;
+				}
 			}
 
 			if (vedYear != "")
 			{
-				visaExpiryDate = vedYear +"-"+vedMonth+"-"+vedDay;
+				if (vedYear.length != 4 || isNaN(vedYear)) {
+					$('label#vedYear_error').show();
+					$('input#vedYear').focus();
+					return false;						
+				} else {
+					visaExpiryDate = vedYear +"-"+vedMonth+"-"+vedDay;
+				}
 			}
 
 			if (sStYear != "")
 			{
-				schoolStartDT = sStYear +"-"+sStMonth+"-"+sStDay;
+				if (sStYear.length != 4 || isNaN(sStYear)) {
+					$('label#schoolStartYear_error').show();
+					$('input#schoolStartYear').focus();
+					return false;						
+				} else {
+					schoolStartDT = sStYear +"-"+sStMonth+"-"+sStDay;
+				}
 			}
 
 			if (sEnYear != "")
 			{
-				schoolEndDT = sEnYear +"-"+sEnMonth+"-"+sEnDay;
+				if (sEnYear.length != 4 || isNaN(sEnYear)) {
+					$('label#schoolEndYear_error').show();
+					$('input#schoolEndYear').focus();
+					return false;						
+				} else {
+					schoolEndDT = sEnYear +"-"+sEnMonth+"-"+sEnDay;
+				}
 			}
 
 			var dataInsert = {"name_eng" : engName, "name_kor" : korName, 
@@ -314,22 +353,41 @@
 					dataInsert.prev_visa.push(list);
 				}
 			}
-		
+
+
 			$.ajax({
-				type: "POST",
-				url: "bin/add_user.php",
-				data:dataInsert,
-				cache: false,	
-				success: function(resp) {
-					if (isNaN(resp))
-					{
-						alert(resp);
+				type:"GET",
+				url: "bin/getAllUser.php",
+				data: {"name_kor": korName, "action" : "check_duplicate_init"},
+				dataType: "json",
+				cache: false,
+				success:function(resp) {
+					if (resp[0].count != 0) {
+						$('#alreadyExistingName').empty();
+						$('#alreadyExistingBDay').empty();
+						$('#alreadyExistingName').append(resp[0].name_kor);
+						$('#alreadyExistingBDay').append(resp[0].date_birth);
+						$('#warningAdd').modal('toggle');
+						return false;
 					} else {
-						newId = resp;
-						$('#addSuccess').modal('toggle');
+						$.ajax({
+							type: "POST",
+							url: "bin/add_user.php",
+							data:dataInsert,
+							cache: false,	
+							success: function(resp) {
+								if (isNaN(resp))
+								{
+									alert(resp);
+								} else {
+									newId = resp;
+									$('#addSuccess').modal('toggle');
+								}
+							}
+						});							
 					}
 				}
-			});
+			})
 
 			return false;
 
