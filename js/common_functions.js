@@ -1,8 +1,8 @@
 	function initializeDateSelector(id_day, id_month) {
 		var months = new Array("January","February","March","April","May","June","July","August","September","October","November","December");
 
-		$(id_month).append('<option value=00>-----------------</option>');
-		$(id_day).append('<option value=00>-----------</option>');
+		$(id_month).append('<option value=0>-----------------</option>');
+		$(id_day).append('<option value=0>-----------</option>');
 
 		for (i=0; i!= months.length ; i++ )
 		{

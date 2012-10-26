@@ -16,6 +16,7 @@ $mail             = new PHPMailer();
 //$body             = eregi_replace("[\]",'',$body);
 
 $mail->IsSMTP();
+$mail->CharSet = 'UTF-8';
 $mail->SMTPDebug  = 1;
 $mail->SMTPAuth   = true;                  // enable SMTP authentication
 $mail->SMTPSecure = "ssl";                 // sets the prefix to the servier

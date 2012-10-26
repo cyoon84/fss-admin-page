@@ -3,6 +3,7 @@
 	include 'connection.php';
 	
 	$id = $_POST['id'];
+	$unique_id = $_POST['unique_id'];
 	$new_eng_name = $_POST['name_eng'];
 	$new_kor_name = $_POST['name_kor'];
 	$new_email = $_POST['email'];
@@ -111,6 +112,7 @@
 	$new_version = $latest_version + 1;
 
 	$insert_query="INSERT INTO studentinfo (studentId
+									, unique_id
 									, version
 									, active_indicator 									
 									, name_eng
@@ -136,6 +138,7 @@
 									, user_id) 
 									VALUES 
 									('$id'
+									,'$unique_id'
 									,'$new_version'
 									,'Y'
 									,'$new_eng_name'

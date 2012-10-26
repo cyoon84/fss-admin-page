@@ -19,73 +19,73 @@
 	//one of 3 entered
 	if ($name != '' and $school == '' and $email == '' and $phone == '') {
 		if ($lang == 'Korean') {
-			$query= $query_text. " where name_kor = '$name'";
+			$query= $query_text. " where name_kor like '%$name%'";
 		} 
 		if ($lang == 'English') {
-			$query=$query_text. " where name_eng = '$name'";
+			$query=$query_text. " where name_eng like '%$name%'";
 		}
 	}
 
 	if ($school != '' and $name == '' and $email == '' and $phone == '') {
-		$query = $query_text. " where current_school = '$school'";
+		$query = $query_text. " where current_school like '%$school%'";
 	}
 
 	if ($email != '' and $name == '' and $school == '' and $phone == '') {
-		$query = $query_text. " where email = '$email'";
+		$query = $query_text. " where email like '%$email%'";
 	}
 
 	if ($phone != '' and $email == '' and $name == '' and $school == '') {
-		$query = $query_text. " where phone_no = '$phone'";
+		$query = $query_text. " where phone_no like '%$phone%'";
 	}
 
 	//when user entered more than one selection criterias
 	//name & school
 	if ($name != '' and $school != '' and $email == '' and $phone == '') {
 		if ($lang == 'Korean') {
-			$query=$query_text. " where name_kor = '$name' ";
+			$query=$query_text. " where name_kor like '%$name%' ";
 		} 
 		if ($lang == 'English') {
-			$query=$query_text. " where name_eng = '$name' ";
+			$query=$query_text. " where name_eng like '%$name%' ";
 		}
-		$query = $query. "and current_school = '$school'";
+		$query = $query. "and current_school like '%$school%'";
 	}
 
 	//name & email
 	if ($name != '' and $email != '' and $school == '' and $phone == '') {
 		if ($lang == 'Korean') {
-			$query=$query_text. " where name_kor = '$name' ";
+			$query=$query_text. " where name_kor like '%$name%' ";
 		} 
 		if ($lang == 'English') {
-			$query=$query_text. " where name_eng = '$name' ";
+			$query=$query_text. " where name_eng like '%$name%' ";
 		}
-		$query = $query. "and email = '$email'";
+		$query = $query. "and email like '%$email%'";
 
 	}
 
 	//school & email
 	if ($name == '' and $email != '' and $school != '' and $phone == '') {
-		$query = $query_text." where email = '$email' and current_school = '$school'";
+		$query = $query_text." where email like '%$email%' and current_school = '%$school%'";
 	}
 
 	//phone & school
 	if ($name == '' and $email == '' and $school != '' and $phone != '') {
-		$query = $query_text. " where phone_no = '$phone' and current_school = '$school'";
+		$query = $query_text. " where phone_no = '%$phone%' and current_school = '%$school%'";
 	}
 
 	//phone & name
 	if ($name != '' and $phone != '' and $school == '' and $email == '') {
 		if ($lang == 'Korean') {
-			$query=$query_text. " where name_kor = '$name' ";
+			$query=$query_text. " where name_kor like '%$name%' ";
 		} 
 		if ($lang == 'English') {
-			$query=$query_text. " where name_eng = '$name' ";
+			$query=$query_text. " where name_eng like '%$name%' ";
 		}
-		$query = $query. "and phone_no = '$phone'";
+		$query = $query. "and phone_no like '%$phone%'";
 
 	}
 	//phone & email
 	if ($name == '' and $email != '' and $school == '' and $phone != '') {
-		$query = $query_text. " where email = '$email' and phone_no = '$phone'";
+		$query = $query_text. " where email like '%$email%' and phone_no like '%$phone%'";
 	}
 
 
@@ -94,54 +94,54 @@
 	//name email school (no phone)
 	if ($name != '' and $email != '' and $school != '' and $phone == '') {
 		if ($lang == 'Korean') {
-			$query=$query_text. " where name_kor = '$name' ";
+			$query=$query_text. " where name_kor like '%$name%' ";
 		} 
 		if ($lang == 'English') {
-			$query=$query_text. " where name_eng = '$name' ";
+			$query=$query_text. " where name_eng like '%$name%' ";
 		}
-		$query = $query. "and email = '$email' and current_school = '$school'";
+		$query = $query. "and email like '%$email%' and current_school like '%$school%'";
 
 	}
 
 	//name email phone (no school)
 	if ($name != '' and $email != '' and $school == '' and $phone != '') {
 		if ($lang == 'Korean') {
-			$query=$query_text. " where name_kor = '$name' ";
+			$query=$query_text. " where name_kor like '%$name%' ";
 		} 
 		if ($lang == 'English') {
-			$query=$query_text. " where name_eng = '$name' ";
+			$query=$query_text. " where name_eng like '%$name%' ";
 		}
-		$query = $query. "and email = '$email' and phone_no = '$phone'";
+		$query = $query. "and email like '%$email%' and phone_no like '%$phone%'";
 
 	}
 
 	//name phone school (no email)
 	if ($name != '' and $email == '' and $school != '' and $phone != '') {
 		if ($lang == 'Korean') {
-			$query=$query_text. " where name_kor = '$name' ";
+			$query=$query_text. " where name_kor like '%$name%' ";
 		} 
 		if ($lang == 'English') {
-			$query=$query_text. " where name_eng = '$name' ";
+			$query=$query_text. " where name_eng like '%$name%' ";
 		}
-		$query = $query. "and current_school ='$school' and phone_no = '$phone'";
+		$query = $query. "and current_school like '%$school%' and phone_no like '%$phone%'";
 
 	}
 
 	//phone school email (no name)
 	if ($name == '' and $email != '' and $school != '' and $phone != '') {
-		$query = $query_text. " where phone_no = '$phone' and current_school = '$school' and email = '$email'";
+		$query = $query_text. " where phone_no like '%$phone%' and current_school like '%$school%' and email like '%$email%'";
 	}
 
 
 	//all 4 entered
 	if ($name != '' and $email != '' and $school != '' and $phone != '') {
 		if ($lang == 'Korean') {
-			$query=$query_text. " where name_kor = '$name' ";
+			$query=$query_text. " where name_kor like '%$name%' ";
 		} 
 		if ($lang == 'English') {
-			$query=$query_text. " where name_eng = '$name' ";
+			$query=$query_text. " where name_eng like '%$name%' ";
 		}
-		$query = $query. "and email = '$email' and current_school = '$school' and phone_no = '$phone'";
+		$query = $query. "and email like '%$email%' and current_school like '%$school%' and phone_no like '%$phone%'";
 	}
 
 	$result = mysql_query($query, $con);

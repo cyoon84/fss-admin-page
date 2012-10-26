@@ -48,13 +48,27 @@
 
 	$prev_visas = $_POST['prev_visa'];
 
+	$unique_id = $_POST['uniqueId'];
+
 	$last_id = mysql_query("select max(studentId) from studentinfo");
 	$last_id = mysql_fetch_array($last_id,MYSQL_BOTH);
 	$last_id = $last_id[0];
 
 	$new_id = $last_id + 1;
 
+
+	$checkUniqueId = mysql_query("select count(*) from studentinfo where unique_id = '$unique_id'");
+
+	$checkUniqueId = mysql_fetch_array($checkUniqueId, MYSQL_BOTH);
+	$checkUniqueId = $checkUniqueId[0];
+
+	if ($checkUniqueId > 0) {
+		$unique_id = $unique_id.$checkUniqueId;
+	}
+
+
 	$query="INSERT INTO studentinfo (studentId
+									, unique_id
 									, version
 									, active_indicator
 									, name_eng
@@ -80,6 +94,7 @@
 									, updt_reason) 
 									VALUES 
 									('$new_id'
+									,'$unique_id'
 									,'0'
 									,'Y'
 									, '$engName'

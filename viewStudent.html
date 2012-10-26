@@ -165,6 +165,7 @@
 									<input style="width:100px" id="visitYear" placeholder="year (yyyy)" name="visitYear">
 									<label class="error" for="visitYear" id="visitYear_error"> This field is required </label>
 									<label class="error" for="visitYear" id="visitDate_error"> Please choose both month, day and enter year </label>
+									<label class="error" for="visitYear" id="visitYear_error2"> Please enter in follwing format - e.g. 2012 </label>
 								</div>
 							</td>
 							</tr>
@@ -236,6 +237,46 @@
 						
 					</div>
 			</div>	
+
+			<div class="modal hide fade" id="addPrevSchool" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				  <div class="modal-header">
+					 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+					    <h3 id="addPrevSchoolTitle">Add a new previous school</h3>
+					 </div>
+					<div class="modal-body" id="modal-body-prev-school">
+						<table class='table'>
+							<tr>
+							<td style='width:30%'>School Name * </td>
+							<td> <input type="text" id='newPrevSchoolName'>
+								<label class="error" for="newPrevSchoolName" id="namePrevSchool_error"> This field is required </label>
+							</tr>
+							<tr>
+							<td> School Progran Name</td>
+							<td> <input type="text" id='newPrevSchoolProgram'>
+							</tr>
+							<tr>
+							<td> School Start Date </td>
+							<td> <select class="span2" id="prevSchoolStartMonth" name="prevSchoolStartMonth"></select>
+								<select class="span2" id="prevSchoolStartDay" name="prevSchoolStartDay"></select>
+								<input style="width:85px" id="prevSchoolStartYear" placeholder="year (yyyy)" name="prevSchoolStartYear">
+								<label class="error" for="prevSchoolStartYear" id="prevSchoolStartYear_error"> Please enter proper year format (e.g. 2012) </label>
+								<label class="error" for="prevSchoolStartYear" id="prevSchoolStartYear_error2"> Please select month / day as well! </label>
+							</tr>
+							<tr>
+							<td> School End Date </td>
+							<td><select class="span2" id="prevSchoolEndMonth" name="prevSchoolEndMonth"></select>
+								<select class="span2" id="prevSchoolEndDay" name="prevSchoolEndDay"></select>
+								<input style="width:85px" id="prevSchoolEndYear" placeholder="year (yyyy)" name="prevSchoolEndYear">
+								<label class="error" for="prevSchoolEndYear" id="prevSchoolEndYear_error"> Please enter proper year format (e.g. 2012) </label>
+								<label class="error" for="prevSchoolEndYear" id="prevSchoolEndYear_error2"> Please select month / day as well! </label>
+							</tr>	
+						</table>
+					</div>
+					<div class="modal-footer">
+					  <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+					  <button class="btn btn-primary" id="savePrevSchool">Save changes</button>
+					</div>
+			</div>
 				
 
 		<div class="accordion span9" id="accordion2" style="margin-left:0px">
@@ -248,6 +289,10 @@
 				<div id="collapseOne" class="accordion-body collapse in">
 					<div class="accordion-inner" id="viewArea">
 						<table class='table'>
+							<tr>
+							<td style='width:25%'>FSS Student ID </td>
+							<td id="viewTable_FSS_ID" class="viewTable_elem"></td>
+							</tr>
 							<tr>
 								<td style='width:25%'>Name (Korean) </td>
 								<td id ="viewTable_korname" class="viewTable_elem"></td>
@@ -349,6 +394,9 @@
 				</div>
 				<div id="collapseTwo" class="accordion-body collapse in">
 					<div class="accordion-inner" id="viewPrevSchools">
+						<p style='text-align:right'>
+						<button class='btn btn-small btn-primary' id='addMorePrevSchool'>Add more previous school</button>
+						</p>
 						<table class="table" id="prevSchoolList">
 							<thead>
 								<th style="width:25%"> School Name </th>
@@ -360,6 +408,7 @@
 							<tbody>
 							</tbody>
 						</table>
+
 					</div>
 				</div>
 			</div>

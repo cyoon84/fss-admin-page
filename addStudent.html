@@ -133,6 +133,7 @@
 						Last Name: <input type="text" id="nameEngLName" name="nameEngLName" class="span2">
 						First Name: <input type="text" id="nameEngFName" name="nameEngFName" class="span2">
 						</form>
+						<label class="error" for="nameEngLName" id="nameEng_error"> This field is required </label>
 					</td>
 					</tr>
 					<tr>
@@ -151,6 +152,7 @@
 						<select class="span2" id="dobDay" name="dobDay"></select>
 						<input class="span2" id="dobYear" placeholder="year (yyyy)" name="dobYear">
 						<label class="error" for="dobYear" id="dobYear_error"> Please enter in proper format (e.g. 2012) </label>
+						<label class="error" for="dobYear" id="dobDate_error"> Please choose both month, day and enter year </label>
 					</td>
 					</tr>
 					<tr>
@@ -174,6 +176,7 @@
 						<select class="span2" id="doaDay" name="doaDay"></select>
 						<input class="span2" id="doaYear" name="doaYear" placeholder="year (yyyy)">
 						<label class="error" for="doaYear" id="doaYear_error"> Please enter in proper format (e.g. 2012) </label>
+						<label class="error" for="doaYear" id="doaDate_error"> Please choose both month, day and enter year </label>
 					</td>
 					</tr>
 					<tr>
@@ -185,6 +188,7 @@
 							<option>Working Holiday</option>
 							<option>Visitor</option>
 							<option>Co-op</option>
+							<option>Work Permit</option>
 						</select>
 					
 					</td>
@@ -196,6 +200,7 @@
 						<select class="span2" id="visaIssueDay" name="visaIssueDay"></select>
 						<input class="span2" id="visaIssueYear" name="visaIssueYear" placeholder="year (yyyy)">
 						<label class="error" for="visaIssueYear" id="visaIssueYear_error"> Please enter in proper format (e.g. 2012) </label>
+						<label class="error" for="visaIssueYear" id="visaIssueDate_error"> Please choose both month, day and enter year </label>
 					</td>
 					</tr>
 					<tr>
@@ -244,6 +249,7 @@
 						<select class="span2" id="schoolStartDay" name="schoolStartDay"></select>
 						<input class="span2" id="schoolStartYear" name="schoolStartYear" placeholder="year (yyyy)">
 						<label class="error" for="schoolStartYear" id="schoolStartYear_error"> Please enter in proper format (e.g. 2012) </label>
+						<label class="error" for="schoolStartYear" id="schoolStartDate_error"> Please choose both month, day and enter year </label>
 					</td>
 					</tr>
 					<tr>
@@ -253,6 +259,7 @@
 						<select class="span2" id="schoolEndDay" name="schoolEndDay"></select>
 						<input class="span2" id="schoolEndYear" name="schoolEndYear" placeholder="year (yyyy)">
 						<label class="error" for="schoolEndYear" id="schoolEndYear_error"> Please enter in proper format (e.g. 2012) </label>
+						<label class="error" for="schoolEndYear" id="schoolEndDate_error"> Please choose both month, day and enter year </label>
 					</td>
 					</tr>
 					<tr>
@@ -273,7 +280,7 @@
 			<br>
 			<br>
 			<form class="form-inline">
-				<button class='btn btn-primary' id='addMorePrevSchoolRow'> Add more previous schools</button>
+				<button class='btn btn-primary' id='addMorePrevSchool'> Add more previous schools</button>
 				<button class='btn btn-primary' id='resetSchool'> Remove all rows</button>
 			</form>
 			<table class="table" id="previousSchoolRows">

@@ -60,13 +60,6 @@
 			var engFName = $('#nameEngFName').val().toUpperCase();
 			var engLName = $('#nameEngLName').val().toUpperCase();
 
-			if (engFName == '' && engLName == '')
-			{
-				var engName = '';
-			} else {
-				var engName = engLName+", "+engFName;
-			}
-
 			var korName = $('#nameKor').val();
 			var address = $('#address').val();
 
@@ -120,6 +113,25 @@
 
 			var referrerName = $('#refferNameText').val();
 
+
+			if (engLName == '')
+			{
+				$('label#nameEng_error').show();
+				$('input#nameEngLName').focus();
+ 				 return false;
+			} 
+
+
+			if (engFName == '' ) 
+			{
+				$('label#nameEng_error').show();
+				$('input#nameEngFName').focus();
+ 				 return false;				
+			}
+
+			var engName = engLName+", "+engFName;
+			
+
 			//do field validation
 			if (korName == "") {
 				$('label#nameKor_error').show();
@@ -136,6 +148,12 @@
 					return false;						
 				} else {
 					dob = dobYear +"-"+dobMonth+"-"+dobDay; 
+
+					if (dob.length != 10) {
+						$('label#dobDate_error').show();
+						$('#dobMonth').focus();
+						return false;
+					}
 				}
 			} 
 
@@ -147,6 +165,12 @@
 					return false;						
 				} else {				
 					doa = doaYear +"-"+doaMonth+"-"+doaDay;
+
+					if (doa.length != 10) {
+						$('label#doaDate_error').show();
+						$('#doaMonth').focus();
+						return false;						
+					}
 				}
 			}
 
@@ -158,6 +182,12 @@
 					return false;						
 				} else {				
 					visaIssueDate = visaIssueYear +"-"+visaIssueMonth+"-"+visaIssueDay;
+
+					if (visaIssueDate.length != 10) {
+						$('label#visaIssueDate_error').show();
+						$('#visaIssueMonth').focus();
+						return false;						
+					}
 				}
 			}
 
@@ -169,6 +199,12 @@
 					return false;						
 				} else {
 					visaExpiryDate = vedYear +"-"+vedMonth+"-"+vedDay;
+
+					if (visaExpiryDate.length != 10) {
+						$('label#vedYear_error').show();
+						$('#vedMonth').focus();
+						return false;						
+					}
 				}
 			}
 
@@ -180,6 +216,12 @@
 					return false;						
 				} else {
 					schoolStartDT = sStYear +"-"+sStMonth+"-"+sStDay;
+
+					if (schoolStartDT.length != 10) {
+						$('label#schoolStartDate_error').show();
+						$('#schoolStartMonth').focus();
+						return false;						
+					}
 				}
 			}
 
@@ -191,10 +233,24 @@
 					return false;						
 				} else {
 					schoolEndDT = sEnYear +"-"+sEnMonth+"-"+sEnDay;
+
+					if (schoolEndDT.length != 10) {
+						$('label#schoolEndDate_error').show();
+						$('#schoolEndMonth').focus();
+						return false;							
+					}
 				}
 			}
 
-			var dataInsert = {"name_eng" : engName, "name_kor" : korName, 
+			if (dob.length == 10) {
+				var studentUniqueId = dobMonth+dobDay+(dobYear.substring(2))+engFName.replace(' ','')+engLName.charAt(0);	
+			} else {
+				var studentUniqueId = "FSS"+engFName.replace(' ','')+engLName.charAt(0);
+			}
+
+			
+
+			var dataInsert = {"uniqueId": studentUniqueId, "name_eng" : engName, "name_kor" : korName, 
 							"gender" : gender, "date_birth" : dob, 
 							"email": email, "phone_no" : phoneNo, 
 							"address" : address, "arrival_date" : doa, 
@@ -205,8 +261,7 @@
 							"source_to_FSS" : sourceToFSS, "referrer_name" : referrerName,
 							"user_id" : current_userid,
 							"current_school_end_dt" : schoolEndDT, "note" : note,
-							"initial_visits": [], "prev_schools": [], "prev_visa":[]};
-		
+							"initial_visits": [], "prev_schools": [], "prev_visa":[]};	
 
 			if (visitRows > 0)
 			{		
@@ -650,8 +705,8 @@
 	function initializeDateSelector(id_day, id_month) {
 		var months = new Array("January","February","March","April","May","June","July","August","September","October","November","December");
 
-		$(id_month).append('<option value=00>-----------------</option>');
-		$(id_day).append('<option value=00>-----------</option>');
+		$(id_month).append('<option value=0>-----------------</option>');
+		$(id_day).append('<option value=0>-----------</option>');
 
 		for (i=0; i!= months.length ; i++ )
 		{

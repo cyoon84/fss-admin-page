@@ -103,7 +103,7 @@
 			<td> Search by phone # </td>
 			<td> <input type="text" id="phone">
 			</tr>
-			<td> 
+			<td colspan='2'> 
 			<label class="radio">
 				<input type="radio" name="searchOpt" id="activeOnly" value="active" checked> Active students only
 			</label>
@@ -120,6 +120,19 @@
 
 		<div class="span8" id="resultcount"> </div>
 		<div class="span8" id="result" style="margin-top:10px">
+			<table class='table' id='resultTable'>
+				<thead>
+					<tr>
+						<td> Name (Korean)</td>
+						<td> Name (English)</td>
+						<td> E-mail address</td>
+						<td>Phone</td>
+						<td></td>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
 		</div>
 	</div>
 </div>

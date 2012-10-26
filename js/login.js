@@ -2,7 +2,7 @@ $(function () {
 
 	$('#loginButton').click(function () {
 		$('#loginresult').empty();
-		var id = $('#inputID').val();
+		var id = $('#inputID').val().toUpperCase();
 		var pwd = $('#inputPWD').val();
 
 		var loginInfo = {"id":id , "pwd": pwd};

@@ -25,6 +25,7 @@
 	while ($row = mysql_fetch_array($result)) {
 		$result_out[] = array(
 			'student_id' => $row['studentId'],
+			'unique_id' => $row['unique_id'],
 			'version' => $row['version'],
 			'name_eng' => $row['name_eng'],
 			'name_kor' => $row['name_kor'],

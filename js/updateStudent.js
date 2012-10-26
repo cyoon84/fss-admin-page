@@ -19,6 +19,8 @@
 		var genderChange = false;
 		var existingGender = '';
 
+		var existingDOB = '';
+
 		var visaTypeChange = false;
 		var existingVisaType = '';
 
@@ -108,12 +110,15 @@
 					var existing_eng_last_name = existing_eng_name.substring(0,indexComma_eng_name).toUpperCase();
 					var existing_eng_first_name = existing_eng_name.substring(indexComma_eng_name+2).toUpperCase();
 
+					$('#fssStudentID').append(resp[0].unique_id);
+
 					$('#newFNameEngText').val(existing_eng_first_name);
 					$('#newLNameEngText').val(existing_eng_last_name);
 					$('#newNameKorText').val(resp[0].name_kor);
 					$('#existingGender').append(resp[0].gender);
 					existingGender = resp[0].gender;
-					$('#existingDOB').append(resp[0].birthdate);
+					existingDOB = resp[0].birthdate;
+					$('#existingDOB').append(existingDOB);
 					$('#newEmailText').val(resp[0].email);
 					latestversion = parseInt(resp[0].version,10) +1;
 					
@@ -304,8 +309,21 @@
 				new_school_end_date = sEnYear +"-"+sEnMonth+"-"+sEnDay;
 			}
 
+
+			if (new_date_of_birth.length == 10 || existingDOB.length == 10) {
+				if (new_date_of_birth.length == 10) {
+					var studentUniqueId = dobMonth+dobDay+(dobYear.substring(2))+new_eng_first_name.replace(' ','')+new_eng_last_name.charAt(0);	
+				} else {
+					if (existingDOB.length == 10 ) {
+						var studentUniqueId = (existingDOB.substring(5,7))+(existingDOB.substring(8))+(existingDOB.substring(2,4))+new_eng_first_name.replace(' ','')+new_eng_last_name.charAt(0);
+					}
+				}
+			} else {
+				var studentUniqueId = "FSS"+new_eng_first_name.replace(' ','')+new_eng_last_name.charAt(0);
+			}
 			
 			var updateRecord = { "id" : student_id ,
+								 "unique_id" : studentUniqueId,
 								 "name_eng" : new_eng_name,
 								 "name_kor" : new_korean_name,
 								 "dob" : new_date_of_birth,

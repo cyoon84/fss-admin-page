@@ -69,6 +69,8 @@
 		var new_reminder_date ='';
 
 		initializeDateSelector("#visitDay","#visitMonth");
+		initializeDateSelector("#prevSchoolStartDay", "#prevSchoolStartMonth");
+		initializeDateSelector("#prevSchoolEndDay", "#prevSchoolEndMonth");
 		
 		if (is_hidden == 'Y')
 		{
@@ -125,7 +127,7 @@
 							var visitNum = i+1;
 							$('#visitRecordTable tbody').append('<tr><td rowspan="5" width="10%">'+visitNum+ '</td><td width="20%"> Visit Date </td><td>' + resp[i].visit_date+ '</td></tr>'
 							+'<tr><td> Visit Purpose</td><td>'+ resp[i].visit_purpose+ '</tr><tr><td> Notes<td>' + resp[i].visit_note + '</td></tr>'
-							+'<tr><td> Added by </td><td>'+ resp[i].user_id+ '</td></tr>' 
+							+'<tr><td> Added by </td><td>'+ resp[i].user_id.toUpperCase()+ '</td></tr>' 
 							+'<tr><td colspan="2"><a class="btn btn-small btn-primary" href="editVisitRecord.html?visit_id='+resp[i].visit_index+'&student_id='+student_id+'">Edit / Delete this record</a> </td></tr>');
 						}
 		
@@ -406,14 +408,23 @@
 					$('input#visitYear').focus();
 					return false;
 				} else {
-					var visit_date = visit_date_year+"-"+visit_date_month+"-"+visit_date_day;
 
-					if (visit_date.length != 10)
-					{
-						$('label#visitDate_error').show();
-						return false;
-					} 
+					if (visit_date_year.length != 4 || isNaN(visit_date_year)) {
+						$('label#visitYear_error2').show();
+						$('input#visitYear').focus();
+						return false;						
+					} else {
+
+						var visit_date = visit_date_year+"-"+visit_date_month+"-"+visit_date_day;
+
+
+						if (visit_date.length != 10)
+						{
+							$('label#visitDate_error').show();
+							return false;
+						} 
 					
+					}
 					
 
 				}
@@ -454,9 +465,93 @@
 
 
 		});
+
+
+		$('#addMorePrevSchool').click(function() {
+			$('#addPrevSchool').modal('toggle');
+
+		});
+
+		$('#savePrevSchool').click(function() {
+			var schoolName = $('#newPrevSchoolName').val();
+			var schoolProgram = $('#newPrevSchoolProgram').val();
+			var schoolStartYear = $('#prevSchoolStartYear').val();
+			var schoolStartMonth = $('#prevSchoolStartMonth').val();
+			var schoolStartDay = $('#prevSchoolStartDay').val();
+
+			var schoolEndYear = $('#prevSchoolEndYear').val();
+			var schoolEndMonth = $('#prevSchoolEndMonth').val();
+			var schoolEndDay = $('#prevSchoolEndDay').val();
+
+			var schoolStartDate = '';
+			var schoolEndDate = '';
+
+			if (schoolName == "") {
+				$('label#namePrevSchool_error').show();
+				$('input#newPrevSchoolNamee').focus();
+				return false;				
+			}
+
+
+			if (schoolStartYear != '') {
+
+				if (schoolStartYear.length != 4 || isNaN(schoolStartYear)) {
+					$('label#prevSchoolStartYear_error').show();
+					$('input#prevSchoolStartYear').focus();
+					return false;				
+				} else {
+					schoolStartDate = schoolStartYear+"-"+schoolStartMonth+"-"+schoolStartDay;
+
+					if (schoolStartDate.length != 10) {
+						$('label#prevSchoolStartYear_error2').show();
+						$('#prevSchoolStartMonth').focus();
+						return false;
+					}
+				}
+
+			}
+
+			
+			if (schoolEndYear != '') {
+
+				if (schoolEndYear.length != 4 || isNaN(schoolEndYear)) {
+					$('label#prevSchoolEndYear_error').show();
+					$('input#prevSchoolEndYear').focus();
+					return false;
+				} else {
+					schoolEndDate = schoolEndYear+"-"+schoolEndMonth+"-"+schoolEndDay;
+
+					if (schoolEndDate.length != 10) {
+						$('label#prevSchoolEndYear_error2').show();
+						$('#prevSchoolEndMonth').focus();
+						return false;
+					}
+				}
+			}
+
+
+			var prevSchoolData = {"action": "add", "student_id": student_id, "prev_school_name": schoolName, "prev_school_program": schoolProgram, "prev_school_strt_dt" : schoolStartDate, "prev_school_end_dt" : schoolEndDate, "user_id": current_userid};
+
+			$.ajax({
+				type:"POST",
+				url:"bin/prev_school.php",
+				data:prevSchoolData,
+				cache:false,
+				success:function(resp) {
+					if (resp == 'insert success') {
+						var url = "viewStudent.html?id="+student_id+"&hidden=N";
+						window.location = url;						
+					} else {
+						alert(resp);
+					}
+				}				
+
+			});
+
+
+		});
 	
 
-		return false;
 
 
 	});
@@ -468,6 +563,7 @@
 		var formatted_address = resp[0].address.replace(/\r\n|\r|\n/g,"<br />");
 		var formatted_note = resp[0].note.replace(/\r\n|\r|\n/g,"<br />");
 
+		$('#viewTable_FSS_ID').append(resp[0].unique_id);
 		$('#viewTable_korname').append(resp[0].name_kor);
 		$('#viewTable_engname').append(resp[0].name_eng);
 		$('#viewTable_gender').append(resp[0].gender);
@@ -489,7 +585,7 @@
 		$('#viewTable_act_status').append(status);
 		$('#viewTable_note').append(formatted_note);
 		$('#viewTable_updt_reason').append(resp[0].updt_reason);
-		$('#viewTable_user_id').append(resp[0].user_id);
+		$('#viewTable_user_id').append(resp[0].user_id.toUpperCase());
 
 	};
 
@@ -521,7 +617,7 @@
 							var remindDate_str = $.evalJSON(encode_row).remindDate;
 							var remindReason = $.evalJSON(encode_row).remindReason.replace(/\r\n|\r|\n/g,"<br />");
 							var remindDate = $.evalJSON(encode_row).remindDate;
-							var user_id = $.evalJSON(encode_row).user_id;
+							var user_id = $.evalJSON(encode_row).user_id.toUpperCase();
 							var follow_up_date =  $.evalJSON(encode_row).follow_up_date;
 
 								
@@ -580,7 +676,7 @@
 							var remindReason = $.evalJSON(encode_row).remindReason.replace(/\r\n|\r|\n/g,"<br />");
 							var remindDate = $.evalJSON(encode_row).remindDate;
 							var follow_up_date =  $.evalJSON(encode_row).follow_up_date;
-							var follow_up_userid = $.evalJSON(encode_row).user_id;
+							var follow_up_userid = $.evalJSON(encode_row).user_id.toUpperCase();
 
 							$('#remindTable_old tbody').append("<tr><td>"+ follow_up_date + "</td><td>" + remindReason+ "</td><td>"+follow_up_userid+
 																"<td><input type='button' value='Undo' class='undo_old_follow_up' id='"+resp[i].reminderIndex+"'></td>"+
@@ -664,32 +760,3 @@
 
 	}
 
-	function initializeDateSelector(id_day, id_month) {
-			var months = new Array("January","February","March","April","May","June","July","August","September","October","November","December");
-
-			$(id_month).append('<option value=00>-----------------</option>');
-			$(id_day).append('<option value=00>-----------</option>');
-
-			for (i=0; i!= months.length ; i++ )
-			{
-				var actualmonth = i+1;
-				if (actualmonth < 10)
-				{
-					$(id_month).append('<option value=0'+actualmonth+'>'+months[i]+'</option>');
-				} else {
-					$(id_month).append('<option value='+actualmonth+'>'+months[i]+'</option>');
-				}
-			}
-
-			for (i=1; i!= 32  ; i++ )
-			{
-				if (i < 10)
-				{
-					$(id_day).append('<option>0'+i+'</option>');
-				} else {
-					$(id_day).append('<option>'+i+'</option>');
-				}
-			}
-			
-			return false;
-		};
