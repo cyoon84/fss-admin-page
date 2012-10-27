@@ -26,8 +26,8 @@ $(function () {
 			
 			if (reminders > 0)
 			{
-				$('#reminderNumber').append("<h1><a href='viewlist.html?by=remind'>"+reminders+"</a></h1>");
-				$('#reminderMessage').append("<a href='viewlist.html?by=remind'>"+reminders+" student(s) need to be followed up within the next 7 days!</a>");
+				$('#reminderNumber').append("<h1><a href='viewlist.html?by=remind&page=1'>"+reminders+"</a></h1>");
+				$('#reminderMessage').append("<a href='viewlist.html?by=remind&page=1'>"+reminders+" student(s) need to be followed up within the next 7 days!</a>");
 			} else {
 				$('#reminderNumber').append("<h1>"+reminders+"</h1>");
 				$('#reminderMessage').append("You have no reminder due within the next 7 days!");
@@ -35,8 +35,8 @@ $(function () {
 
 			if (reminder_past_due > 0)
 			{				
-				$('#reminderPastDueNumber').append("<h1><a href='viewlist.html?by=remindPastDue' class='pastDue'>"+reminder_past_due+"</a></h1>");
-				$('#reminderPastDueMessage').append("<a href='viewlist.html?by=remindPastDue' class='pastDue'>"+reminder_past_due+" reminder(s) are past due");
+				$('#reminderPastDueNumber').append("<h1><a href='viewlist.html?by=remindPastDue&page=1' class='pastDue'>"+reminder_past_due+"</a></h1>");
+				$('#reminderPastDueMessage').append("<a href='viewlist.html?by=remindPastDue&page=1' class='pastDue'>"+reminder_past_due+" reminder(s) are past due");
 			} else {
 				$('#reminderPastDueNumber').append("<h1>"+reminder_past_due+"</h1>");
 				$('#reminderPastDueMessage').append("You have no outstanding reminders!");
@@ -59,8 +59,8 @@ $(function () {
 
 			if (visa_count > 0)
 			{
-				$('#visaNumber').append("<h1><a href='viewlist.html?by=visadate'>"+visa_count+"</a></h1>");
-				$('#visaMessage').append("<a href='viewlist.html?by=visadate'>"+visa_count+" student(s) visa is expiring within the next 30 days!</a>");
+				$('#visaNumber').append("<h1><a href='viewlist.html?by=visadate&page=1'>"+visa_count+"</a></h1>");
+				$('#visaMessage').append("<a href='viewlist.html?by=visadate&page=1'>"+visa_count+" student(s) visa is expiring within the next 30 days!</a>");
 			} else {
 				$('#visaNumber').append("<h1>"+visa_count+"</h1>");
 				$('#visaMessage').append("No students have visa expiring within next 30 days!");
@@ -72,8 +72,8 @@ $(function () {
 
 			if (new_student_added > 0)
 			{
-				$('#newAddedNumber').append("<h1><a href='viewlist.html?by=newAdd'>"+new_student_added+"</a></h1>");
-				$('#newAddedMessage').append("<a href='viewlist.html?by=newAdd'>"+new_student_added+" new student(s) registered within the last 7 days</a>");
+				$('#newAddedNumber').append("<h1><a href='viewlist.html?by=newAdd&page=1'>"+new_student_added+"</a></h1>");
+				$('#newAddedMessage').append("<a href='viewlist.html?by=newAdd&page=1'>"+new_student_added+" new student(s) registered within the last 7 days</a>");
 			} else {
 				$('#newAddedNumber').append("<h1>"+new_student_added+"</h1>");
 				$('#newAddedMessage').append("No new students registered within the last 7 days");
@@ -83,8 +83,8 @@ $(function () {
 
 			if (new_visit_added > 0)
 			{
-				$('#newVisitNumber').append("<h1><a href='viewlist.html?by=newVisit'>"+new_visit_added+"</a></h1>");
-				$('#newVisitMessage').append("<a href='viewlist.html?by=newVisit'>"+new_visit_added+" student(s) visited within the last 7 days</a>");
+				$('#newVisitNumber').append("<h1><a href='viewlist.html?by=newVisit&page=1'>"+new_visit_added+"</a></h1>");
+				$('#newVisitMessage').append("<a href='viewlist.html?by=newVisit&page=1'>"+new_visit_added+" student(s) visited within the last 7 days</a>");
 			} else {
 				$('#newVisitNumber').append("<h1>"+new_visit_added+"</h1>");
 				$('#newVisitMessage').append("No new visits within the last 7 days");

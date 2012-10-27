@@ -17,7 +17,7 @@
 		} else {
 			$query = "SELECT * from studentinfo a inner join 
 				(SELECT `studentId`,max(`version`)  as max_version FROM `studentinfo` group by `studentId`) e 
-				where a.studentId = e.studentId and a.version = e.max_version  and  a.how_hear_us = '$category'";
+				where a.studentId = e.studentId and a.version = e.max_version  and  a.visa_type = '$category'";
 
 		}
 	
@@ -78,7 +78,12 @@
 	if ($action == 'visa_expiry_daterange_contents') {
 		$start_date = $_GET['start_date'];
 		$end_date = $_GET['end_date'];
-		$query = "SELECT studentId, name_eng, name_kor, visa_type, visa_issue_date, visa_exp_date from studentinfo where active_indicator = 'Y' and visa_exp_date between '$start_date' and '$end_date 23:59:59'";
+
+		$page = $_GET['page'];
+		$per_page = $_GET['per_page'];
+		$start = ($page-1)*$per_page;
+
+		$query = "SELECT studentId, name_eng, name_kor, visa_type, visa_issue_date, visa_exp_date from studentinfo where active_indicator = 'Y' and visa_exp_date between '$start_date' and '$end_date 23:59:59' limit $start, $per_page";
 		$result = mysql_query($query, $con);
 
 		$result_out = array();
@@ -100,7 +105,12 @@
 	if ($action == 'new_added_students_contents') {
 		$start_date = $_GET['start_date'];
 		$end_date = $_GET['end_date'];
-		$query = "SELECT studentId, name_eng, name_kor, email, date_birth, date_added from studentinfo where version = 0 and date_added between '$start_date' and '$end_date 23:59:59' order by date_added desc";
+
+		$page = $_GET['page'];
+		$per_page = $_GET['per_page'];
+		$start = ($page-1)*$per_page;
+
+		$query = "SELECT studentId, name_eng, name_kor, email, date_birth, date_added from studentinfo where version = 0 and date_added between '$start_date' and '$end_date 23:59:59' order by date_added desc limit $start, $per_page";
 
 		$result = mysql_query($query, $con);
 
@@ -125,9 +135,14 @@
 	if ($action == 'new_visit_contents') {
 		$start_date = $_GET['start_date'];
 		$end_date = $_GET['end_date'];
+
+		$page = $_GET['page'];
+		$per_page = $_GET['per_page'];
+		$start = ($page-1)*$per_page;
+		
 		$query = "SELECT a.studentId, a.visit_date, a.visit_purpose, b.name_eng, b.name_kor from studentvisit a inner join 
 				(select studentId, name_eng, name_kor from studentinfo where active_indicator = 'Y') b on a.studentId = b.studentId 
-					where a.visit_date between '$start_date' and '$end_date' order by a.visit_date desc";
+					where a.visit_date between '$start_date' and '$end_date 23:59:59' order by a.visit_date desc limit $start, $per_page";
 
 		$result = mysql_query($query, $con);
 
@@ -160,6 +175,39 @@
 		$row = mysql_fetch_array($result);
 
 		$result_out[] = array('count'=> $num_rows, 'name_kor' => $row['name_kor'], 'date_birth' => $row['date_birth']);
+	}
+
+	if ($action == 'viewlist_pagination') {
+		$start_date = $_GET['start_date'];
+		$end_date = $_GET['end_date'];
+		$per_page = $_GET['per_page'];
+		$show_by = $_GET['show_by'];
+
+		if ($show_by == 'newAdd') {
+			$query = "SELECT count(*) as count from studentinfo where version = 0 and date_added between '$start_date' and '$end_date 23:59:59'";
+		}
+
+
+		if ($show_by == 'newVisit') {
+			$query = "SELECT count(*) as count from studentvisit where visit_date between '$start_date' and '$end_date 23:59:59'";
+		}
+
+
+		if ($show_by == 'visadate') {
+			$query = "SELECT count(*) as count from studentinfo where active_indicator = 'Y' and visa_exp_date between '$start_date' and '$end_date 23:59:59'";
+		}
+		
+		$result = mysql_query($query, $con);
+
+		$row = mysql_fetch_array($result);
+
+		$total_elem = $row['count'];
+
+		$total_pages = ceil($total_elem/$per_page);
+
+		$result_out[] = array('total_pages' => $total_pages);
+
+
 	}
 
 

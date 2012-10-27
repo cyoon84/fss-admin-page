@@ -74,8 +74,8 @@
 					<li><a tabindex="-1" href="searchStudent.html"><i class="icon-search"></i>&nbsp;Search students</a></li>
 					<li><a tabindex="-1" href="showAllStudent.html"><i class="icon-th-list"></i>&nbsp;Show / search all students</a></li>
 					<li class="divider"></li>
-					<li><a tabindex="-1" href="viewlist.html?by=remind"><i class="icon-tasks"></i>&nbsp;View upcoming reminders</a></li>
-					<li><a tabindex="-1" href="viewlist.html?by=remindPastDue"><i class="icon-tasks"></i>&nbsp;View past due reminders</a></li>
+					<li><a tabindex="-1" href="viewlist.html?by=remind&page=1"><i class="icon-tasks"></i>&nbsp;View upcoming reminders</a></li>
+					<li><a tabindex="-1" href="viewlist.html?by=remindPastDue&page=1"><i class="icon-tasks"></i>&nbsp;View past due reminders</a></li>
 					<li class="divider"></li>
 					<li><a tabindex="-1" href="#">Metropass sale</a></li>
 					<li class="divider"></li>
@@ -84,10 +84,19 @@
 			</div>
 		</div>
 		<div class="span9" style="margin-top:10px">
-		<div id = 'title'> </div>
+		<span id = 'title'> </span>
 		<br>
 		<div id = 'daterange'> </div>
 		<br>
+		<form class="form-horizontal">
+		<select id="numberPerPage" class="span1">
+			<option value="15"> 15 </option>
+			<option value="25"> 25 </option>
+			<option value="50"> 50 </option>
+			<option value="100"> 100 </option>
+		</select> records per page
+		</form>
+
 		<table class='table' id='result'>
 		<thead>
 
@@ -96,7 +105,11 @@
 
 		</tbody>
 		</table>
-	
+		<div class="pagination pagination-centered">
+			<ul id="pageList">
+
+			</ul>
+		</div>
 		</div>
 	</div>
 </div>

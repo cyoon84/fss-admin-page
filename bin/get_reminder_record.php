@@ -63,7 +63,12 @@
 	if ($action == 'by_date_contents') {
 		$start_date = $_GET['start_date'];
 		$end_date = $_GET['end_date'];
-		$query = "select a.studentId, b.name_kor, b.name_eng, a.reminderIndex, a.remindReason, a.remindDate from studentreminder a inner join studentinfo b on a.studentId = b.studentId where a.follow_up_ind = 'N' and b.active_indicator = 'Y' and a.remindDate between '$start_date' and '$end_date' order by a.remindDate desc";
+
+		$page = $_GET['page'];
+		$per_page = $_GET['per_page'];
+		$start = ($page-1)*$per_page;
+		
+		$query = "select a.studentId, b.name_kor, b.name_eng, a.reminderIndex, a.remindReason, a.remindDate from studentreminder a inner join studentinfo b on a.studentId = b.studentId where a.follow_up_ind = 'N' and b.active_indicator = 'Y' and a.remindDate between '$start_date' and '$end_date' order by a.remindDate desc limit $start, $per_page";
 
 		$result = mysql_query($query, $con);
 
@@ -84,7 +89,12 @@
 
 	if ($action == 'by_past_due_contents') {
 		$start_date = $_GET['start_date'];
-		$query = "select a.studentId, b.name_kor, b.name_eng, a.reminderIndex, a.remindReason, a.remindDate from studentreminder a inner join studentinfo b on a.studentId = b.studentId where a.follow_up_ind = 'N' and b.active_indicator = 'Y' and a.remindDate < '$start_date' order by a.remindDate desc";
+
+		$page = $_GET['page'];
+		$per_page = $_GET['per_page'];
+		$start = ($page-1)*$per_page;
+		
+		$query = "select a.studentId, b.name_kor, b.name_eng, a.reminderIndex, a.remindReason, a.remindDate from studentreminder a inner join studentinfo b on a.studentId = b.studentId where a.follow_up_ind = 'N' and b.active_indicator = 'Y' and a.remindDate < '$start_date' order by a.remindDate desc limit $start, $per_page";
 
 		$result = mysql_query($query, $con);
 
@@ -99,6 +109,33 @@
 				'remindReason' => $row['remindReason']
 			);
 		}
+		echo json_encode($result_out);
+	}
+
+	if ($action == 'viewlist_pagination') {
+		$start_date = $_GET['start_date'];
+		$end_date = $_GET['end_date'];
+		$per_page = $_GET['per_page'];
+		$show_by = $_GET['show_by'];
+
+		if ($show_by == 'remind') {
+			$query = "select count(*) as count from studentreminder where follow_up_ind = 'N' and remindDate between '$start_date' and '$end_date 23:59:59'";
+		} 
+
+		if ($show_by == 'remindPastDue') {
+			$query = "select count(*) as count from studentreminder where follow_up_ind = 'N' and remindDate < '$start_date'";
+		}
+
+		$result = mysql_query($query, $con);
+
+		$row = mysql_fetch_array($result);
+
+		$total_elem = $row['count'];
+
+		$total_pages = ceil($total_elem/$per_page);
+
+		$result_out[] = array('total_pages' => $total_pages);
+
 		echo json_encode($result_out);
 	}
 	

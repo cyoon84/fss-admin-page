@@ -9,7 +9,7 @@ $(function() {
 	$('#phone').mask("999-999-9999");	
 
 	$('#searchButton').click(function(){
-		$('#result').empty();
+		$('#resultTable tbody').empty();
 		var nameEntered = new Boolean();
 		var schoolEntered = new Boolean();
 		var emailEntered = new Boolean();
@@ -54,17 +54,15 @@ $(function() {
 								}
 						}
 						
-						$('#result').append("<table class='table' id='resultTable'><thead><tr><td> Name (Korean)</td><td> Name (English)</td><td> E-mail address</td><td>Phone</td><td></td></tr></thead><tbody>");
-							
+								
 						if (resp.length > 0)
 						{
 							
 							for(i=0;i!=resp.length;i++){
 								$('#resultTable tbody').append("<tr><td>"+resp[i].name_kor+"</td><td>"+resp[i].name_eng+"</a></td><td><a href='send_email.html?email="+resp[i].email+"'>"+resp[i].email+"</a></td><td>"+resp[i].phone_no+"</td><td><a href=viewStudent.html?id="+resp[i].student_id+"&hidden=N>[view]</a></td></tr>");
 							}
-							$('#result').append("</tbody></table>");
 						} else {
-							$('#result').append("</tbody></table><h3><center>No students found</center></h3>");
+							$('#resultTable tbody').append("<tr><td colspan='5'><h3><center>No students found</center></h3></td></tr>");
 						}
 					}
 			
