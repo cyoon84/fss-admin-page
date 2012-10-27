@@ -2,6 +2,8 @@ $(function() {
 	var d = getTodayDateString(new Date());
 	var current_userid = $.session.get('session_userid');
 
+	$('#menuarea').load('menu.html');
+
 	$('#todayDate').append(d);
 	$('.error').hide();
 

@@ -7,6 +7,8 @@ $(function(){
 
   var emailAddrParm = $.urlParam('email');
 
+  $('#menuarea').load('menu.html');
+
   var senderDisplay = emailAddrParm;
 
   $('#sendTo').val(senderDisplay);

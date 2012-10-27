@@ -6,6 +6,8 @@
 	var countRec = 0;
 
 	$(function() {
+
+		$('#menuarea').load('menu.html');
 		
 		var current_userid = $.session.get('session_userid');
 		var visitRows = 0;

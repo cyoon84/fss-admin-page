@@ -6,6 +6,8 @@ var page_no = 0;
 
 	$(function() {
 		
+		$('#menuarea').load('menu.html');
+
 		var current_userid = $.session.get('session_userid');
 		var newId = 0;
 		var action_view_by = ''

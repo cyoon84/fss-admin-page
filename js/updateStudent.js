@@ -8,6 +8,8 @@
 
 		var current_userid = $.session.get('session_userid');
 
+		$('#menuarea').load('menu.html');
+
 
 		$.urlParam = function(name){
 			var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);

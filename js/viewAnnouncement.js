@@ -8,6 +8,8 @@ var page_no = 0;
 
 $(function() {
 
+	$('#menuarea').load('menu.html');
+
 	$('.error').hide();
 	$.urlParam = function(name){
 			var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);

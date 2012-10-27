@@ -12,6 +12,7 @@
 
 		var current_userid = $.session.get('session_userid');
 
+		$('#menuarea').load('menu.html');
 
 
 		var months = new Array("January","February","March","April","May","June","July","August","September","October","November","December");

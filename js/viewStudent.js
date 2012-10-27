@@ -8,6 +8,8 @@
 
 	$(function() {
 
+		$('#menuarea').load('menu.html');
+
 		var visitDateOpt = '';
 
 		$('.error').hide();

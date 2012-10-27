@@ -6,6 +6,8 @@
 
 $(function() {
 
+	$('#menuarea').load('menu.html');
+
 	$('#phone').mask("999-999-9999");	
 
 	$('#searchButton').click(function(){

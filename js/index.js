@@ -1,4 +1,7 @@
 $(function () {
+
+	$('#menuarea').load('menu.html');
+
 	var seven_days_later = Date.parse('+7 days');
 	var thirty_days_later = Date.parse('+30 days');
 

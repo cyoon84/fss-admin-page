@@ -6,6 +6,7 @@ var resultTable;
 
 $(function() {
 
+	$('#menuarea').load('menu.html');
 
 	resultTable = $('#result').dataTable( {
 		"sDom": "<'row'<'span4'l><'span5'f>r>t<'row'<'span4'i><'span5'p>>",
