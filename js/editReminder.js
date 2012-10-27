@@ -5,8 +5,6 @@
 	
 	$(function() {
 
-		$('menuarea').load('menu.html');
-
 		$.urlParam = function(name){
 			var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
 			return results[1] || 0;
@@ -15,6 +13,9 @@
 		$('#afterDelete').hide();
 
 		var current_userid = $.session.get('session_userid');
+
+		$('#menuarea').load('menu.html');
+
 
 		var existing_remind_date = '';
 
