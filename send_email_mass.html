@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+ <head>
+ <meta charset="UTF-8">
+  <title> FSS Admin Page </title>
+	<meta name="Generator" content="EditPlus">
+	<meta name="Author" content="">
+	<meta name="Keywords" content="">
+	<meta name="Description" content="">
+	<meta charset="UTF-8">
+	<link href="css/bootstrap.css" rel="stylesheet">
+	<link href="css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="css/page-style.css" rel="stylesheet">
+	<script src="http://code.jquery.com/jquery-1.8.0.js"></script>
+	<script src="js/bootstrap-dropdown.js"></script>
+	<script src="js/bootstrap-modal.js"></script>
+	<script src="js/jquery.session.js"></script>
+	<script src="js/checklogin.js"></script>
+	<script src="js/common_functions.js"></script>
+	<script src="js/date.js"></script>
+	<script src="js/send_email_mass.js"></script>
+ </head>
+
+ <body>
+  
+<div class="span12" style="margin-top:10px" id="top-header">
+		<div style="float:left">
+			<h3>FSS Toronto</h3>
+		</div>
+		
+
+		<div id="currentUserName" style="float:right">
+		
+		</div>
+
+</div>
+
+
+<div class="modal hide fade" id="plzlogin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
+	<div class="modal-header">
+		<h3 id="myModalLabel3">Log in Required</h3>
+	</div>
+	<div class="modal-body" id="modal-body3">
+	Please log in first
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" id="goToLogin">Log In</button>
+	</div>
+</div>	
+
+<div class="modal hide fade" id="logoutWindow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
+	<div class="modal-header">
+		<h3 id="myModalLabel4">Logout</h3>
+	</div>
+	<div class="modal-body" id="modal-body4">
+		User will logout from this site.
+	</div>
+	<div class="modal-footer">
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel logout</button>
+		<button class="btn btn-primary" id="goToLogout">Logout</button>
+	</div>
+</div>	
+
+<div class="modal hide fade" id="emailMsg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel5" aria-hidden="true">
+	<div class="modal-header">
+		<h3 id="myModalLabel5">Send E-mail</h3>
+	</div>
+	<div class="modal-body" id="modal-body5">
+	
+	</div>
+	<div class="modal-footer">
+		<button class="btn" data-dismiss="modal" aria-hidden="true" id='closeEmailMsg'>Close</button>
+	</div>
+</div>
+
+
+<div class="span12">
+	<div class="row">
+		<div class="span3" style="margin-top:10px" id="menuarea">
+		</div>
+		<div class="span9" style="margin-top:10px;margin-left:0px">
+			<div class="span9 well-nobgcolor" style="margin-left:0px">
+				<h3>Send Mass E-mail</h3>
+				<br>
+				<table class="table">
+				<tr>
+					<td style="width:25%"> Send to </td>
+					<td> 
+						<label class="radio">
+							<input type="radio" class="emailOpt" name="emailRecOpt" id="activeOnly" value="active" checked> Send to all active students
+						</label>
+						<label class="radio">
+							<input type="radio" class="emailOpt" name="emailRecOpt" id="selectOnly" value="select"> Choose from following lists (list of students w/email address)
+							<div id="emailSelectArea">
+								<br>
+								Hold down Ctrl key to select multiple email addresses
+								<br><br>
+								<select multiple="multiple" name="recipients" class="span6" id="selectRecipients" size="10"> </select></td>
+							</div>
+						</label>
+
+						
+				</tr>
+				<tr>
+					<td> Subject </td>
+					<td> <input type="text" id="emailSubject" class="span6">
+				</tr>
+
+				<tr>
+					<td> Body </td>
+					<td> <textarea class="span6" rows="10" id="emailBody"> </textarea>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align:right"> <button class="btn btn-primary btn-medium" id="sendEmail">Send e-mail</button>
+
+
+			</div>
+	
+		</div>
+	</div>
+</div>
+
+ </body>
+</html>

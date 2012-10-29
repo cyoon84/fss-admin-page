@@ -20,11 +20,11 @@ $(function(){
 
     var subject = $('#emailSubject').val();
 
-    var body = $('#emailBody').val().replace(/\r\n|\r|\n/g,"<br />");;
+    var body = $('#emailBody').val().replace(/\r\n|\r|\n/g,"<br />");
 
     $.ajax({
       type:"POST",
-      data:{"recipient": actualEmail, "body":body, "subject": subject},
+      data:{"opt": "individual", "recipient": actualEmail, "body":body, "subject": subject},
       url:"bin/use_gmail.php",
       cache:false,
       success:function(resp) {
@@ -33,7 +33,6 @@ $(function(){
 
       }
     });
-
 
 
   });

@@ -210,6 +210,20 @@
 
 	}
 
+	if ($action == 'get_all_active_email') {
+		$query = "SELECT name_kor, email from studentinfo where active_indicator ='Y' and email <> ''";
+		$result = mysql_query($query, $con);
+
+		$result_out = array();
+
+		while ($row = mysql_fetch_array($result)) {
+
+			$result_out[] = array(
+				'name_kor' => $row['name_kor'],
+				'email' => $row['email']
+			);
+		}
+	}
 
 	echo json_encode($result_out);
 	

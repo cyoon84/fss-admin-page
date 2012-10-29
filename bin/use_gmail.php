@@ -7,7 +7,8 @@ include("class.phpmailer.php");
 
 
 $body = $_POST['body'];
-$email = $_POST['recipient'];
+$opt = $_POST['opt'];
+
 $subject = $_POST['subject'];
 
 $mail             = new PHPMailer();
@@ -39,8 +40,22 @@ $mail->AddReplyTo("fsstoronto@gmail.com","FSS Toronto");
 //$mail->AddAttachment("/path/to/file.zip");             // attachment
 //$mail->AddAttachment("/path/to/image.jpg", "new.jpg"); // attachment
 
-$mail->AddAddress($email);
-$mail->AddAddress("chulhee.y@gmail.com","Test2");
+
+if ($opt == 'individual') {
+	$email = $_POST['recipient'];
+	$mail->AddAddress($email);
+} 
+
+if ($opt == 'mass') {
+	$email_list = $_POST['recipients'];
+	$count_addr = count($email_list);
+	for ($i = 0; $i != $count_addr; $i++) {
+		$name =  $email_list[$i]['name_kor'];
+		$email = $email_list[$i]['email'];
+
+		$mail->AddAddress($email, $name);
+	}
+}
 
 $mail->IsHTML(true); // send as HTML
 
