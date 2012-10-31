@@ -41,6 +41,7 @@ $(function(){
   $('#closeEmailMsg').click(function(){
     $('#emailSubject').val('');
     $('#emailBody').val('');
+    $('#modal-body5').empty();
   });
 
 });

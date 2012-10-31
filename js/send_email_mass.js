@@ -93,6 +93,7 @@ $(function(){
     $('#activeOnly').attr('checked','checked');
     $('#emailSelectArea').hide();
     $("#selectRecipients option:selected").removeAttr("selected");
+    $('#modal-body5').empty();
   });
 
 });

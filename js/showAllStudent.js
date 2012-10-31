@@ -51,10 +51,10 @@ function loadTable(category) {
 				if (resp[i].active_indicator == 'Y')
 				{
 				//	koreanNameLink = "<a href=viewStudent_2.html?id="+resp[i].student_id+"&hidden=N class='viewRec' id='"+resp[i].student_id+"'>"+resp[i].name_kor+"</a>"
-					koreanNameLink = "<a href=viewStudent.html?id="+resp[i].student_id+"&hidden=N>"+resp[i].name_kor+"</a>"
+					koreanNameLink = "<a href=viewStudent.html?id="+resp[i].student_id+"&hidden=N>"+resp[i].name_kor+"</a><br>("+resp[i].unique_id+")";
 					active_stat = "Active";
 				} else {
-					koreanNameLink = "<a href=viewStudent.html?id="+resp[i].student_id+"&hidden=Y>"+resp[i].name_kor+"</a>"
+					koreanNameLink = "<a href=viewStudent.html?id="+resp[i].student_id+"&hidden=Y>"+resp[i].name_kor+"</a><br>("+resp[i].unique_id+")";
 				//	koreanNameLink = "<a href=viewStudent_2.html?id="+resp[i].student_id+"&hidden=N class='viewRec' id='"+resp[i].student_id+"'>"+resp[i].name_kor+"</a>"
 					active_stat = "Inactive"; 
 				}

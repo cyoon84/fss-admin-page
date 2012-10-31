@@ -88,7 +88,7 @@ var page_no = 0;
 			end_date_str = today_str;
 			
 
-			$('#result thead').append("<tr><th style='width:30%'>Student Name </th> <th style='width:15%'>Date of Birth</th> <th style='width:40%'> Email </th><th style='width:20%'>Added Date</th> </tr>");
+			$('#result thead').append("<tr><th style='width:20%'>Student Name </th> <th style='width:20%'>FSS Student ID </th> <th style='width:15%'>Date of Birth</th> <th style='width:30%'> Email </th><th style='width:15%'>Added Date</th> </tr>");
 		
 			
 			loadPagination(show_by, start_date_str, end_date_str, per_page);
@@ -225,9 +225,9 @@ var page_no = 0;
 						var date_add_dates = resp[i].date_added.substring(0,10);
 						if (resp[i].name_eng == '')
 						{
-							$('#result tbody').append("<tr><td><a href='viewStudent.html?id="+resp[i].studentId+"&hidden=N'>"+resp[i].name_kor+"</td><td>"+resp[i].date_birth+"</td><td><a href='send_email.html?email="+resp[i].email+"'>"+resp[i].email+"</a></td><td>"+date_add_dates+"</td></tr>");
+							$('#result tbody').append("<tr><td><a href='viewStudent.html?id="+resp[i].studentId+"&hidden=N'>"+resp[i].name_kor+"</td><td>"+resp[i].unique_id+"</td><td>"+resp[i].date_birth+"</td><td><a href='send_email.html?email="+resp[i].email+"'>"+resp[i].email+"</a></td><td>"+date_add_dates+"</td></tr>");
 						} else {
-							$('#result tbody').append("<tr><td><a href='viewStudent.html?id="+resp[i].studentId+"&hidden=N'>"+resp[i].name_kor+"<br>("+resp[i].name_eng+")</a></td><td>"+resp[i].date_birth+"</td><td><a href='send_email.html?email="+resp[i].email+"'>"+resp[i].email+"</a></td><td>"+date_add_dates+"</td></tr>");
+							$('#result tbody').append("<tr><td><a href='viewStudent.html?id="+resp[i].studentId+"&hidden=N'>"+resp[i].name_kor+"<br>("+resp[i].name_eng+")</a></td><td>"+resp[i].unique_id+"</td><td>"+resp[i].date_birth+"</td><td><a href='send_email.html?email="+resp[i].email+"'>"+resp[i].email+"</a></td><td>"+date_add_dates+"</td></tr>");
 
 						}
 					}
