@@ -44,6 +44,89 @@
 	</div>
 </div>	
 
+
+<div class="modal hide fade" id="fssPT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel5" aria-hidden="true">
+	<div class="modal-header">
+		<h3 id="myModalLabel5">Manage FSS Points</h3>
+	</div>
+	<div class="modal-body" id="modal-body5">
+	Current Point
+	<br>
+	<h1><span id='currentPT_modal'> </span> <small> points </small></h1>
+	<hr>
+	Add a new point transaction
+	<table class="table">
+		<tr>
+		<td style="width:25%">Date <br>(required)
+		<td>
+			<select id="transMonth" name="transMonth" style="width:100px"></select>
+			<select id="transDay" name="transDay" style="width:70px"></select>
+			<input  id="transYear" placeholder="year (yyyy)" name="transYear" style="width:100px">
+			<label class="error" for="transYear" id="transYear_error">This field is required </label>
+			<label class="error" for="transYear" id="transDT_error">Please select all month / day / year values </label>
+		</tr>
+		<tr>
+		<td>Point category:
+		<td> <select id="pointList" name="pointList"></select> 
+			
+		</tr>
+	</table>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" id="savePointTrans">Save</button>
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+</div>
+
+<div class="modal hide fade" id="editFssPT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel6" aria-hidden="true">
+	<div class="modal-header">
+		<h3 id="myModalLabel6">Edit FSS Point Record</h3>
+	</div>
+	<div class="modal-body" id="modal-body6">
+	<table class="table">
+		<tr>
+		<td style="width:25%">Date <br>(required)
+		<td>
+
+			<div>
+				Select new date:<Br>
+				<select id="new_transMonth" name="new_transMonth" style="width:100px"></select>
+				<select id="new_transDay" name="new_transDay" style="width:70px"></select>
+				<input  id="new_transYear" placeholder="year (yyyy)" name="new_transYear" style="width:100px">
+				<label class="error" for="new_transYear" id="new_transYear_error">This field is required </label>
+				<label class="error" for="new_transYear" id="new_transDT_error">Please select all month / day / year values </label>
+			</div>
+		</tr>
+		<tr>
+		<td>Point category:
+		<td> 
+			Select a new category: <br>
+		 <select id="new_pointList" name="new_pointList"></select> 
+			
+		</tr>
+	</table>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" id="updPointTrans">Save</button>
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+</div>
+
+<div class="modal hide fade" id="delFssPT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel7" aria-hidden="true">
+	<div class="modal-header">
+		<h3 id="myModalLabel7">Delete FSS Point Record</h3>
+	</div>
+	<div class="modal-body" id="modal-body7">
+		Delete this point record?
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-danger" id="delPointTrans">Delete</button>
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+</div>
+
+
+
 <div class="span12" style="margin-top:10px" id="top-header">
 		<div style="float:left">
 			<h3>FSS Toronto</h3>
@@ -77,6 +160,9 @@
 						</li>
 						<li class="activeOnly">
 							<a href="#" id="updButton">Update personal info</a>
+						</li>
+						<li >
+							<a href="#" id="point">Add Point</a>
 						</li>
 						<li class="activeOnly">
 							<a href="#" id="addVisit">New Visit</a>	
@@ -261,6 +347,7 @@
 				
 
 		<div class="accordion span9" id="accordion2" style="margin-left:0px">
+
 			 <div class="accordion-group">
 				<div class="accordion-heading">
 					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
@@ -421,22 +508,50 @@
 			 <div class="accordion-group">
 				<div class="accordion-heading">
 					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFour">
-					<h4>Visit Record</h4>
+					<h4>FSS Points</h4>
 					</a>
 				</div>
 				<div id="collapseFour" class="accordion-body collapse in">
+					<div class="accordion-inner" id="viewPointRecord">
+						As of today:
+						<h1><span id="pointVal"></span><small> points </small></h1>
+						<br>
+						Point history
+						<table class="table" id="pointHistory">
+							<thead>
+								<th style="width:15%"> Date </th>
+								<th style="width:10%"> Type </th>
+								<th style="width:50%"> Purpose </th>
+								<th style="width:10%"> Value </th>
+								<th style="width:15%"> Edit / Delete </th>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+			 <div class="accordion-group">
+				<div class="accordion-heading">
+					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFive">
+					<h4>Visit Record</h4>
+					</a>
+				</div>
+				<div id="collapseFive" class="accordion-body collapse in">
 					<div class="accordion-inner" id="viewVisitRecord">
+
 					</div>
 				</div>
 			</div>
 
 			<div class="accordion-group">
 				<div class="accordion-heading">
-					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFive">
+					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseSix">
 					<h4>Reminders</h4>
 					</a>
 				</div>
-				<div id="collapseFive" class="accordion-body collapse in">
+				<div id="collapseSix" class="accordion-body collapse in">
 					<div class="accordion-inner" id="viewReminders">
 						<h4>Needs to follow up</h4>
 						<br>

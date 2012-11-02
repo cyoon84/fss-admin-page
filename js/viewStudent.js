@@ -66,6 +66,8 @@
 		var version_latest = 0;
 
 		var reminder_count = 0;
+
+		var point_id = 0;
 		
 		var data_studentID = {"studentId": student_id, "is_hidden": is_hidden};
 		var new_reminder_date ='';
@@ -73,6 +75,8 @@
 		initializeDateSelector("#visitDay","#visitMonth");
 		initializeDateSelector("#prevSchoolStartDay", "#prevSchoolStartMonth");
 		initializeDateSelector("#prevSchoolEndDay", "#prevSchoolEndMonth");
+		initializeDateSelector("#transDay", "#transMonth");
+		initializeDateSelector("#new_transDay", "#new_transMonth");
 		
 		if (is_hidden == 'Y')
 		{
@@ -143,6 +147,10 @@
 
 		reminderLoad(student_id);
 		reminder_old_Load(student_id);
+
+		pointList_load();
+
+		point_load(student_id); 
 
 		prevSchoolLoad(student_id);
 
@@ -552,8 +560,173 @@
 
 
 		});
-	
 
+
+		$('#point').click(function() {
+			$('#transMonth').prop('selectedIndex', 0);
+			$('#transDay').prop('selectedIndex', 0);
+			$('#pointList').prop('selectedIndex',0)
+			$('#fssPT').modal('toggle');
+		});
+
+		$('#savePointTrans').click(function() {
+			var trans_date_month = $('#transMonth').val();
+			var trans_date_day = $('#transDay').val();
+			var trans_date_year = $('#transYear').val();
+
+			var trans_val = $('#pointList').val();
+
+
+
+			if (trans_date_year == '')
+			{
+				$('label#transYear_error').show();
+				$('input#transYear').focus();
+				return false;
+			} else {
+
+				if (trans_date_year.length != 4 || isNaN(trans_date_year)) {
+					$('label#transDT_error2').show();
+					$('input#transYear').focus();
+					return false;						
+				} else {
+
+					var trans_date = trans_date_year+"-"+trans_date_month+"-"+trans_date_day;
+
+
+					if (trans_date.length != 10)
+					{
+						$('label#transDate_error').show();
+						return false;
+					} 
+				
+				}
+				
+
+			}
+
+			var point_trans = {"action" : "add_new_pt", "student_id": student_id, "trans_date": trans_date, "trans_val": trans_val, "user_id": current_userid};
+			
+			$.ajax({
+				type:"POST",
+				url:"bin/point_history.php",
+				cache:false,
+				data:point_trans,
+				success:function(resp) {
+					$('#fssPT').modal('hide');
+					point_load(student_id);
+
+				}
+			});
+
+		});
+
+		$('#updPointTrans').click(function() {
+			var trans_date_month = $('#new_transMonth').val();
+			var trans_date_day = $('#new_transDay').val();
+			var trans_date_year = $('#new_transYear').val();
+
+			var new_trans_val = $('#new_pointList').val();
+
+
+			if (trans_date_year == '')
+			{
+				$('label#new_transYear_error').show();
+				$('input#new_transYear').focus();
+				return false;
+			} else {
+
+				if (trans_date_year.length != 4 || isNaN(trans_date_year)) {
+					$('label#new_transDT_error2').show();
+					$('input#new_transYear').focus();
+					return false;						
+				} else {
+
+					var new_trans_date = trans_date_year+"-"+trans_date_month+"-"+trans_date_day;
+
+
+					if (new_trans_date.length != 10)
+					{
+						$('label#new_transDate_error').show();
+						return false;
+					} 
+				
+				}
+				
+
+			}
+
+			var new_point_trans = {"action" : "update_pt", "index": point_id, "trans_date": new_trans_date, "trans_val": new_trans_val, "user_id": current_userid};
+			
+			$.ajax({
+				type:"POST",
+				url:"bin/point_history.php",
+				cache:false,
+				data:new_point_trans,
+				success:function(resp) {
+					if (resp == 'update success') {
+						$('#editFssPT').modal('hide');
+						point_load(student_id);
+					} else {
+						alert(resp);
+					} 
+
+				}
+			});
+
+		});
+
+		$('#delPointTrans').click(function() {
+			$.ajax({
+				type:"POST",
+				url:"bin/point_history.php",
+				cache:false,
+				data:{"action": "delete_pt", "index": point_id},
+				success:function(resp) {
+					if (resp == 'delete success') {
+						$('#delFssPT').modal('hide');
+						point_load(student_id);
+					} else {
+						alert(resp);
+					} 
+
+				}
+			});
+		});
+
+		$('#pointHistory tbody').on('click', '.delPointHistory', function() {
+			point_id = this.id;
+			$('#delFssPT').modal('toggle');
+
+		});
+	
+		$('#pointHistory tbody').on('click','.editPointHistory', function () {
+			var trans_date = $(this).parent().parent().find("td").eq(0).html();
+
+			var trans_year = trans_date.substring(0,4);
+
+			var trans_month = parseInt(trans_date.substring(5,7),10);
+
+			var trans_day = parseInt(trans_date.substring(8),10);
+
+			point_id = this.id;
+
+			$('#new_transMonth').prop('selectedIndex', trans_month);
+			$('#new_transDay').prop('selectedIndex', trans_day);
+			$('#new_transYear').val(trans_year);
+
+
+			var trans_name = $(this).parent().parent().find("td").eq(2).attr('id');
+
+			var trans_name = parseInt(trans_name,10) - 1;
+
+
+			$('#new_pointList').prop('selectedIndex', trans_name);	
+
+
+			$('#editFssPT').modal('toggle');
+
+		});
 
 
 	});
@@ -649,6 +822,65 @@
 					
 				}
 
+
+		});
+	}
+
+	function pointList_load() {
+		$.ajax({
+			type:"GET",
+			url:"bin/point_history.php",
+			dataType:"json",
+			cache:false,
+			data:{"action": "getPointLists"},
+			success:function(resp) {
+				for (var i =0; i!= resp.length; i++) {
+					$('#pointList').append('<option value='+resp[i].index+'>'+resp[i].name+'</option>');
+					$('#new_pointList').append('<option value='+resp[i].index+'>'+resp[i].name+'</option>');
+				}
+			}
+		});
+	}
+
+	function point_load(student_id) {
+		$('#pointHistory tbody').empty();
+		$('#pointVal').empty();
+		$('#currentPT_modal').empty();
+
+		var input = {"student_id" : student_id, "action" : "getHistory"};
+
+		$.ajax({
+			type:"GET",
+			url:"bin/point_history.php",
+			dataType: "json",
+			cache:false,
+			data: input,
+			success:function(resp) {
+				var point = 0
+
+
+				var point_history = resp[0].point_history_list;
+
+
+				if (point_history.length > 0) {
+					for (var i =0; i!= point_history.length; i++) {
+						if (point_history[i].point_type == 'accumulate') {
+							point += parseInt(point_history[i].point_value,10);
+							var cat = 'Credit';
+						} 
+						if (point_history[i].point_type == 'deduct') {
+							var cat = 'Redemption';
+							point -= parseInt(point_history[i].point_value,10);
+						}
+						$('#pointHistory tbody').append("<tr><td>"+point_history[i].trans_date+"</td><td>"+cat+"</td><td class='transName' id='"+point_history[i].point_index+"'>"+point_history[i].name+"</td><td>"+point_history[i].point_value+"</td><td><input type='button' class='editPointHistory' id='"+point_history[i].index+"' value='Edit'><input type='button' class='delPointHistory' id='"+point_history[i].index+"' value='Delete'></tr>");
+
+					}
+				} else {
+					$('#pointHistory tbody').append("<tr><td colspan='5' style='text-align:center'><h3>No point record found for this student</h3></td></tr>");
+				}
+				$('#pointVal').append(point);
+				$('#currentPT_modal').append(point);
+			}
 
 		});
 	}
@@ -756,7 +988,7 @@
 						$('#prevVisaList tbody').append("<tr><td colspan='4'><h3 style='text-align:center'> No previous visa found for this student</h3></td></tr>");
 					}
 				}
-			});
+		});
 				
 		return false;
 
