@@ -111,7 +111,7 @@
 		$per_page = $_GET['per_page'];
 		$start = ($page-1)*$per_page;
 
-		$query = "SELECT studentId, unique_id, name_eng, name_kor, email, date_birth, date_added from studentinfo where version = 0 and date_added between '$start_date' and '$end_date 23:59:59' order by date_added desc limit $start, $per_page";
+		$query = "SELECT studentId, unique_id, name_eng, name_kor, email, date_birth, date_added from studentinfo where version = 0 and active_indicator = 'Y' and date_added between '$start_date' and '$end_date 23:59:59' order by date_added desc limit $start, $per_page";
 
 		$result = mysql_query($query, $con);
 

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title> FSS Admin Page </title>
+	<meta name="Generator" content="EditPlus">
+	<meta name="Author" content="">
+	<meta name="Keywords" content="">
+	<meta name="Description" content="">
+	<meta charset="UTF-8">
+	<link href="css/bootstrap.css" rel="stylesheet">
+	<link href="css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="css/page-style.css" rel="stylesheet">
+	<script src="http://code.jquery.com/jquery-1.8.0.js"></script>
+	<script src="js/bootstrap-dropdown.js"></script>
+	<script src="js/bootstrap-modal.js"></script>
+	<script src="js/jquery.session.js"></script>
+	<script src="js/checklogin.js"></script>
+	<script src="js/common_functions.js"></script>
+	<script src="js/date.js"></script>
+	<script src="js/manage_point_list.js"></script>
+ </head>
+
+ <body>
+  
+<div class="span12" style="margin-top:10px" id="top-header">
+		<div style="float:left">
+			<h3>FSS Toronto</h3>
+		</div>
+		
+
+		<div id="currentUserName" style="float:right">
+		
+		</div>
+
+</div>
+
+
+<div class="modal hide fade" id="plzlogin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
+	<div class="modal-header">
+		<h3 id="myModalLabel3">Log in Required</h3>
+	</div>
+	<div class="modal-body" id="modal-body3">
+	Please log in first
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" id="goToLogin">Log In</button>
+	</div>
+</div>	
+
+<div class="modal hide fade" id="logoutWindow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
+	<div class="modal-header">
+		<h3 id="myModalLabel4">Logout</h3>
+	</div>
+	<div class="modal-body" id="modal-body4">
+		User will logout from this site.
+	</div>
+	<div class="modal-footer">
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel logout</button>
+		<button class="btn btn-primary" id="goToLogout">Logout</button>
+	</div>
+</div>	
+
+
+<div class="modal hide fade" id="delFssPTCateory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel5" aria-hidden="true">
+	<div class="modal-header">
+		<h3 id="myModalLabel5">Delete FSS Point Category</h3>
+	</div>
+	<div class="modal-body" id="modal-body5">
+		Delete this point category?
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-danger" id="delPointCat">Delete</button>
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+</div>
+
+<div class="modal hide fade" id="editFssPTCateory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel6" aria-hidden="true">
+	<div class="modal-header">
+		<h3 id="myModalLabel6">Edit FSS Point Category</h3>
+	</div>
+	<div class="modal-body" id="modal-body6">
+		Edit this point category
+		<table class="table" id="editCatTable">
+		<thead>
+			<th style="width:55%"> Name </th>
+			<th style="width:20%"> Category </th>
+			<th style="width:25%">Point</th>
+		</thead>
+		<tbody>
+			<td><input type="text" id="editName" style="width:100%">
+				<label class="error" for="editName" id="editName_error">This field is required </label></td>
+			<td><select id="editCat" style="width:80px"><option value='accumulate'>Add </option> <option value='deduct'>Redeem</option></select></td>
+			<td><input type="text" id="editPT" style="width:100px">
+				<label class="error" for="editPT" id="editPT_error">This field is required </label>
+				<label class="error" for="editPT" id="editPT_error2">Enter numeric value </label></td>
+		</tbody>
+		</table>
+		<div class="modal-footer">
+			<button class="btn btn-primary" id="editPointCat">Edit</button>
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		</div>
+	</div>
+</div>
+
+<div class="modal hide fade" id="newFssPTCateory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel7" aria-hidden="true">
+	<div class="modal-header">
+		<h3 id="myModalLabel7">Add a new FSS Point Category</h3>
+	</div>
+	<div class="modal-body" id="modal-body7">
+		Add a new point category
+		<table class="table" id="newCatTable">
+		<thead>
+			<th style="width:55%"> Name </th>
+			<th style="width:20%"> Category </th>
+			<th style="width:25%">Point</th>
+		</thead>
+		<tbody>
+			<td><input type="text" id="newName" style="width:100%">
+				<label class="error" for="newName" id="newName_error">This field is required </label></td>
+			<td><select id="newCat" style="width:80px"><option value='accumulate'>Add </option> <option value='deduct'>Redeem</option></select></td>
+			<td><input type="text" id="newPT" style="width:100px">
+				<label class="error" for="newPT" id="newPT_error">This field is required </label>
+				<label class="error" for="newPT" id="newPT_error2">Enter numeric value </label></td>
+		</tbody>
+		</table>
+
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" id="newPointCat">Edit</button>
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+</div>
+
+<div class="span12">
+	<div class="row">
+		<div class="span3" style="margin-top:10px" id="menuarea">
+		</div>
+		<div class="span9" style="margin-top:10px">
+			<h3> Manage FSS Point List</h3>
+			<br>
+			<button class="btn btn-primary" id="addNewCat">Add a new point category</button>
+			<br>
+			<br>
+
+			<div class="span9 well-nobgcolor" style="margin-left:0px">
+				<h4>Add point category</h4>
+				<table class="category table" id="addCat">
+					<thead>
+					<tr>
+						<th style="width:60%"> Name </th>
+						<th style="width:20%"> Point Value </th>
+						<th style="width:20%"> Edit / Delete </th>
+					</tr>
+					</thead>
+					<tbody>
+
+					</tbody>
+				</table>  
+			</div>
+
+			<div class="span9 well-nobgcolor" style="margin-left:0px">
+				<h4>Redeem point category</h4>
+				<table class="category table" id="redeemCat">
+					<thead>
+					<tr>
+						<th style="width:60%"> Name </th>
+						<th style="width:20%"> Point Value </th>
+						<th style="width:20%"> Edit / Delete </th>
+					</tr>
+					</thead>
+					<tbody>
+
+					</tbody>
+				</table>  
+			</div>
+
+		</div>
+	</div>
+</div>
+
+ </body>
+</html>

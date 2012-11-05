@@ -53,8 +53,10 @@
 	Current Point
 	<br>
 	<h1><span id='currentPT_modal'> </span> <small> points </small></h1>
-	<hr>
-	Add a new point transaction
+	<input type="radio" name="FSSpoint" value="addPT" class="fssPT"> Add FSS point transaction  <br>
+	<input type="radio" name="FSSpoint" value="redeemPT" class="fssPT"> Redeem FSS point transaction
+	<br>
+	<br>
 	<table class="table">
 		<tr>
 		<td style="width:25%">Date <br>(required)
@@ -65,12 +67,18 @@
 			<label class="error" for="transYear" id="transYear_error">This field is required </label>
 			<label class="error" for="transYear" id="transDT_error">Please select all month / day / year values </label>
 		</tr>
-		<tr>
+		<tr id="addPTcat">
 		<td>Point category:
 		<td> <select id="pointList" name="pointList"></select> 
 			
 		</tr>
+		<tr id="redeemPTcat">
+		<td>Point category:
+		<td> <select id="redeemList" name="redeemList"></select> 
+			
+		</tr>
 	</table>
+
 	</div>
 	<div class="modal-footer">
 		<button class="btn btn-primary" id="savePointTrans">Save</button>
@@ -162,7 +170,7 @@
 							<a href="#" id="updButton">Update personal info</a>
 						</li>
 						<li >
-							<a href="#" id="point">Add Point</a>
+							<a href="#" id="point">FSS Point</a>
 						</li>
 						<li class="activeOnly">
 							<a href="#" id="addVisit">New Visit</a>	

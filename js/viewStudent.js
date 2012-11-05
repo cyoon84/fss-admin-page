@@ -11,10 +11,14 @@
 		$('#menuarea').load('menu.html');
 
 		var visitDateOpt = '';
+		var fssPTopt = '';
 
 		$('.error').hide();
 		$('#chooseDate').hide();
 		$('#saveVisitSuccess').hide();
+
+		$('#addPTcat').hide();
+		$('#redeemPTcat').hide();
 		//function to get parameter (id #) from the url
 		$.urlParam = function(name){
 			var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
@@ -76,6 +80,7 @@
 		initializeDateSelector("#prevSchoolStartDay", "#prevSchoolStartMonth");
 		initializeDateSelector("#prevSchoolEndDay", "#prevSchoolEndMonth");
 		initializeDateSelector("#transDay", "#transMonth");
+		initializeDateSelector("#redDay", "#redMonth");
 		initializeDateSelector("#new_transDay", "#new_transMonth");
 		
 		if (is_hidden == 'Y')
@@ -361,6 +366,21 @@
 		});
 
 
+		$('.fssPT').change(function() {
+			fssPTopt= $('input:radio[name=FSSpoint]:checked').val();
+			if (fssPTopt == 'addPT')
+			{
+				$('#addPTcat').show();
+				$('#redeemPTcat').hide();
+			} else {
+				$('#addPTcat').hide();
+				$('#redeemPTcat').show();
+			}
+
+		});
+
+
+
 		$('#toActive').click(function() {
 			$('#makeActive').modal('toggle');
 		
@@ -563,20 +583,37 @@
 
 
 		$('#point').click(function() {
+			$('.fssPT').attr("checked",false);
 			$('#transMonth').prop('selectedIndex', 0);
 			$('#transDay').prop('selectedIndex', 0);
-			$('#pointList').prop('selectedIndex',0)
+			$('#transYear').val('');
+			$('#redMonth').prop('selectedIndex', 0);
+			$('#redDay').prop('selectedIndex', 0);
+			$('#redYear').val('');
+			$('#pointList').prop('selectedIndex',0);
+			$('#addPTcat').hide();
+			$('#redeemPTcat').hide();
 			$('#fssPT').modal('toggle');
+
+
 		});
 
 		$('#savePointTrans').click(function() {
 			var trans_date_month = $('#transMonth').val();
 			var trans_date_day = $('#transDay').val();
 			var trans_date_year = $('#transYear').val();
+			var trans_val = '';
+			fssPTopt= $('input:radio[name=FSSpoint]:checked').val();
 
-			var trans_val = $('#pointList').val();
+			if (fssPTopt == 'addPT') {
 
+				trans_val = $('#pointList').val();
+			} 
 
+			if (fssPTopt == 'redeemPT') {
+				trans_val = $('#redeemList').val();
+
+			}
 
 			if (trans_date_year == '')
 			{
@@ -586,7 +623,7 @@
 			} else {
 
 				if (trans_date_year.length != 4 || isNaN(trans_date_year)) {
-					$('label#transDT_error2').show();
+					$('label#transDT_error').show();
 					$('input#transYear').focus();
 					return false;						
 				} else {
@@ -602,7 +639,6 @@
 				
 				}
 				
-
 			}
 
 			var point_trans = {"action" : "add_new_pt", "student_id": student_id, "trans_date": trans_date, "trans_val": trans_val, "user_id": current_userid};
@@ -835,8 +871,16 @@
 			data:{"action": "getPointLists"},
 			success:function(resp) {
 				for (var i =0; i!= resp.length; i++) {
-					$('#pointList').append('<option value='+resp[i].index+'>'+resp[i].name+'</option>');
-					$('#new_pointList').append('<option value='+resp[i].index+'>'+resp[i].name+'</option>');
+					var point_type = resp[i].point_type;
+
+					if (point_type == 'accumulate') {
+						$('#pointList').append('<option value='+resp[i].pointList_index+'>'+resp[i].name+'</option>');	
+					} 				
+
+					if (point_type == 'deduct') {
+						$('#redeemList').append('<option value='+resp[i].pointList_index+'>'+resp[i].name+'</option>');	
+					}	
+					$('#new_pointList').append('<option value='+resp[i].pointList_index+'>'+resp[i].name+'</option>');
 				}
 			}
 		});
