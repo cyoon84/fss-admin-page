@@ -224,11 +224,12 @@
 
 	$today = date("Y-m-d"); 
 
-	$query5 ="INSERT INTO student_point (studentId, point_index, user_id, trans_date) VALUES ('$new_id', '1', '$user_id', '$today')";
+	$query5 ="INSERT INTO student_point (studentId, point_index, user_id, point_value, trans_date) VALUES ('$new_id', '1', '$user_id', '50', '$today')";
 
 	if (!mysql_query($query5, $con)) {
 		die('Error5: ' . mysql_error());
 	}
+
 	
 	echo $new_id;
 

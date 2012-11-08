@@ -18,6 +18,12 @@
 
 		var months = new Array("January","February","March","April","May","June","July","August","September","October","November","December");
 
+		var genderList = new Array("Male", "Female");
+
+		var visaList = new Array("Unknown","Study","Working Holiday","Visitor","Co-op","Work Permit");
+
+		var howHearUsList = new Array("캐스모","한국 협력업체","Walk in","Referral");
+
 		var genderChange = false;
 		var existingGender = '';
 
@@ -31,64 +37,12 @@
 
 		$('#newPhoneText').mask("999-999-9999");		
 
-
-		$('#new_doaMonth').append('<option value=0>-----------------</option>');
-		$('#new_dobMonth').append('<option value=0>-----------------</option>');
-		$('#new_vedMonth').append('<option value=0>-----------------</option>');
-		$('#new_schoolStartMonth').append('<option value=0>-----------------</option>');
-		$('#new_schoolEndMonth').append('<option value=0>-----------------</option>');
-		$('#new_visaIssueMonth').append('<option value=0>-----------------</option>');
-		
-		$('#new_doaDay').append('<option value=0>-----------</option>');
-		$('#new_dobDay').append('<option value=0>-----------</option>');
-		$('#new_vedDay').append('<option value=0>-----------</option>');
-		$('#new_schoolStartDay').append('<option value=0>-----------</option>');
-		$('#new_schoolEndDay').append('<option value=0>-----------</option>');
-		$('#new_visaIssueDay').append('<option value=0>-----------</option>');
-
-		//initialize month / day selector fields
-		for (i=0; i!= months.length ; i++ )
-		{
-			var actualmonth = i+1;
-			if (actualmonth < 10)
-			{
-				$('#new_doaMonth').append('<option value=0'+actualmonth+'>'+months[i]+'</option>');
-				$('#new_dobMonth').append('<option value=0'+actualmonth+'>'+months[i]+'</option>');
-				$('#new_vedMonth').append('<option value=0'+actualmonth+'>'+months[i]+'</option>');
-				$('#new_schoolStartMonth').append('<option value=0'+actualmonth+'>'+months[i]+'</option>');
-				$('#new_schoolEndMonth').append('<option value=0'+actualmonth+'>'+months[i]+'</option>');
-				$('#new_visaIssueMonth').append('<option value=0'+actualmonth+'>'+months[i]+'</option>');
-			} else {
-				$('#new_doaMonth').append('<option value='+actualmonth+'>'+months[i]+'</option>');
-				$('#new_dobMonth').append('<option value='+actualmonth+'>'+months[i]+'</option>');
-				$('#new_vedMonth').append('<option value='+actualmonth+'>'+months[i]+'</option>');
-				$('#new_schoolStartMonth').append('<option value='+actualmonth+'>'+months[i]+'</option>');
-				$('#new_schoolEndMonth').append('<option value='+actualmonth+'>'+months[i]+'</option>');
-				$('#new_visaIssueMonth').append('<option value='+actualmonth+'>'+months[i]+'</option>');
-			}
-		}
-
-		for (i=1; i!= 32  ; i++ )
-		{
-			if (i < 10)
-			{
-				$('#new_doaDay').append('<option>0'+i+'</option>');
-				$('#new_dobDay').append('<option>0'+i+'</option>');
-				$('#new_vedDay').append('<option>0'+i+'</option>');
-				$('#new_schoolStartDay').append('<option>0'+i+'</option>');
-				$('#new_schoolEndDay').append('<option>0'+i+'</option>');
-				$('#new_visaIssueDay').append('<option>0'+i+'</option>');
-			} else {
-				$('#new_doaDay').append('<option>'+i+'</option>');
-				$('#new_dobDay').append('<option>'+i+'</option>');
-				$('#new_vedDay').append('<option>'+i+'</option>');
-				$('#new_schoolStartDay').append('<option>'+i+'</option>');
-				$('#new_schoolEndDay').append('<option>'+i+'</option>');
-				$('#new_visaIssueDay').append('<option>'+i+'</option>');
-			}
-		}
-	
-
+		initializeDateSelector('#new_doaDay','#new_doaMonth');
+		initializeDateSelector('#new_dobDay','#new_dobMonth');
+		initializeDateSelector('#new_vedDay','#new_vedMonth');
+		initializeDateSelector('#new_schoolStartDay','#new_schoolStartMonth');
+		initializeDateSelector('#new_schoolEndDay','#new_schoolEndMonth');
+		initializeDateSelector('#new_visaIssueDay','#new_visaIssueMonth');
 
 
 		var student_id = $.urlParam('id');
@@ -117,10 +71,26 @@
 					$('#newFNameEngText').val(existing_eng_first_name);
 					$('#newLNameEngText').val(existing_eng_last_name);
 					$('#newNameKorText').val(resp[0].name_kor);
-					$('#existingGender').append(resp[0].gender);
 					existingGender = resp[0].gender;
+					var genderIndex = selectBoxIndexFind(existingGender,genderList);
+
+					$('#genderSelect').prop('selectedIndex',genderIndex);
+
+
 					existingDOB = resp[0].birthdate;
-					$('#existingDOB').append(existingDOB);
+
+					if (existingDOB != '') {
+						var dob_year = existingDOB.substring(0,4);
+
+						var dob_month = parseInt(existingDOB.substring(5,7),10);
+
+						var dob_day = parseInt(existingDOB.substring(8),10);
+
+						$('#new_dobYear').val(dob_year);
+						$('#new_dobMonth').prop('selectedIndex',dob_month);
+						$('#new_dobDay').prop('selectedIndex',dob_day);
+					}
+
 					$('#newEmailText').val(resp[0].email);
 					latestversion = parseInt(resp[0].version,10) +1;
 					
@@ -134,37 +104,105 @@
 
 					$('#newAddressText').val(existing_address);
 					$('#new_note').val(existing_note);
-					$('#existingDOA').append(resp[0].arrival_dt);
-					$('#existingVisaType').append(resp[0].visa_type);
+
+					var existingDOA = resp[0].arrival_dt;
+
+					if (existingDOA != '') {
+						var doa_year = existingDOA.substring(0,4);
+
+						var doa_month = parseInt(existingDOA.substring(5,7),10);
+
+						var doa_day = parseInt(existingDOA.substring(8),10);
+
+						$('#new_doaYear').val(doa_year);
+						$('#new_doaMonth').prop('selectedIndex',doa_month);
+						$('#new_doaDay').prop('selectedIndex',doa_day);
+					}					
+
 					existingVisaType = resp[0].visa_type;
-					$('#existingVisaIssue').append(resp[0].visa_issue_date);
+					var visaTypeIndex = selectBoxIndexFind(existingVisaType,visaList);
 
-					$('#existingVisaExpiry').append(resp[0].visa_exp_date);
+					$('#newVisaTypeVal').prop('selectedIndex',visaTypeIndex);
 
-					$('#existingHowHearUs').append(resp[0].how_hear_us);
+					var existingVisaIssue =resp[0].visa_issue_date;
+
+					if (existingVisaIssue != '') {
+						var visa_issue_year = existingVisaIssue.substring(0,4);
+
+						var visa_issue_month = parseInt(existingVisaIssue.substring(5,7),10);
+
+						var visa_issue_day = parseInt(existingVisaIssue.substring(8),10);
+
+						$('#new_visaIssueYear').val(visa_issue_year);
+						$('#new_visaIssueMonth').prop('selectedIndex',visa_issue_month);
+						$('#new_visaIssueDay').prop('selectedIndex',visa_issue_day);
+					}	
+
+					var existingVisaExpiry = resp[0].visa_exp_date;
+
+					if (existingVisaExpiry != '') {
+						var visa_exp_year = existingVisaExpiry.substring(0,4);
+
+						var visa_exp_month = parseInt(existingVisaExpiry.substring(5,7),10);
+
+						var visa_exp_day = parseInt(existingVisaExpiry.substring(8),10);
+
+						$('#new_vedYear').val(visa_exp_year);
+						$('#new_vedMonth').prop('selectedIndex',visa_exp_month);
+						$('#new_vedDay').prop('selectedIndex',visa_exp_day);
+					}	
+					
 					existingHowHearUs = resp[0].how_hear_us;
 
+					if (existingHowHearUs != '') {
+
+						var howHearUsIndex = parseInt(selectBoxIndexFind(existingHowHearUs,howHearUsList),10)+1;
+
+						$('#newHowHearUsVal').prop('selectedIndex',howHearUsIndex);
+
+						$('#referrerNameText_new').val(resp[0].referred_by);
+							
+
+						if (existingHowHearUs == 'Referral') {
+							$('#referrerName_new').show();
+						}
+					}
 					$('#newKoreaAgencyText').val(resp[0].korea_agency);
 
 					$('#newSchoolText').val(resp[0].current_school);
 
 					$('#newPgmName').val(resp[0].current_program);
 
-					$('#referrerNameText_new').val(resp[0].referred_by);
+					
+					var existingSchoolStart = resp[0].current_school_strt_dt;
 
-					if (resp[0].current_school_strt_dt == '')
+					if ( existingSchoolStart != '')
 					{
-						$('#existingSchoolStart').append('N/A');
-					} else {
-						$('#existingSchoolStart').append(resp[0].current_school_strt_dt);
-					}
+						var school_start_year = existingSchoolStart.substring(0,4);
 
-					if (resp[0].current_school_end_dt == '')
+						var school_start_month = parseInt(existingSchoolStart.substring(5,7),10);
+
+						var school_start_day = parseInt(existingSchoolStart.substring(8),10);	
+
+						$('#new_schoolStartYear').val(school_start_year);
+						$('#new_schoolStartMonth').prop('selectedIndex',school_start_month);
+						$('#new_schoolStartDay').prop('selectedIndex',school_start_day);					
+					} 
+
+					var existingSchoolEnd = resp[0].current_school_end_dt;
+
+					if (existingSchoolEnd != '')
 					{
-						$('#existingSchoolEnd').append('N/A');
-					} else {
-						$('#existingSchoolEnd').append(resp[0].current_school_end_dt);
-					}
+						var school_end_year = existingSchoolEnd.substring(0,4);
+
+						var school_end_month = parseInt(existingSchoolEnd.substring(5,7),10);
+
+						var school_end_day = parseInt(existingSchoolEnd.substring(8),10);	
+
+						$('#new_schoolEndYear').val(school_end_year);
+						$('#new_schoolEndMonth').prop('selectedIndex',school_end_month);
+						$('#new_schoolEndDay').prop('selectedIndex',school_end_day);
+					} 
 				}
 		
 		});
@@ -355,13 +393,20 @@
 				data: updateRecord,
 				cache: false,
 				success: function(resp) {
-					alert(resp);
-					var url = "viewStudent.html?id="+student_id+"&hidden=N";
-					window.location = url;
+					if (resp == 'Record updated successfully') { 
+
+						$('#updSuccess').modal('toggle');
+					}
 				}
 			});
 			return false;
 				
+		});
+
+		$('#closeWindow').click(function() {
+			$('#updSuccess').modal('hide');
+			var url = "viewStudent.html?id="+student_id+"&hidden=N";
+			window.location = url;
 		});
 
 
@@ -381,3 +426,15 @@
 
 
 	});
+
+function selectBoxIndexFind(key,list) {
+	var index = 0;
+
+	while (index != list.length) {
+		if (key == list[index]) {
+			break;
+		}
+		index++;
+	}	
+	return index;
+}

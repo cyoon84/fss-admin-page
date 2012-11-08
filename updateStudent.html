@@ -6,9 +6,9 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <script src="http://code.jquery.com/jquery-1.8.0.js"></script>
 <script src="js/jquery.session.js"></script>
-<script src="js/bootstrap-modal.js"></script>
-<script src="js/bootstrap-dropdown.js"></script>
+<script src="js/bootstrap.js"></script>
 <script src="js/checklogin.js"></script>
+<script src="js/common_functions.js"></script>
 <script src="js/updateStudent.js"></script>
 <script src="js/jquery.maskedinput-1.3.js"></script>
 </head>
@@ -20,12 +20,28 @@
 			<h3>FSS Toronto</h3>
 		</div>
 		
-
+		<div id="logoffarea" style="float:right">
+			&nbsp;<a tabindex="-1" href="#" id="logout"><i class="icon-off"></i></a></li>
+		</div>
 		<div id="currentUserName" style="float:right">
 		
 		</div>
 
 </div>
+
+
+<div class="modal hide fade" id="updSuccess" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
+  <div class="modal-header">
+	 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+		<h3 id="myModalLabel3">Update student record</h3>
+	 </div>
+	<div class="modal-body" id="modal-body3">
+		Record Updated Successfully
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" id="closeWindow" aria-hidden="true">Go back to view</button>
+	</div>
+</div>	
 
 <div class="modal hide fade" id="plzlogin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
 	<div class="modal-header">
@@ -86,9 +102,6 @@
 		<tr>
 		<td> Gender </td>
 		<td> 
-			<div id="existingGender">
-			
-			</div><br>
 			<div id="newGender"> Select new gender<br>
 					<select id="genderSelect" class="span2" name="gender">
 						<option>Male</option>
@@ -100,7 +113,6 @@
 		<tr>
 		<td> Date of Birth</td>
 		<td>
-			<div id="existingDOB"></div><br>
 			<div id="newDOB"> Enter new date of birth  <br>
 				<select class="span2" id="new_dobMonth" name="dobMonth"></select>
 				<select class="span2" id="new_dobDay" name="dobDay"></select>
@@ -133,9 +145,6 @@
 		<tr>
 		<td> Date of Arrival</td>
 		<td> 
-			<div id="existingDOA">
-			</div>
-			<br>
 			<div id="newDOA"> Enter new date of arrival  <br>
 				<select class="span2" id="new_doaMonth" name="doaMonth"></select>
 				<select class="span2" id="new_doaDay" name="doaDay"></select>
@@ -146,10 +155,6 @@
 		<tr>
 		<td> Visa Type </td>
 		<td>
-			<div id="existingVisaType">
-
-			</div>
-			<br>
 			<div id="newvisatype" class="newValue">Select new visa type<br>
 				<select id="newVisaTypeVal" class="span2" name="newVisaType">
 					<option>Unknown</option>
@@ -167,8 +172,6 @@
 		<tr>
 		<td> Visa Issue Date</td>
 		<td> 
-			<div id="existingVisaIssue"></div>
-			<br>
 			<div id="newVisaIssueDT" class="newValue">Enter new visa issue date<br>
 					<select class="span2" id="new_visaIssueMonth" name="visaIssueMonth"></select>
 					<select class="span2" id="new_visaIssueDay" name="visaIssueDay"></select>
@@ -179,8 +182,6 @@
 		<tr>
 		<td> Visa Expiry Date</td>
 		<td> 
-			<div id="existingVisaExpiry"></div>
-			<br>
 			<div id="newVisaExpDT" class="newValue">Enter new visa expiry date<br>
 				<select class="span2" id="new_vedMonth" name="vedMonth"></select>
 				<select class="span2" id="new_vedDay" name="vedDay"></select>
@@ -193,10 +194,6 @@
 		<tr>
 		<td> How did you hear about us </td>
 		<td>
-			<div id="existingHowHearUs">
-
-			</div>
-			<br>
 			<div id="newHowHearUs" class="newValue">Select new value for 'How did you hear about us'<br>
 				<select id="newHowHearUsVal" class="span2" name="newHowHearUsType">
 					<option value=0>-------------</option>
@@ -237,8 +234,6 @@
 		<tr>
 		<td> Current School Start Date</td>
 		<td> 
-			<div id="existingSchoolStart"></div>
-			<br>
 			<div id="newSchoolStartDT" class="newValue">Enter new school start date<br>
 				<select class="span2" id="new_schoolStartMonth" name="schoolStartMonth"></select>
 				<select class="span2" id="new_schoolStartDay" name="schoolStartDay"></select>
@@ -249,8 +244,6 @@
 		<tr>
 		<td> Current School End Date</td>
 		<td> 
-			<div id="existingSchoolEnd"></div>
-			<br>
 			<div id="newSchoolEndDT" class="newValue">Enter new school end date<br>
 				<select class="span2" id="new_schoolEndMonth" name="schoolEndMonth"></select>
 				<select class="span2" id="new_schoolEndDay" name="schoolEndDay"></select>

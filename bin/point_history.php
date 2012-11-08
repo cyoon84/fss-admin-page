@@ -20,7 +20,7 @@
 		$result_out = array();
 		$point_history = array();
 
-		$query = "SELECT a.studentId, a.student_pt_index, a.point_index, b.point_type, b.name, b.point_value, a.trans_date FROM student_point a inner join fss_point_list b on a.point_index = b.pointList_index where a.studentId = '$studentId' order by a.trans_date desc";
+		$query = "SELECT a.studentId, a.student_pt_index, a.point_index, b.point_type, b.name, a.point_value, a.trans_date FROM student_point a inner join fss_point_list b on a.point_index = b.pointList_index where a.studentId = '$studentId' order by a.trans_date desc";
 		
 		$result = mysql_query($query, $con);
 	
@@ -155,8 +155,9 @@
 		$trans_date = $_POST['trans_date'];
 		$trans_val = $_POST['trans_val'];
 		$user_id = $_POST['user_id'];
+		$point_val = $_POST['point_val'];
 
-		$query2 ="INSERT INTO student_point (studentId, point_index, user_id, trans_date) VALUES ('$student_id', '$trans_val', '$user_id', '$trans_date')";
+		$query2 ="INSERT INTO student_point (studentId, point_index, point_value, user_id, trans_date) VALUES ('$student_id', '$trans_val', '$point_val', '$user_id', '$trans_date')";
 		$result2 = mysql_query($query2, $con);
 
 		if ($result2) {

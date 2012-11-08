@@ -6,12 +6,19 @@
 		
 	var status = '';
 
+	var pointValList = new Array();
+
+	var visitList = new Array();
+
+
 	$(function() {
 
 		$('#menuarea').load('menu.html');
 
 		var visitDateOpt = '';
 		var fssPTopt = '';
+
+
 
 		$('.error').hide();
 		$('#chooseDate').hide();
@@ -72,6 +79,7 @@
 		var reminder_count = 0;
 
 		var point_id = 0;
+
 		
 		var data_studentID = {"studentId": student_id, "is_hidden": is_hidden};
 		var new_reminder_date ='';
@@ -82,6 +90,7 @@
 		initializeDateSelector("#transDay", "#transMonth");
 		initializeDateSelector("#redDay", "#redMonth");
 		initializeDateSelector("#new_transDay", "#new_transMonth");
+		initializeDateSelector("#new_visitDay", "#new_visitMonth");
 		
 		if (is_hidden == 'Y')
 		{
@@ -123,37 +132,14 @@
 
 
 		//gets list of visit records from the database
-		$.ajax({
-				type:"GET",
-				url:"bin/get_visit_record.php",
-				dataType:"json",
-				cache: false,
-				data:data_studentID,
-				success: function(resp) {
-					if (resp.length > 0) {
-						$('#viewVisitRecord').append('<table class="table table-bordered" id="visitRecordTable"><tbody>');
-
-						for (i=0;i!=resp.length ;i++ )
-						{
-							var visitNum = i+1;
-							$('#visitRecordTable tbody').append('<tr><td rowspan="5" width="10%">'+visitNum+ '</td><td width="20%"> Visit Date </td><td>' + resp[i].visit_date+ '</td></tr>'
-							+'<tr><td> Visit Purpose</td><td>'+ resp[i].visit_purpose+ '</tr><tr><td> Notes<td>' + resp[i].visit_note + '</td></tr>'
-							+'<tr><td> Added by </td><td>'+ resp[i].user_id.toUpperCase()+ '</td></tr>' 
-							+'<tr><td colspan="2"><a class="btn btn-small btn-primary" href="editVisitRecord.html?visit_id='+resp[i].visit_index+'&student_id='+student_id+'">Edit / Delete this record</a> </td></tr>');
-						}
-		
-
-						$('#viewVisitRecord').append('</tbody></table>');
-					} else {
-						$('#viewVisitRecord').append('<center><h3>No visit record found for this student</h3></center>');
-					}
-				}
-		});
+		visitLoad(data_studentID);
 
 		reminderLoad(student_id);
 		reminder_old_Load(student_id);
 
-		pointList_load();
+		pointValList = 	pointList_load();
+
+		fillPointList(pointValList);
 
 		point_load(student_id); 
 
@@ -367,19 +353,47 @@
 
 
 		$('.fssPT').change(function() {
-			fssPTopt= $('input:radio[name=FSSpoint]:checked').val();
+			fssPTopt = $('input:radio[name=FSSpoint]:checked').val();
+			$('#pointValField').val('');
+			var selected = 0;
 			if (fssPTopt == 'addPT')
 			{
 				$('#addPTcat').show();
 				$('#redeemPTcat').hide();
+				$('#pointList').prop('selectedIndex',0);
+				var selected = $('#pointList').val()
+
+
 			} else {
+				$('#redeemList').prop('selectedIndex',0);
 				$('#addPTcat').hide();
 				$('#redeemPTcat').show();
+				var selected = $('#redeemList').val();
+			}
+			var i = 0;
+			while (i != pointValList.length) {
+				if (selected == pointValList[i].pointList_index) {
+					$('#pointValField').val(pointValList[i].point_value);
+					break;
+				}
+				i++;
 			}
 
 		});
 
 
+		$('.pointCategoryList').change(function() {
+			var selected = $(this).val();
+			var i = 0;
+			while (i != pointValList.length) {
+				if (selected == pointValList[i].pointList_index) {
+					$('#pointValField').val(pointValList[i].point_value);
+					break;
+				}
+				i++;
+			}
+
+		})
 
 		$('#toActive').click(function() {
 			$('#makeActive').modal('toggle');
@@ -591,6 +605,7 @@
 			$('#redDay').prop('selectedIndex', 0);
 			$('#redYear').val('');
 			$('#pointList').prop('selectedIndex',0);
+			$('#redeemList').prop('selectedIndex',0);
 			$('#addPTcat').hide();
 			$('#redeemPTcat').hide();
 			$('#fssPT').modal('toggle');
@@ -640,8 +655,9 @@
 				}
 				
 			}
+			var point_val = $('#pointValField').val();
 
-			var point_trans = {"action" : "add_new_pt", "student_id": student_id, "trans_date": trans_date, "trans_val": trans_val, "user_id": current_userid};
+			var point_trans = {"action" : "add_new_pt", "student_id": student_id, "trans_date": trans_date, "trans_val": trans_val, "point_val": point_val, "user_id": current_userid};
 			
 			$.ajax({
 				type:"POST",
@@ -732,8 +748,115 @@
 
 		$('#pointHistory tbody').on('click', '.delPointHistory', function() {
 			point_id = this.id;
+
 			$('#delFssPT').modal('toggle');
 
+		});
+
+		$('#visitRecordTable tbody').on('click','.editVisitBtn', function() {
+			visit_id = this.id;
+
+			var index = 0;
+			while  (index != visitList.length) {
+				if (visit_id == visitList[index].visit_index) {
+					break;
+				}
+				index++;
+			}
+
+			var visit_date = visitList[index].visit_date;
+
+			var visit_year = visit_date.substring(0,4);
+
+			var visit_month = visit_date.substring(5,7);
+
+			var visit_day = visit_date.substring(8);
+
+			$('#new_visitYear').val(visit_year);
+			$('#new_visitMonth').prop('selectedIndex',visit_month);
+			$('#new_visitDay').prop('selectedIndex',visit_day);
+
+			$('#newVisitPurpose').val(visitList[index].visit_purpose);
+
+			var visit_note_format = visitList[index].visit_note.replace(/<br\s*[\/]?>/gi, "\n");
+			$('#newVisitNote').val(visit_note_format);
+
+			$('#editVisit').modal('toggle');
+		});
+
+		$('#visitRecordTable tbody').on('click','.delVisitBtn', function() {
+			visit_id = this.id;
+
+			$('#delVisit').modal('toggle');
+		});
+
+		$('#updVisit').click(function() {
+			var visit_year = $('#new_visitYear').val();
+			var visit_month = $('#new_visitMonth').val();
+			var visit_day = $('#new_visitDay').val();
+			var new_visit_date = '';
+
+			if (visit_year == '') {
+				$('label#new_visitYear_error').show();
+				$('#new_visitYear').focus();
+				return false;
+			} else {
+				if (isNaN(visit_year) || visit_year.length != 4) {
+					$('label#new_visitYear_error2').show();
+					$('#new_visitYear').focus();
+					return false;
+				} 
+
+				new_visit_date = visit_year+"-"+visit_month+"-"+visit_day;
+
+				if (new_visit_date.length != 10) {
+					$('label#new_visitYear_error3').show();
+					$('#new_visitDay').focus();
+					return false;	
+				}
+			}
+
+			var new_purpose = $('#newVisitPurpose').val();
+
+			var new_note = $('#newVisitNote').val().replace(/\r\n|\r|\n/g,"<br />");
+
+			var dataVisitUpd = {"action": "edit", "visit_index": visit_id, "visit_date": new_visit_date, "visit_purpose": new_purpose, "visit_note": new_note, "user_id": current_userid};
+			
+			$.ajax({
+				type: "POST",
+				url: "bin/edit_visit.php",
+				cache: false,
+				data:dataVisitUpd,
+				success: function(resp) {
+					if (resp == 'update success') {
+						$('#editVisit').modal('hide');
+						visitLoad(data_studentID);
+					} else {
+						alert(resp);
+					}
+				}
+			});
+
+		});
+
+		$('#delVisitConfirm').click(function() {
+
+			var dataVisitDel = {"action" : "del", "visit_index": visit_id};
+
+			$.ajax({
+				type: "POST",
+				url: "bin/edit_visit.php",
+				cache: false,
+				data:dataVisitDel,
+				success: function(resp) {
+					if (resp == 'delete success') {
+						$('#delVisit').modal('hide');
+						visitLoad(data_studentID);
+					} else {
+						alert(resp);
+					}
+				}
+			});
 		});
 	
 		$('#pointHistory tbody').on('click','.editPointHistory', function () {
@@ -763,6 +886,7 @@
 			$('#editFssPT').modal('toggle');
 
 		});
+
 
 
 	});
@@ -799,6 +923,35 @@
 		$('#viewTable_user_id').append(resp[0].user_id.toUpperCase());
 
 	};
+
+	function visitLoad(data_studentID) {
+		$('#visitRecordTable tbody').empty();
+		$.ajax({
+			type:"GET",
+			url:"bin/get_visit_record.php",
+			dataType:"json",
+			cache: false,
+			async: false,
+			data:data_studentID,
+			success: function(resp) {
+				visitList = resp;
+			}
+		});
+
+		if (visitList.length > 0 ) {
+
+			for (var i = 0; i != visitList.length; i++) {
+
+				var visitNum = i+1;
+				$('#visitRecordTable tbody').append('<tr><td rowspan="5" width="10%">'+visitNum+ '</td><td width="20%"> Visit Date </td><td>' + visitList[i].visit_date+ '</td></tr>'
+				+'<tr><td> Visit Purpose</td><td>'+ visitList[i].visit_purpose+ '</tr><tr><td> Notes<td>' + visitList[i].visit_note + '</td></tr>'
+				+'<tr><td> Added by </td><td>'+ visitList[i].user_id.toUpperCase()+ '</td></tr>' 
+				+'<tr><td colspan="2"><button class="editVisitBtn btn btn-primary" id="'+visitList[i].visit_index+'">Edit</button> <button class="delVisitBtn btn btn-danger" id="'+visitList[i].visit_index+'">Delete</button></td></tr>');		
+			}
+		} else {
+			$('#visitRecordTable tbody').append('<tr><td colspan="3"><center><h3>No visit record found for this student</h3></center></td></tr>');
+		}
+	}
 
 
 	function reminderLoad(student_id) {
@@ -863,27 +1016,20 @@
 	}
 
 	function pointList_load() {
+		var pointList = null;
 		$.ajax({
 			type:"GET",
 			url:"bin/point_history.php",
 			dataType:"json",
 			cache:false,
+			async:false,
 			data:{"action": "getPointLists"},
 			success:function(resp) {
-				for (var i =0; i!= resp.length; i++) {
-					var point_type = resp[i].point_type;
+				pointList = resp;
 
-					if (point_type == 'accumulate') {
-						$('#pointList').append('<option value='+resp[i].pointList_index+'>'+resp[i].name+'</option>');	
-					} 				
-
-					if (point_type == 'deduct') {
-						$('#redeemList').append('<option value='+resp[i].pointList_index+'>'+resp[i].name+'</option>');	
-					}	
-					$('#new_pointList').append('<option value='+resp[i].pointList_index+'>'+resp[i].name+'</option>');
-				}
 			}
 		});
+		return pointList;
 	}
 
 	function point_load(student_id) {
@@ -1036,5 +1182,23 @@
 				
 		return false;
 
+	}
+
+	function fillPointList(pointValList) {
+		for (var i =0; i!= pointValList.length; i++) {
+
+			var point_type = pointValList[i].point_type;
+
+			if (point_type == 'accumulate') {
+				$('#pointList').append('<option value='+pointValList[i].pointList_index+'>'+pointValList[i].name+' : '+pointValList[i].point_value+'</option>');	
+			} 				
+
+			if (point_type == 'deduct') {
+				$('#redeemList').append('<option value='+pointValList[i].pointList_index+'>'+pointValList[i].name+' : '+pointValList[i].point_value+'</option>');	
+			}	
+			
+			$('#new_pointList').append('<option value='+pointValList[i].pointList_index+'>'+pointValList[i].name+' : '+pointValList[i].point_value+'</option>');
+					
+		}
 	}
 

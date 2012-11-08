@@ -34,7 +34,14 @@
 	if (!mysql_query($query, $con)) {
 		die('Error5: ' . mysql_error());
 	}
-	echo "Record deleted successfully";
+
+	$query = "DELETE from student_point where studentId = '$id'";
+
+	if (!mysql_query($query, $con)) {
+		die('Error6: ' . mysql_error());
+	}
+
+	echo "Deleted successfully";
 
 	mysql_close($con);
 ?>

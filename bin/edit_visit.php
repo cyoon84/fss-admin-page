@@ -2,28 +2,41 @@
 
 	include 'connection.php';
 	
+	$action = $_POST['action'];
 
-	$visit_record_id = $_POST['visit_record_id'];
-	$studentId = $_POST['studentId'];
-	$visit_date = $_POST['date'];
-	$visit_purpose = $_POST['purpose'];
-	$visit_note = $_POST['note'];
+	if ($action == 'edit') {
+		$visit_index = $_POST['visit_index'];
+		$visit_date = $_POST['visit_date'];
+		$visit_purpose = $_POST['visit_purpose'];
+		$visit_note = $_POST['visit_note'];
+		$user_id = $_POST['user_id'];
 
-	$query="INSERT INTO studentvisit (studentId
-									, visit_date
-									, visit_purpose
-									, visit_note) 
-									VALUES 
-									('$studentId'
-									,'$visit_date'
-									,'$visit_purpose'
-									,'$visit_note')";
+		$query="update studentvisit 
+					set visit_date = '$visit_date'
+						, visit_purpose = '$visit_purpose'
+						, visit_note = '$visit_note'
+						, user_id = '$user_id' 
+					where visit_index = '$visit_index'";
 
-	if (!mysql_query($query, $con)) {
-		die('Error: ' . mysql_error());
+		if (!mysql_query($query, $con)) {
+			die('Error: ' . mysql_error());
+		} else {
+			echo "update success";
+		}
+
 	}
-	
-	echo "Record added successfully";
+
+	if ($action == 'del') {
+		$visit_index = $_POST['visit_index'];
+
+		$query = "DELETE from studentvisit where visit_index = '$visit_index'";
+
+		if (!mysql_query($query, $con)) {
+			die('Error: ' . mysql_error());
+		} else {
+			echo "delete success";
+		}
+	}
 	
 
 	mysql_close($con);

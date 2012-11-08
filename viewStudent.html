@@ -11,8 +11,7 @@
 <script src="js/bootstrap-dropdown.js"></script>
 <script src="js/jquery.json-2.3.js"></script>
 <script src="js/jquery.session.js"></script>
-<script src="js/bootstrap-modal.js"></script>
-<script src="js/bootstrap-collapse.js"></script>
+<script src="js/bootstrap.js"></script>
 <script src="js/common_functions.js"></script>
 <script src="js/checklogin.js"></script>
 <script src="js/viewStudent.js"></script>
@@ -69,13 +68,17 @@
 		</tr>
 		<tr id="addPTcat">
 		<td>Point category:
-		<td> <select id="pointList" name="pointList"></select> 
+		<td> <select class="pointCategoryList" id="pointList" name="pointList"></select> 
 			
 		</tr>
 		<tr id="redeemPTcat">
 		<td>Point category:
-		<td> <select id="redeemList" name="redeemList"></select> 
+		<td> <select class="pointCategoryList" id="redeemList" name="redeemList"></select> 
 			
+		</tr>
+		<tr>
+		<td>Point value:
+		<td> <input id="pointValField" style="width:100px">
 		</tr>
 	</table>
 
@@ -133,14 +136,63 @@
 	</div>
 </div>
 
+<div class="modal hide fade" id="editVisit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel8" aria-hidden="true">
+	<div class="modal-header">
+		<h3 id="myModalLabel8">Edit Visit Record</h3>
+	</div>
+	<div class="modal-body" id="modal-body8">
+	<table class="table">
+		<tr>
+		<td style="width:25%">Date <br>(required)
+		<td>
 
+			<div>
+				Select new date:<Br>
+				<select id="new_visitMonth" name="new_visitMonth" style="width:100px"></select>
+				<select id="new_visitDay" name="new_visitDay" style="width:70px"></select>
+				<input  id="new_visitYear" placeholder="year (yyyy)" name="new_visitYear" style="width:100px">
+				<label class="error" for="new_visitYear" id="new_visitYear_error">This field is required </label>
+				<label class="error" for="new_visitYear" id="new_visitYear_error2">Please enter proper value for year (e.g. 2012) </label>
+				<label class="error" for="new_visitYear" id="new_visitYear_error3">Please select all fields - day, month and enter year</label>
+			</div>
+		</tr>
+		<tr>
+		<td>Visit Purpose
+		<td> <input type="text" id="newVisitPurpose" class="span4">
+			
+		</tr>
+		<tr>
+		<td>Note
+		<td><textarea id="newVisitNote" rows="6" class="span4"> </textarea>
+		</tr>
+	</table>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" id="updVisit">Save</button>
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+</div>
 
+<div class="modal hide fade" id="delVisit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel8" aria-hidden="true">
+	<div class="modal-header">
+		<h3 id="myModalLabel8">Delete Visit Record</h3>
+	</div>
+	<div class="modal-body" id="modal-body8">
+		Delete this visit record?
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-danger" id="delVisitConfirm">Delete</button>
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+</div>
 <div class="span12" style="margin-top:10px" id="top-header">
 		<div style="float:left">
 			<h3>FSS Toronto</h3>
 		</div>
 		
-
+		<div id="logoffarea" style="float:right">
+			&nbsp;<a tabindex="-1" href="#" id="logout"><i class="icon-off"></i></a></li>
+		</div>
 		<div id="currentUserName" style="float:right">
 		
 		</div>
@@ -548,7 +600,10 @@
 				</div>
 				<div id="collapseFive" class="accordion-body collapse in">
 					<div class="accordion-inner" id="viewVisitRecord">
-
+						<table class="table table-bordered" id="visitRecordTable">
+							<tbody>
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</div>
