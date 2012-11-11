@@ -155,6 +155,19 @@ $(function() {
 				}
 			})
 		});
+
+	$('.scrolltotop').click(function() {
+		$('html, body').animate({scrollTop: $('#top').offset().top }, 'fast');
+	});
+
+
+	$('#goAdd').click(function() {
+		$('html, body').animate({scrollTop: $('#add').offset().top }, 'fast');	
+	});
+
+	$('#goRedeem').click(function() {
+		$('html, body').animate({scrollTop: $('#redeem').offset().top }, 'fast');	
+	});
 });
 
 function pointlistLoad () {

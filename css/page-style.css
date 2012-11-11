@@ -35,7 +35,7 @@ url('../fonts/helveticaneueltstd-roman-webfont.eot') format('embedded-opentype')
 
 .login-logo-img {
 	width:400px;
-	height:92px;
+	height:93px;
 	
 }
 
@@ -91,4 +91,8 @@ url('../fonts/helveticaneueltstd-roman-webfont.eot') format('embedded-opentype')
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
   -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+#otherSchoolArea {
+	display:none;
 }

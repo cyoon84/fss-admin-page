@@ -82,7 +82,7 @@
 		<td style="width:25%">FSS Student ID </td>
 		<td> <span id='fssStudentID'> </span>		
 		<tr>
-		<td style="width:25%"> Name (Korean)
+		<td style="width:25%"> Name (Korean) *
 		<br>
 		</td>
 		<td>
@@ -91,7 +91,7 @@
 		</td>
 		</tr>
 		<tr>
-		<td style="width:25%"> Name (English)
+		<td style="width:25%"> Name (English) *
 		<td>
 			<div id="newNameEng" class="newValue">Enter new name <br>
 			Last Name: <input id="newLNameEngText" class="span2" type="text">
@@ -117,6 +117,9 @@
 				<select class="span2" id="new_dobMonth" name="dobMonth"></select>
 				<select class="span2" id="new_dobDay" name="dobDay"></select>
 				<input class="span2" id="new_dobYear" placeholder="year (yyyy)" name="dobYear">
+				<label class="error" for="new_dobYear" id="dobYear_error"> Please enter in proper format (e.g. 2012) </label>
+				<label class="error" for="new_dobYear" id="dobDate_error"> Please choose both month, day and enter year </label>
+				<label class="error" for="new_dobMonth" id="dobDate_error2"> Please choose both month and day at least </label>
 			</div>
 		</td>
 		</tr>

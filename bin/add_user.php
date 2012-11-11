@@ -30,7 +30,7 @@
 
 	$korean_agency = $_POST['korean_agency'];
 
-	$schoolName = $_POST['current_school'];
+	$school_index = $_POST['school_index'];
 
 	$programName = $_POST['current_program'];
 
@@ -66,6 +66,27 @@
 		$unique_id = $unique_id.$checkUniqueId;
 	}
 
+	if ($school_index == 'Other') {
+		$school_type = $_POST['other_school_type'];
+		$school_name = $_POST['other_school_name'];
+		$query2 = "INSERT INTO school_list (school_name, school_type, user_id) values ('$school_name', '$school_type', '$user_id')";
+
+		if (!mysql_query($query2, $con)) {
+			die('Error2: ' . mysql_error());
+		} else {
+			$query3 = "SELECT school_index from school_list where school_type = '$school_type' and school_name = '$school_name'";
+			$result = mysql_query($query3, $con);
+
+			if (!$result) {
+				die('Error3: '.mysql_error());
+			}
+
+			$row = mysql_fetch_array($result);
+
+			$school_index = $row['school_index'];
+		}
+	}
+
 
 	$query="INSERT INTO studentinfo (studentId
 									, unique_id
@@ -85,6 +106,7 @@
 									, how_hear_us
 									, referred_by
 									, korea_agency
+									, school_index
 									, current_school
 									, current_program
 									, current_school_strt_dt
@@ -111,7 +133,8 @@
 									,'$source_to_FSS'
 									,'$referrer_name'
 									,'$korean_agency'
-									,'$schoolName'
+									,'$school_index'
+									,''
 									,'$programName'
 									,'$school_strt_dt'
 									,'$school_end_dt'
@@ -125,6 +148,7 @@
 
 
 	$query="INSERT INTO student_prev_school (studentId
+									,school_index
 									,prev_school_name
 									,prev_school_program
 									,prev_school_strt_dt
@@ -132,22 +156,43 @@
 									,user_id)
 									VALUES ";
 
-	$filledCount = 0;
-	for ($i=0; $i!= 5; $i++) {
-		$prev_school_name = $prev_schools[$i]['prev_school_name'];
+	$max = count($prev_schools);
+	$filledCount_prev_school = 0;
+	for ($i=0; $i!= $max; $i++) {
+		$school_index = $prev_schools[$i]['school_index']; //reference to school_list table
 		$prev_school_pgm = $prev_schools[$i]['prev_school_prgm'];
 		$prev_school_strt = $prev_schools[$i]['prev_school_strt_dt'];
 		$prev_school_end = $prev_schools[$i]['prev_school_end_dt'];
-	
-		if ($prev_school_name != '') {
-			$query = $query."('$new_id','$prev_school_name','$prev_school_pgm','$prev_school_strt','$prev_school_end','$user_id'),";
-			$filledCount ++;
-		}
 
+		if ($school_index == 'Other') {
+			$school_type = $prev_schools[$i]['prev_other_school_type'];
+			$school_name = $prev_schools[$i]['prev_other_school_name'];
+			$query2 = "INSERT INTO school_list (school_name, school_type, user_id) values ('$school_name', '$school_type', '$user_id')";
+
+			if (!mysql_query($query2, $con)) {
+				die('Error2: ' . mysql_error());
+			} else {
+				$query3 = "SELECT school_index from school_list where school_type = '$school_type' and school_name = '$school_name'";
+				$result = mysql_query($query3, $con);
+
+				if (!$result) {
+					die('Error3: '.mysql_error());
+				}
+
+				$row = mysql_fetch_array($result);
+
+				$school_index = $row['school_index'];
+			}			
+		}
+		
+		if ($school_index != 0) {
+			$query = $query."('$new_id','$school_index','not needed','$prev_school_pgm','$prev_school_strt','$prev_school_end','$user_id'),";
+			$filledCount_prev_school++; 
+		}
 	}
 	$query = substr($query,0,-1);
 
-	if ($filledCount > 0) {
+	if ($filledCount_prev_school  > 0) {
 		if (!mysql_query($query, $con)) {
 			die('Error2: ' . mysql_error());
 		} 

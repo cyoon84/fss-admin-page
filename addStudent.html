@@ -7,6 +7,7 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <script src="http://code.jquery.com/jquery-1.8.0.js"></script>
 <script src="js/jquery.maskedinput-1.3.js"></script>
+<script src="js/common_functions.js"></script>
 <script src="js/jquery.session.js"></script>
 <script src="js/bootstrap.js"></script>
 <script src="js/checklogin.js"></script>
@@ -129,13 +130,14 @@
 					</td>
 					</tr>
 					<tr>
-					<td> Date of Birth</td>
+					<td> Date of Birth<br>(at least select month / day)</td>
 					<td>
 						<select class="span2" id="dobMonth" name="dobMonth"></select>
 						<select class="span2" id="dobDay" name="dobDay"></select>
 						<input class="span2" id="dobYear" placeholder="year (yyyy)" name="dobYear">
 						<label class="error" for="dobYear" id="dobYear_error"> Please enter in proper format (e.g. 2012) </label>
 						<label class="error" for="dobYear" id="dobDate_error"> Please choose both month, day and enter year </label>
+						<label class="error" for="dobMonth" id="dobDate_error2"> Please choose both month and day at least </label>
 					</td>
 					</tr>
 					<tr>
@@ -219,7 +221,15 @@
 					</tr>
 					<tr>
 					<td> Current School Name</td>
-					<td ><input type="text" id="schoolName" name="schoolName"> </td>
+					<td ><select id="schoolCategory" class="span3">
+						</select>
+						<select id="schoolList" class="span4">
+							<option value = 0>-----------------------------</option>
+						</select>
+						<div id="otherSchoolArea">
+						Please enter school name <input type="text" id="otherSchoolText" class="span3">
+						</div>
+					 </td>
 					</tr>
 					<tr>
 					<td> Current School Program</td>

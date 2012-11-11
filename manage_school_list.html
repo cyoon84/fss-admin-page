@@ -16,7 +16,7 @@
 	<script src="js/checklogin.js"></script>
 	<script src="js/common_functions.js"></script>
 	<script src="js/date.js"></script>
-	<script src="js/manage_point_list.js"></script>
+	<script src="js/manage_school_list.js"></script>
  </head>
 
  <body>
@@ -62,72 +62,82 @@
 </div>	
 
 
-<div class="modal hide fade" id="delFssPTCateory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel5" aria-hidden="true">
+<div class="modal hide fade" id="delSchool" tabindex="-1" role="dialog" aria-labelledby="myModalLabel5" aria-hidden="true">
 	<div class="modal-header">
-		<h3 id="myModalLabel5">Delete FSS Point Category</h3>
+		<h3 id="myModalLabel5">Delete School</h3>
 	</div>
 	<div class="modal-body" id="modal-body5">
-		Delete this point category?
+		Delete this school?
 	</div>
 	<div class="modal-footer">
-		<button class="btn btn-danger" id="delPointCat">Delete</button>
+		<button class="btn btn-danger" id="delSchoolConfirm">Delete</button>
 		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
 	</div>
 </div>
 
-<div class="modal hide fade" id="editFssPTCateory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel6" aria-hidden="true">
+<div class="modal hide fade" id="editSchool" tabindex="-1" role="dialog" aria-labelledby="myModalLabel6" aria-hidden="true">
 	<div class="modal-header">
-		<h3 id="myModalLabel6">Edit FSS Point Category</h3>
+		<h3 id="myModalLabel6">Edit School</h3>
 	</div>
 	<div class="modal-body" id="modal-body6">
-		Edit this point category
-		<table class="table" id="editCatTable">
+		Edit this school
+		<table class="table" id="editSchoolTable">
 		<thead>
 			<th style="width:55%"> Name </th>
-			<th style="width:20%"> Category </th>
-			<th style="width:25%">Point</th>
+			<th style="width:45%"> Category </th>
 		</thead>
 		<tbody>
+			<tr>
 			<td><input type="text" id="editName" style="width:100%">
 				<label class="error" for="editName" id="editName_error">This field is required </label></td>
-			<td><select id="editCat" style="width:80px"><option value='accumulate'>Add </option> <option value='deduct'>Redeem</option></select></td>
-			<td><input type="text" id="editPT" style="width:100px">
-				<label class="error" for="editPT" id="editPT_error">This field is required </label>
-				<label class="error" for="editPT" id="editPT_error2">Enter numeric value </label></td>
+			<td><select id="editCat" style="width:100%">
+				<option value='LANGUAGE_SCHOOL'>Language School </option> 
+				<option value='UNIV/COLLEGE'>University / College</option>
+				<option value='CREDIT_SCHOOL'>Credit School</option>
+				<option value='HIGH_SCHOOL'>High School</option>
+			</select></td>
+		</tr>
 		</tbody>
 		</table>
 		<div class="modal-footer">
-			<button class="btn btn-primary" id="editPointCat">Edit</button>
+			<button class="btn btn-primary" id="editSchoolConfirm">Edit</button>
 			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
 		</div>
 	</div>
 </div>
 
-<div class="modal hide fade" id="newFssPTCateory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel7" aria-hidden="true">
+<div class="modal hide fade" id="newSchoolModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel7" aria-hidden="true">
 	<div class="modal-header">
-		<h3 id="myModalLabel7">Add a new FSS Point Category</h3>
+		<h3 id="myModalLabel7">Add a new school</h3>
 	</div>
+
+
 	<div class="modal-body" id="modal-body7">
-		Add a new point category
+		Add a new school
 		<table class="table" id="newCatTable">
 		<thead>
 			<th style="width:55%"> Name </th>
-			<th style="width:20%"> Category </th>
-			<th style="width:25%">Point</th>
+			<th style="width:45%"> Category </th>
+			
 		</thead>
 		<tbody>
-			<td><input type="text" id="newName" style="width:100%">
-				<label class="error" for="newName" id="newName_error">This field is required </label></td>
-			<td><select id="newCat" style="width:80px"><option value='accumulate'>Add </option> <option value='deduct'>Redeem</option></select></td>
-			<td><input type="text" id="newPT" style="width:100px">
-				<label class="error" for="newPT" id="newPT_error">This field is required </label>
-				<label class="error" for="newPT" id="newPT_error2">Enter numeric value </label></td>
+			<tr>
+			<td><input type="text" id="newSchool" style="width:100%">
+				<label class="error" for="newSchool" id="newSchoolName_error">This field is required </label></td>
+			<td><select id="newCat" style="width:100%">
+				<option value='LANGUAGE_SCHOOL'>Language School  </option> 
+				<option value='UNIV/COLLEGE'>University / College </option>
+				<option value='CREDIT_SCHOOL'>Credit School </option>
+				<option value='HIGH_SCHOOL'>High School </option>
+			</select>
+		</td>
+		</tr>
 		</tbody>
 		</table>
 
 	</div>
 	<div class="modal-footer">
-		<button class="btn btn-primary" id="newPointCat">Save</button>
+		<button class="btn btn-primary" id="newSchoolSave">Save</button>
 		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
 	</div>
 </div>
@@ -137,19 +147,25 @@
 		<div class="span3" style="margin-top:10px" id="menuarea">
 		</div>
 		<div class="span9" style="margin-top:10px" id="top">
-			<h3> Manage FSS Point List</h3>
+			<h3> Manage FSS School List</h3>
 			<br>
 			<div class="navbar">
 				<div class="navbar-inner">
 					<ul class="nav">
 						<li>
-							<a href="#" id="addNewCat">Add a new point category</a>
+							<a href="#" id="addNewSchool">Add a new school</a>
 						</li>
 						<li >
-							<a href="#" id="goAdd">Add point category</a>
+							<a href="#" id="goLangSch">Language School</a>
 						</li>
 						<li>
-							<a href="#" id="goRedeem">Redeem point category</a>	
+							<a href="#" id="goUniCollege">University / College</a>	
+						</li>
+						<li>
+							<a href="#" id="goHS">High School</a>
+						</li>
+						<li>
+							<a href="#" id="goCreditSch">Credit School</a>
 						</li>
 					</ul>
 
@@ -157,19 +173,20 @@
 
 			</div>
 
-			<div class="span9 well-nobgcolor" style="margin-left:0px" id="add">
+			<div class="span9 well-nobgcolor" style="margin-left:0px" id="lang">
+
 				<div class="titlearea">
-					<div class="titleheader" style="float:left"><h4>Add point category </h4>
+					<div class="titleheader" style="float:left"><h4>Language School </h4>
 					</div>
 					<div class="scrolltoparea" style="float:right">
 						<a href="#" class="scrolltotop">Scroll to top</a>
 					</div>
 				</div>
-				<table class="category table" id="addCat">
+
+				<table class="category table" id="langSch">
 					<thead>
 					<tr>
-						<th style="width:60%"> Name </th>
-						<th style="width:20%"> Point Value </th>
+						<th style="width:80%"> Name </th>
 						<th style="width:20%"> Edit / Delete </th>
 					</tr>
 					</thead>
@@ -179,19 +196,38 @@
 				</table>  
 			</div>
 
-			<div class="span9 well-nobgcolor" style="margin-left:0px" id="redeem">
+			<div class="span9 well-nobgcolor" style="margin-left:0px" id="uni">
 				<div class="titlearea">
-					<div class="titleheader" style="float:left"><h4>Redeem point category </h4>
+					<div class="titleheader" style="float:left"><h4>University / College </h4>
 					</div>
 					<div class="scrolltoparea" style="float:right">
 						<a href="#" class="scrolltotop">Scroll to top</a>
 					</div>
 				</div>
-				<table class="category table" id="redeemCat">
+				<table class="category table" id="unicollege">
 					<thead>
 					<tr>
-						<th style="width:60%"> Name </th>
-						<th style="width:20%"> Point Value </th>
+						<th style="width:80%"> Name </th>
+						<th style="width:20%"> Edit / Delete </th>
+					</tr>
+					</thead>
+					<tbody>
+
+					</tbody>
+				</table>   
+			</div>
+			<div class="span9 well-nobgcolor" style="margin-left:0px" id="credit">
+				<div class="titlearea">
+					<div class="titleheader" style="float:left"><h4>Credit School </h4>
+					</div>
+					<div class="scrolltoparea" style="float:right">
+						<a href="#" class="scrolltotop">Scroll to top</a>
+					</div>
+				</div>
+				<table class="category table" id="creditschool">
+					<thead>
+					<tr>
+						<th style="width:80%"> Name </th>
 						<th style="width:20%"> Edit / Delete </th>
 					</tr>
 					</thead>
@@ -200,7 +236,27 @@
 					</tbody>
 				</table>  
 			</div>
+			<div class="span9 well-nobgcolor" style="margin-left:0px" id ="hs">
+				<div class="titlearea">
+					<div class="titleheader" style="float:left"><h4>High School </h4>
+					</div>
+					<div class="scrolltoparea" style="float:right">
+						<a href="#" class="scrolltotop">Scroll to top</a>
+					</div>
+				</div>
+				<table class="category table" id="highschool">
+					<thead>
+					<tr>
+						<th style="width:80%"> Name </th>
+						<th style="width:20%"> Edit / Delete </th>
+					</tr>
+					</thead>
+					<tbody>
 
+					</tbody>
+
+				</table>
+			</div>
 		</div>
 	</div>
 </div>

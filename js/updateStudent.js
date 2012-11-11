@@ -6,6 +6,8 @@
 	$(function() {
 		//function to get parameter (id #) from the url
 
+
+		$('.error').hide();
 		var current_userid = $.session.get('session_userid');
 
 		$('#menuarea').load('menu.html');
@@ -22,7 +24,7 @@
 
 		var visaList = new Array("Unknown","Study","Working Holiday","Visitor","Co-op","Work Permit");
 
-		var howHearUsList = new Array("캐스모","한국 협력업체","Walk in","Referral");
+		var howHearUsList = new Array("0", "캐스모","한국 협력업체","Walk in","Referral");
 
 		var genderChange = false;
 		var existingGender = '';
@@ -79,7 +81,7 @@
 
 					existingDOB = resp[0].birthdate;
 
-					if (existingDOB != '') {
+					if (existingDOB.length == 10) {
 						var dob_year = existingDOB.substring(0,4);
 
 						var dob_month = parseInt(existingDOB.substring(5,7),10);
@@ -89,6 +91,14 @@
 						$('#new_dobYear').val(dob_year);
 						$('#new_dobMonth').prop('selectedIndex',dob_month);
 						$('#new_dobDay').prop('selectedIndex',dob_day);
+					} else {
+						if (existingDOB.length == 5) {
+
+							var existing_dobMonth = existingDOB.substring(0,2);
+							var existing_dobDay = existingDOB.substring(3);
+							$('#new_dobMonth').prop('selectedIndex',existing_dobMonth);
+							$('#new_dobDay').prop('selectedIndex',existing_dobDay);
+						}
 					}
 
 					$('#newEmailText').val(resp[0].email);
@@ -156,7 +166,7 @@
 
 					if (existingHowHearUs != '') {
 
-						var howHearUsIndex = parseInt(selectBoxIndexFind(existingHowHearUs,howHearUsList),10)+1;
+						var howHearUsIndex = selectBoxIndexFind(existingHowHearUs,howHearUsList);
 
 						$('#newHowHearUsVal').prop('selectedIndex',howHearUsIndex);
 
@@ -228,6 +238,8 @@
 
 		//when 'update' button is clicked
 		$('#updButton').click(function() {
+			$('.error').hide();
+
 			var new_korean_name = $('#newNameKorText').val();
 			var new_eng_first_name = $('#newFNameEngText').val().toUpperCase();
 			var new_eng_last_name = $('#newLNameEngText').val().toUpperCase();
@@ -245,36 +257,14 @@
 
 			var new_referrer_name = $('#referrerNameText_new').val();
 
-			if (visaTypeChange)
-			{
-				var new_visa_type = $('#newVisaTypeVal').val();
-			} else {
-				var new_visa_type = existingVisaType;
+			var new_visa_type = $('#newVisaTypeVal').val();
 			
-			}
+			var new_gender = $('#genderSelect').val();
 			
-			if (genderChange)
-			{
-				var new_gender = $('#genderSelect').val();
-			} else {
-				var new_gender = existingGender;
-			}
+			var new_how_hear_us = $('#newHowHearUsVal').val();
 
-			if (howHearUsChange || existingHowHearUs == '')
-			{
-				var new_how_hear_us = $('#newHowHearUsVal').val();
-
-				if (new_how_hear_us == 0)
-				{
-					var new_how_hear_us = existingHowHearUs;
-				}
-			} else {
-				var new_how_hear_us = existingHowHearUs;
-
-
-			}
-
-			if (existingHowHearUs == 'Referral' && new_how_hear_us != 'Referral')
+			
+			if (new_how_hear_us != 'Referral')
 			{
 				new_referrer_name = '';
 			}
@@ -317,12 +307,33 @@
 			var new_visa_issue_date = '';
 			var new_korea_agency = $('#newKoreaAgencyText').val();
 
-			//concatenate year / month / day to create date string (YYYY-MM-DD)
-			if (dobYear != '')
+			//concatenate year / month / day to create date string (YYYY-MM-DD) or (MM-DD)
+			if (dobYear != "")
 			{
-				new_date_of_birth = dobYear +"-"+dobMonth+"-"+dobDay;
-			}
+				if (dobYear.length != 4 || isNaN(dobYear)) {
+					$('label#dobYear_error').show();
+					$('input#dobYear').focus();
+					return false;						
+				} else {
+					new_date_of_birth = dobYear +"-"+dobMonth+"-"+dobDay; 
 
+					if (new_date_of_birth.length != 10) {
+						$('label#dobDate_error').show();
+						$('#dobMonth').focus();
+						return false;
+					}
+				}
+			} else {
+				if (((dobMonth == 0 && dobDay != 0) || (dobMonth != 0 && dobDay == 0))) {
+					$('label#dobDate_error2').show();
+					$('#dobMonth').focus();
+					return false;
+				} else {
+					if (dobMonth != 0 && dobDay != 0) {
+						new_date_of_birth= dobMonth+"-"+dobDay;
+					}
+				}
+			}
 			
 			if (doaYear != '')
 			{
@@ -350,17 +361,15 @@
 			}
 
 
-			if (new_date_of_birth.length == 10 || existingDOB.length == 10) {
-				if (new_date_of_birth.length == 10) {
-					var studentUniqueId = dobMonth+dobDay+(dobYear.substring(2))+new_eng_first_name.replace(' ','')+new_eng_last_name.charAt(0);	
-				} else {
-					if (existingDOB.length == 10 ) {
-						var studentUniqueId = (existingDOB.substring(5,7))+(existingDOB.substring(8))+(existingDOB.substring(2,4))+new_eng_first_name.replace(' ','')+new_eng_last_name.charAt(0);
-					}
-				}
+			var newBirthMonthDay = dobMonth+dobDay;
+
+			if (newBirthMonthDay != '' && newBirthMonthDay != '00') {
+
+				var studentUniqueId = newBirthMonthDay+new_eng_first_name.replace(' ','')+new_eng_last_name.charAt(0);	
 			} else {
 				var studentUniqueId = "FSS"+new_eng_first_name.replace(' ','')+new_eng_last_name.charAt(0);
 			}
+			
 			
 			var updateRecord = { "id" : student_id ,
 								 "unique_id" : studentUniqueId,

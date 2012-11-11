@@ -149,13 +149,16 @@ $(function() {
 				success:function(resp) {
 					if (resp == 'delete success') {
 						number_article_page --;
+						if (page_no == 'latest') {
+							var url="index.html";
+						} else {	
+							if (number_article_page == 0) {
+								var new_page = page_no - 1;
 
-						if (number_article_page == 0) {
-							var new_page = page_no - 1;
-
-							var url="viewAnnouncement.html?page="+new_page;
-						} else {
-							var url="viewAnnouncement.html?page="+page_no;
+								var url="viewAnnouncement.html?page="+new_page;
+							} else {
+								var url="viewAnnouncement.html?page="+page_no;
+							}
 						}
 						window.location = url;
 					} else {

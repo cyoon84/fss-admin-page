@@ -16,12 +16,14 @@
 		$('#menuarea').load('menu.html');
 
 		var visitDateOpt = '';
+		var pointDateOpt = '';	
 		var fssPTopt = '';
 
 
 
 		$('.error').hide();
 		$('#chooseDate').hide();
+		$('#chooseDatePoint').hide();
 		$('#saveVisitSuccess').hide();
 
 		$('#addPTcat').hide();
@@ -67,6 +69,7 @@
 		
 
 		$('#visitTodayDate').append("&nbsp;&nbsp;&nbsp;"+today_str);
+		$('#pointTodayDate').append("&nbsp;&nbsp;&nbsp;"+today_str);
 
 		var student_id = $.urlParam('id');
 
@@ -81,7 +84,7 @@
 		var point_id = 0;
 
 		
-		var data_studentID = {"studentId": student_id, "is_hidden": is_hidden};
+		var data_studentID = {"action": "latest", "studentId": student_id, "is_hidden": is_hidden};
 		var new_reminder_date ='';
 
 		initializeDateSelector("#visitDay","#visitMonth");
@@ -322,12 +325,12 @@
 		//it enables user to view previous record (detailed information only, not visit / reminder) for that student
 		$('#prev_ver').change(function() {
 			var select_ver = $('#prev_ver').val();
-			var data_studentID = {"studentId": student_id,
+			var data_studentID = {"action":prev, "studentId": student_id,
 								  "version": select_ver
 								};
 			$.ajax({
 				type:"GET",
-				url: "bin/view_user_prev.php",
+				url: "bin/view_user.php",
 				cache: false,
 				dataType: "json",
 				data:data_studentID,
@@ -344,6 +347,9 @@
 			visitDateOpt = $('input:radio[name=visitDate]:checked').val();
 			if (visitDateOpt == 'chooseDate')
 			{
+				$('#transMonth').prop('selectedIndex', 0);
+				$('#transDay').prop('selectedIndex', 0);
+				$('#transYear').val('');
 				$('#chooseDate').show();
 			} else {
 				$('#chooseDate').hide();
@@ -351,6 +357,16 @@
 
 		});
 
+		$('.datePointRadio').change(function() {
+			pointDateOpt = $('input:radio[name=pointDate]:checked').val();
+			if (pointDateOpt == 'chooseDate')
+			{
+				$('#chooseDatePoint').show();
+			} else {
+				$('#chooseDatePoint').hide();
+			}
+
+		});
 
 		$('.fssPT').change(function() {
 			fssPTopt = $('input:radio[name=FSSpoint]:checked').val();
@@ -434,6 +450,7 @@
 
 		$('#saveVisit').click(function() {
 			$('.error').hide();
+			visitDateOpt = $('input:radio[name=visitDate]:checked').val();
 
 			var visit_purpose = $('#visit_purpose').val();
 			var visit_note = $('#visit_note').val();
@@ -614,9 +631,42 @@
 		});
 
 		$('#savePointTrans').click(function() {
-			var trans_date_month = $('#transMonth').val();
-			var trans_date_day = $('#transDay').val();
-			var trans_date_year = $('#transYear').val();
+			var trans_date = '';
+
+			pointDateOpt = $('input:radio[name=pointDate]:checked').val();
+
+			if (pointDateOpt == 'today') {
+				trans_date = today_str;
+			} else {
+				var trans_date_month = $('#transMonth').val();
+				var trans_date_day = $('#transDay').val();
+				var trans_date_year = $('#transYear').val();
+				if (trans_date_year == '')
+				{
+					$('label#transYear_error').show();
+					$('input#transYear').focus();
+					return false;
+				} else {
+
+					if (trans_date_year.length != 4 || isNaN(trans_date_year)) {
+						$('label#transDT_error').show();
+						$('input#transYear').focus();
+						return false;						
+					} else {
+
+						trans_date = trans_date_year+"-"+trans_date_month+"-"+trans_date_day;
+
+
+						if (trans_date.length != 10)
+						{
+							$('label#transDate_error').show();
+							return false;
+						} 
+					
+					}
+					
+				}
+			}	
 			var trans_val = '';
 			fssPTopt= $('input:radio[name=FSSpoint]:checked').val();
 
@@ -630,31 +680,7 @@
 
 			}
 
-			if (trans_date_year == '')
-			{
-				$('label#transYear_error').show();
-				$('input#transYear').focus();
-				return false;
-			} else {
 
-				if (trans_date_year.length != 4 || isNaN(trans_date_year)) {
-					$('label#transDT_error').show();
-					$('input#transYear').focus();
-					return false;						
-				} else {
-
-					var trans_date = trans_date_year+"-"+trans_date_month+"-"+trans_date_day;
-
-
-					if (trans_date.length != 10)
-					{
-						$('label#transDate_error').show();
-						return false;
-					} 
-				
-				}
-				
-			}
 			var point_val = $('#pointValField').val();
 
 			var point_trans = {"action" : "add_new_pt", "student_id": student_id, "trans_date": trans_date, "trans_val": trans_val, "point_val": point_val, "user_id": current_userid};
@@ -791,6 +817,7 @@
 		});
 
 		$('#updVisit').click(function() {
+			$('.error').hide();
 			var visit_year = $('#new_visitYear').val();
 			var visit_month = $('#new_visitMonth').val();
 			var visit_day = $('#new_visitDay').val();
@@ -817,6 +844,12 @@
 			}
 
 			var new_purpose = $('#newVisitPurpose').val();
+
+			if ($.trim(new_purpose).length == 0) {
+				$('label#new_visitPurpose_error').show();
+				$('#new_visitPurpose').focus();
+				return false;
+			}
 
 			var new_note = $('#newVisitNote').val().replace(/\r\n|\r|\n/g,"<br />");
 
@@ -910,10 +943,18 @@
 		$('#viewTable_visa').append(resp[0].visa_type);
 		$('#viewTable_visa_issue').append(resp[0].visa_issue_date);
 		$('#viewTable_visa_exp').append(resp[0].visa_exp_date);
-		$('#viewTable_how_hear_us').append(resp[0].how_hear_us);
+		
+		if (resp[0].how_hear_us != 0) {
+			$('#viewTable_how_hear_us').append(resp[0].how_hear_us);
+		}
+		
 		$('#viewTable_referred_by').append(resp[0].referred_by);
 		$('#viewTable_korea_agency').append(resp[0].korea_agency);
-		$('#viewTable_current_school').append(resp[0].current_school);
+		if (resp[0].school_index == '0') {
+			$('#viewTable_current_school').append(resp[0].current_school);
+		} else {
+			$('#viewTable_current_school').append(resp[0].school_name);
+		}
 		$('#viewTable_current_program').append(resp[0].current_program);
 		$('#viewTable_school_strt_dt').append(resp[0].current_school_strt_dt);
 		$('#viewTable_school_end_dt').append(resp[0].current_school_end_dt);

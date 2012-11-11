@@ -18,6 +18,8 @@ $(function() {
 	var page_go_back = $.urlParam('prev_page');
 
 
+
+
 	var loadAnnouncement = {"action": "one", "id": announce_id};
 
 	$.ajax({
@@ -27,11 +29,12 @@ $(function() {
 			cache: false,
 			data: loadAnnouncement,
 			success:function(resp) {
-				var body = resp[0].body[0].body;
+
+				var body = resp[0].announcement[0].body[0].body;
 
 				var body_edited= body.replace(/<br\s*[\/]?>/gi, "\n");
 
-				$('#announcementTitle_new').val(resp[0].body[0].title);
+				$('#announcementTitle_new').val(resp[0].announcement[0].body[0].title);
 				$('#announcementBody_new').val(body_edited);
 			
 			}
@@ -52,7 +55,11 @@ $(function() {
 			data: updateAnnouncement,
 			success:function(resp) {
 				if (resp == 'update success') {
-					var url = "viewAnnouncement.html?page="+page_go_back;
+					if (page_go_back == 'latest') {
+						var url = "viewAnnouncement.html?page="+page_go_back+"&id="+announce_id;
+					} else {
+						var url = "viewAnnouncement.html?page="+page_go_back;
+					}
 					window.location = url;
 				}
 			}
@@ -62,7 +69,11 @@ $(function() {
 	});
 
 	$('#back').click(function(){
-		var url = "viewAnnouncement.html?page="+page_go_back;
+		if (page_go_back == 'latest') {
+			var url = "viewAnnouncement.html?page="+page_go_back+"&id="+announce_id;
+		} else {
+			var url = "viewAnnouncement.html?page="+page_go_back;
+		}
 		window.location = url;
 	});
 

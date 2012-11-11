@@ -36,6 +36,7 @@ $mail->WordWrap   = 50; // set word wrap
 $mail->MsgHTML($body);
 
 $mail->AddReplyTo("fsstoronto@gmail.com","FSS Toronto");
+$mail->AddBCC("fssseminar@gmail.com", "FSS Seminar");
 
 //$mail->AddAttachment("/path/to/file.zip");             // attachment
 //$mail->AddAttachment("/path/to/image.jpg", "new.jpg"); // attachment
