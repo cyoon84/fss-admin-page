@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title> FSS Admin Page </title>
+	<meta name="Generator" content="EditPlus">
+	<meta name="Author" content="">
+	<meta name="Keywords" content="">
+	<meta name="Description" content="">
+	<meta charset="UTF-8">
+	<link href="css/bootstrap.css" rel="stylesheet">
+	<link href="css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="css/page-style.css" rel="stylesheet">
+	<script src="http://code.jquery.com/jquery-1.8.0.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/jquery.session.js"></script>
+	<script src="js/checklogin.js"></script>
+	<script src="js/common_functions.js"></script>
+	<script src="js/date.js"></script>
+	<script src="js/manage_reminder_list.js"></script>
+ </head>
+
+ <body>
+  
+<div class="span12" style="margin-top:10px" id="top-header">
+		<div style="float:left">
+			<h3>FSS Toronto</h3>
+		</div>
+		
+		<div id="logoffarea" style="float:right">
+			&nbsp;<a tabindex="-1" href="#" id="logout"><i class="icon-off"></i></a></li>
+		</div>
+		<div id="currentUserName" style="float:right">
+		
+		</div>
+
+</div>
+
+
+<div class="modal hide fade" id="plzlogin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
+	<div class="modal-header">
+		<h3 id="myModalLabel3">Log in Required</h3>
+	</div>
+	<div class="modal-body" id="modal-body3">
+	Please log in first
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" id="goToLogin">Log In</button>
+	</div>
+</div>	
+
+<div class="modal hide fade" id="logoutWindow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
+	<div class="modal-header">
+		<h3 id="myModalLabel4">Logout</h3>
+	</div>
+	<div class="modal-body" id="modal-body4">
+		User will logout from this site.
+	</div>
+	<div class="modal-footer">
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel logout</button>
+		<button class="btn btn-primary" id="goToLogout">Logout</button>
+	</div>
+</div>	
+
+
+<div class="modal hide fade" id="delRemindModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel5" aria-hidden="true">
+	<div class="modal-header">
+		<h3 id="myModalLabel5">Delete Remind Category</h3>
+	</div>
+	<div class="modal-body" id="modal-body5">
+		Delete this reminder category?
+
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-danger" id="delRemindConfirm">Delete</button>
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+</div>
+
+<div class="modal hide fade" id="editReminder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel6" aria-hidden="true">
+	<div class="modal-header">
+		<h3 id="myModalLabel6">Edit Reminder Category</h3>
+	</div>
+	<div class="modal-body" id="modal-body6">
+		Edit this reminder category
+		<table class="table" id="editSchoolTable">
+		
+		<tbody>
+			<tr>
+			<td style="width:25%"> Name
+			<td><input type="text" id="editReminderName">
+				<label class="error" for="editReminderName" id="editReminderName_error">This field is required </label></td>
+			</tr>
+		</tbody>
+		</table>
+		<div class="modal-footer">
+			<button class="btn btn-primary" id="editRemindConfirm">Edit</button>
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		</div>
+	</div>
+</div>
+
+<div class="modal hide fade" id="newReminderModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel7" aria-hidden="true">
+	<div class="modal-header">
+		<h3 id="myModalLabel7">Add a new reminder category</h3>
+	</div>
+
+
+	<div class="modal-body" id="modal-body7">
+		Add a new reminder category
+		<br><br>
+		<table class="table" id="newRemindCatTable">
+		
+		<tbody>
+			<tr>
+			<td>Name</td>
+			<td><input type="text" id="newReminder">
+				<label class="error" for="newReminder" id="newReminder_error">This field is required </label>
+			</td>
+		</tr>
+		</tbody>
+		</table>
+
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" id="newRemindSave">Save</button>
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+</div>
+
+<div class="span12">
+	<div class="row">
+		<div class="span3" style="margin-top:10px" id="menuarea">
+		</div>
+		<div class="span9" style="margin-top:10px" id="top">
+			<h3> Manage Student Reminders</h3>
+			<br>
+
+			<div class="span9 well-nobgcolor" style="margin-left:0px" id="lang">
+
+				<div class="titlearea">
+					<div class="titleheader" style="float:left"><h4>Reminder categories </h4>
+					</div>
+					<div class="addBtnArea" style="float:right">
+						<button class="btn btn-primary btn-small" id="addnewReminderCategory">Add a new reminder category</button>
+					</div>
+				</div>
+				<br><br>
+				<table class="category table" id="reminder_list">
+					<thead>
+					<tr>
+						<th style="width:80%"> Name </th>
+						<th style="width:20%"> Edit / Delete </th>
+					</tr>
+					</thead>
+					<tbody>
+
+					</tbody>
+				</table>  
+			</div>
+
+
+		</div>
+	</div>
+</div>
+
+ </body>
+</html>

@@ -68,6 +68,12 @@
 	</div>
 	<div class="modal-body" id="modal-body5">
 		Delete this school?
+
+		<br>
+		<br>
+		<div id="warningareaDelSchool">
+		<b>Warning</b>: <span id="recordCountStudent"> </span> student record(s) is (are) belong to this school. Those records will be changed accordingly.
+		</div>
 	</div>
 	<div class="modal-footer">
 		<button class="btn btn-danger" id="delSchoolConfirm">Delete</button>
@@ -93,8 +99,7 @@
 			<td><select id="editCat" style="width:100%">
 				<option value='LANGUAGE_SCHOOL'>Language School </option> 
 				<option value='UNIV/COLLEGE'>University / College</option>
-				<option value='CREDIT_SCHOOL'>Credit School</option>
-				<option value='HIGH_SCHOOL'>High School</option>
+				<option value='OTHER/PUBLIC_SCHOOL'>Elementary & High School / Credit School</option>
 			</select></td>
 		</tr>
 		</tbody>
@@ -125,10 +130,7 @@
 			<td><input type="text" id="newSchool" style="width:100%">
 				<label class="error" for="newSchool" id="newSchoolName_error">This field is required </label></td>
 			<td><select id="newCat" style="width:100%">
-				<option value='LANGUAGE_SCHOOL'>Language School  </option> 
-				<option value='UNIV/COLLEGE'>University / College </option>
-				<option value='CREDIT_SCHOOL'>Credit School </option>
-				<option value='HIGH_SCHOOL'>High School </option>
+
 			</select>
 		</td>
 		</tr>
@@ -162,10 +164,7 @@
 							<a href="#" id="goUniCollege">University / College</a>	
 						</li>
 						<li>
-							<a href="#" id="goHS">High School</a>
-						</li>
-						<li>
-							<a href="#" id="goCreditSch">Credit School</a>
+							<a href="#" id="goHS">Elementary & High School / Credit School</a>
 						</li>
 					</ul>
 
@@ -216,29 +215,10 @@
 					</tbody>
 				</table>   
 			</div>
-			<div class="span9 well-nobgcolor" style="margin-left:0px" id="credit">
-				<div class="titlearea">
-					<div class="titleheader" style="float:left"><h4>Credit School </h4>
-					</div>
-					<div class="scrolltoparea" style="float:right">
-						<a href="#" class="scrolltotop">Scroll to top</a>
-					</div>
-				</div>
-				<table class="category table" id="creditschool">
-					<thead>
-					<tr>
-						<th style="width:80%"> Name </th>
-						<th style="width:20%"> Edit / Delete </th>
-					</tr>
-					</thead>
-					<tbody>
 
-					</tbody>
-				</table>  
-			</div>
 			<div class="span9 well-nobgcolor" style="margin-left:0px" id ="hs">
 				<div class="titlearea">
-					<div class="titleheader" style="float:left"><h4>High School </h4>
+					<div class="titleheader" style="float:left"><h4>Elementary & High School / Credit School </h4>
 					</div>
 					<div class="scrolltoparea" style="float:right">
 						<a href="#" class="scrolltotop">Scroll to top</a>

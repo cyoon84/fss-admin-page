@@ -50,24 +50,47 @@
 
 	if ($action == 'delete') {
 		$school_index = $_POST['school_index'];
+		$count = $_POST['count'];
+
+		$query_get_name = "SELECT school_name from school_list where school_index = '$school_index'";
+
+		$result_name = mysql_query($query_get_name, $con);
+
+		$row_name = mysql_fetch_array($result_name);
+
+		$school_name = $row_name['school_name'];
 
 		$query ="DELETE from school_list where school_index = '$school_index'";
 		$result = mysql_query($query, $con);
 
-		if ($result) {
-			echo "delete success";
-		} else {
+		if (!$result) {
 			die('Error: ' . mysql_error());
-		}		
+		}
+
+		if ($count > 0) {
+			$query2 = "update studentinfo set school_index = 0, current_school = '$school_name' where school_index = '$school_index'";
+			$result2 = mysql_query($query2, $con);
+
+			if (!$result2) {
+				die('Error: ' . mysql_error());
+			} 
+		}
+
+		$query3 = "update student_prev_school set school_index = 0, prev_school_name = '$school_name' where school_index = '$school_index'";
+		$result3 = mysql_query($query3, $con);
+
+		if (!$result3) {
+			die('Error: '. mysql_error());
+		}
+
+		echo "delete success";
 	}
 	if ($action == 'get_list') {
 		$cond = $_GET['cond'];
 		if ($cond == 'init') {
-			$query = "SELECT * from school_list";
-		} 
-
-		if ($cond == 'LANGUAGE_SCHOOL' || $cond == 'UNIV/COLLEGE' || $cond == 'CREDIT_SCHOOL' || $cond == 'HIGH_SCHOOL') {
-			$query = "SELECT * from school_list where school_type = '$cond'";
+			$query = "SELECT * from school_list order by school_name";
+		} else {
+			$query = "SELECT * from school_list where school_type = '$cond' order by school_name";
 		}
 
 		$result = mysql_query($query, $con);
@@ -95,6 +118,16 @@
 			);
 		}
 		echo json_encode($result_out);
+	}
+
+	if ($action == 'get_count') {
+		$school_index = $_GET['school_index'];
+		$query = "SELECT count(*) as count from studentinfo where school_index = '$school_index'";
+		$result = mysql_query($query, $con);
+
+		$row = mysql_fetch_array($result);
+
+		echo $row['count'];
 	}
 	mysql_close($con);
 ?>

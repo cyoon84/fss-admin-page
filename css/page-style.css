@@ -93,6 +93,22 @@ url('../fonts/helveticaneueltstd-roman-webfont.eot') format('embedded-opentype')
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 
-#otherSchoolArea {
+.otherSchoolArea {
+	display:none;
+}
+
+#warningareaDelSchool {
+	display:none;
+}
+
+#tableDivArea {
+	margin-bottom: 0px;
+}
+
+#reminderType {
+	display:none;
+}
+
+.schoolNameNotList {
 	display:none;
 }

@@ -8,10 +8,11 @@
 		$reminderIndex = $_POST['reminderIndex'];
 		$remindDate = $_POST['remindDate'];
 		$remindReason = $_POST['remindReason'];
+		$rem_list_index = $_POST['rem_list_index'];
 			
 		$user_id = $_POST['user_id'];
 		
-		$query="update studentreminder set remindDate = '$remindDate', remindReason = '$remindReason', user_id = '$user_id' where reminderIndex = '$reminderIndex'";
+		$query="update studentreminder set remindDate = '$remindDate', rem_list_index = '$rem_list_index', remindReason = '$remindReason', user_id = '$user_id' where reminderIndex = '$reminderIndex'";
 
 		if (!mysql_query($query, $con)) {
 			die('Error: ' . mysql_error());

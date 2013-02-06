@@ -24,7 +24,7 @@ $(function(){
 
   });
 
-  $('#sendEmail').click(function() {
+/*  $('#sendEmail').click(function() {
 
     emailOpt = $('input:radio[name=emailRecOpt]:checked').val();
     
@@ -84,7 +84,7 @@ $(function(){
 
 
     return false;
-  });
+  });*/
 
 
   $('#closeEmailMsg').click(function(){

@@ -11,7 +11,11 @@ $(function() {
 
 		var orig_school_type = '';
 
+		var studentrec_count = 0;
+
 		loadSchoolList("init");
+
+		schoolCatLoad("#newCat");
 
 		$('#addNewSchool').click(function() {
 			$('#newSchool').val('');
@@ -54,6 +58,24 @@ $(function() {
 			selected_school_id = this.id;
 
 			var tableid = $(this).parent().parent().parent().parent().attr('id');
+			$('#recordCountStudent').empty();
+
+			$.ajax({
+				type:"GET",
+				data: {"action": "get_count", "school_index": selected_school_id},
+				url:"bin/school_list.php",
+				async:false,
+				success:function(resp) {
+					studentrec_count=resp;
+				}
+			});
+
+			if (studentrec_count > 0) {
+				$('#recordCountStudent').html(studentrec_count);
+				$('#warningareaDelSchool').show();
+			} else {
+				$('#warningareaDelSchool').css('display','none');
+			}
 
 			switch (tableid) {
 				case "langSch":
@@ -64,13 +86,9 @@ $(function() {
 					$('#editCat').prop('selectedIndex', 1);
 					orig_school_type = "UNIV/COLLEGE";
 					break;
-				case "creditschool":
-					$('#editCat').prop('selectedIndex', 2);
-					orig_school_type = "CREDIT_SCHOOL";
-					break;
 				case "highschool" : 
 					$('#editCat').prop('selectedIndex', 3);
-					orig_school_type = "HIGH_SCHOOL";
+					orig_school_type = "OTHER/PUBLIC_SCHOOL";
 					break;
 				default:
 					alert('error');
@@ -97,13 +115,9 @@ $(function() {
 					$('#editCat').prop('selectedIndex', 1);
 					orig_school_type = "UNIV/COLLEGE";
 					break;
-				case "creditschool":
-					$('#editCat').prop('selectedIndex', 2);
-					orig_school_type = "CREDIT_SCHOOL";
-					break;
 				case "highschool" : 
-					$('#editCat').prop('selectedIndex', 3);
-					orig_school_type = "HIGH_SCHOOL";
+					$('#editCat').prop('selectedIndex', 2);
+					orig_school_type = "OTHER/PUBLIC_SCHOOL";
 					break;
 				default:
 					alert('error');
@@ -145,7 +159,7 @@ $(function() {
 		});
 
 		$('#delSchoolConfirm').click(function(){
-			var schoolData = {"action": "delete", "school_index": selected_school_id};
+			var schoolData = {"action": "delete", "school_index": selected_school_id, "count": studentrec_count};
 
 			$.ajax({
 				type:"POST",
@@ -154,8 +168,7 @@ $(function() {
 				success:function(resp){
 					if (resp == 'delete success') {
 						$('#delSchool').modal('hide');
-						loadSchoolList(orig_school_type);
-						
+						loadSchoolList(orig_school_type);						
 					} else {
 						alert(resp);
 					}
@@ -198,11 +211,8 @@ function loadSchoolList(cond) {
 			break;
 		case "UNIV/COLLEGE":
 			$('#unicollege tbody').empty();
-			break;
-		case "CREDIT_SCHOOL":
-			$('#creditschool tbody').empty();
 			break;		
-		case "HIGH_SCHOOL":
+		case "OTHER/PUBLIC_SCHOOL":
 			$('#highschool tbody').empty();
 			break;
 		default:
@@ -228,10 +238,7 @@ function loadSchoolList(cond) {
 					if (resp[i].school_type == 'UNIV/COLLEGE') {
 						$('#unicollege tbody').append("<tr><td>"+resp[i].school_name+"</td><td><input type='button' class='editSchool btn' id='"+resp[i].school_index+"' value='Edit'> <input type='button' class='delSchool btn' id='"+resp[i].school_index+"' value='Delete'></td></tr>")
 					}
-					if (resp[i].school_type == 'CREDIT_SCHOOL') {
-						$('#creditschool tbody').append("<tr><td>"+resp[i].school_name+"</td><td><input type='button' class='editSchool btn' id='"+resp[i].school_index+"' value='Edit'> <input type='button' class='delSchool btn' id='"+resp[i].school_index+"' value='Delete'></td></tr>")
-					}
-					if (resp[i].school_type == 'HIGH_SCHOOL') {
+					if (resp[i].school_type == 'OTHER/PUBLIC_SCHOOL') {
 						$('#highschool tbody').append("<tr><td>"+resp[i].school_name+"</td><td><input type='button' class='editSchool btn' id='"+resp[i].school_index+"' value='Edit'> <input type='button' class='delSchool btn' id='"+resp[i].school_index+"' value='Delete'></td></tr>")
 					}
 				}
@@ -239,4 +246,21 @@ function loadSchoolList(cond) {
 
 		}
 	});
+}
+
+
+function schoolCatLoad(id) {
+	var dataAction = {"action" : "get_type"};
+	$.ajax({
+		type: "POST",
+		url: "bin/school_list.php",
+		data:dataAction,
+		dataType:"json",
+		cache: false,	
+		success: function(resp) {
+			for (var i = 1; i!= resp.length; i++) {
+				$(id).append('<option>'+resp[i].school_type+'</option>');
+			}
+		}
+	});	
 }

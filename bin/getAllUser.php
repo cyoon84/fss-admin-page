@@ -4,6 +4,7 @@
 
 	$action = $_GET['action'];
 
+
 	if ($action == 'all') {
 
 		$category = $_GET['category'];
@@ -213,7 +214,7 @@
 	}
 
 	if ($action == 'get_all_active_email') {
-		$query = "SELECT name_kor, email from studentinfo where active_indicator ='Y' and email <> ''";
+		$query = "SELECT name_kor, email from studentinfo where active_indicator ='Y' and email <> '' order by name_kor";
 		$result = mysql_query($query, $con);
 
 		$result_out = array();

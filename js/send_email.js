@@ -14,7 +14,7 @@ $(function(){
   $('#sendTo').val(senderDisplay);
 
 
-  $('#sendEmail').click(function() {
+/*  $('#sendEmail').click(function() {
     
     var actualEmail = $('#sendTo').val();
 
@@ -22,9 +22,11 @@ $(function(){
 
     var body = $('#emailBody').val().replace(/\r\n|\r|\n/g,"<br />");
 
+    var filename = $('#attach').val();
+
     $.ajax({
       type:"POST",
-      data:{"opt": "individual", "recipient": actualEmail, "body":body, "subject": subject},
+      data:{"opt": "individual", "recipient": actualEmail, "body":body, "subject": subject, "filename": filename},
       url:"bin/use_gmail.php",
       cache:false,
       success:function(resp) {
@@ -35,7 +37,8 @@ $(function(){
     });
 
 
-  });
+  });*/
+
 
 
   $('#closeEmailMsg').click(function(){

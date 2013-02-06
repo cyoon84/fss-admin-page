@@ -70,6 +70,7 @@
 						, a.note
 						, a.updt_reason
 						, a.user_id
+						, b.school_type
 						, b.school_name
 						from studentinfo a inner join school_list b on a.school_index = b.school_index where a.studentId='$id' and a.active_indicator = 'Y'";
 		} else {
@@ -103,6 +104,7 @@
 						, a.note
 						, a.updt_reason
 						, a.user_id
+						, b.school_type
 						, b.school_name
 						from studentinfo a inner join school_list b on a.school_index = b.school_index where a.studentId='$id' and a.version = '$last_ver'";
 			
@@ -136,6 +138,7 @@
 				'current_school' => $row['current_school'],
 				'school_index' => $row['school_index'],
 				'school_name' => $row['school_name'],
+				'school_type' => $row['school_type'],
 				'current_program' => $row['current_program'],
 				'current_school_strt_dt' => $row['current_school_strt_dt'],
 				'current_school_end_dt' => $row['current_school_end_dt'],

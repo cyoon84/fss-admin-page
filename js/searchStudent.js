@@ -6,37 +6,51 @@
 
 $(function() {
 
+	schoolCatLoad('#schoolCategory');
+
 	$('#menuarea').load('menu.html');
 
 	$('#phone').mask("999-999-9999");	
 
+	$('#schoolCategory').change(function() {
+		var type = $(this).val();
+		if (type == 0) {
+			$('#schoolList').empty();
+		} else {
+			schoolListLoad("#schoolList",type);
+		}
+	});	
+
 	$('#searchButton').click(function(){
 		$('#resultTable tbody').empty();
-		var nameEntered = new Boolean();
-		var schoolEntered = new Boolean();
-		var emailEntered = new Boolean();
 
 		var nameText = $('#name').val();
 		var nameLang = $('#namelang').val();
-		var schoolText  = $('#school').val();
 		var emailText  = $('#email').val();
 		var phoneText  = $('#phone').val();
 
+		var noteText = $('#note').val();
+
 		var fssID = $('#fssID').val();
+
+		var schoolType = $('#schoolCategory').val();
+
+		var schoolNameIndex = $('#schoolList').val();
 
 		var searchWithin = $('input:radio[name=searchOpt]:checked').val();
 
-		var searchKeys = {"status":searchWithin, "name": nameText,  "language_name": nameLang, "unique_id": fssID, "school_name" : schoolText, "email": emailText, "phone": phoneText};
+		var searchKeys = {"status":searchWithin, "name": nameText,  "language_name": nameLang, "unique_id": fssID, "school_index" : schoolNameIndex, "school_type" : schoolType, "email": emailText, "phone": phoneText, "note": noteText};
 
-		if (nameText == '' && schoolText == '' && fssID == '' && emailText == '' && phoneText == '')
+		if (nameText == '' && fssID == '' && emailText == '' && phoneText == '' && noteText == '' && schoolType == 0)
 		{
 			alert('Please enter one of search keyword');
 			return false;
 		}
 		
 
-		
-			//gets the list of students from the database and display 
+
+
+		//gets the list of students from the database and display 
 		$.ajax({
 				type:"GET",
 				url: "bin/search_user.php",
@@ -44,6 +58,7 @@ $(function() {
 				cache: false,
 				data:searchKeys,
 				success: function(resp) {
+
 					$('#resultcount').empty();
 
 					if (resp.length == 1)
@@ -81,3 +96,42 @@ $(function() {
 
 
 });
+
+
+	function schoolListLoad(id, type) {
+		var dataAction = {"action": "get_list", "cond": type};
+
+		$(id).empty();
+		$(id).append('<option value = 0>-----------------------------</option>');
+		$.ajax({
+			type: "GET",
+			url: "bin/school_list.php",
+			data:dataAction,
+			dataType:"json",
+			cache: false,	
+			success: function(resp) {
+				for (var i = 0; i!= resp.length; i++) {
+					$(id).append("<option value='"+resp[i].school_index+"'>"+resp[i].school_name+'</option>');
+				}
+				$(id).append("<option value='Other'>Other (please specify)</option>");
+			}
+		});	
+	}
+
+
+	function schoolCatLoad(id) {
+		var dataAction = {"action" : "get_type"};
+		$(id).append('<option value = 0>-----------------------------</option>');
+		$.ajax({
+			type: "POST",
+			url: "bin/school_list.php",
+			data:dataAction,
+			dataType:"json",
+			cache: false,	
+			success: function(resp) {
+				for (var i = 1; i!= resp.length; i++) {
+					$(id).append('<option>'+resp[i].school_type+'</option>');
+				}
+			}
+		});	
+	}

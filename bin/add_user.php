@@ -2,6 +2,8 @@
 
 	include 'connection.php';
 
+	include("class.phpmailer.php");
+
 	$engName = $_POST['name_eng'];
 
 	$korName = $_POST['name_kor'];
@@ -144,7 +146,50 @@
 
 	if (!mysql_query($query, $con)) {
 		die('Error1: ' . mysql_error());
-	} 
+	} else {
+		if ($email != '') {
+			$subject = "FSS에 등록하심을 환영합니다.";
+			$body = $korName." 님 FSS에 등록하심을 환영합니다. ". $korName. " 의 FSS ID는 ". $unique_id. "이고 등록 기념으로 50 FSS Point가 적립되었습니다. <br> 본인의 포인트는 <a href='http://www.fsstoronto.com/student'>http://www.fsstoronto.com/student</a> 에서 확인하실 수 있습니다. <br>"
+					. " <br> FSS Blog: <a href='http://fsstoronto.blogspot.com'>http://fsstoronto.blogspot.com </a> & FSS Twitter: <a href='https://twitter.com/fsstoronto'>https://twitter.com/fsstoronto</a>";
+						
+			$mail             = new PHPMailer();
+
+			//$body             = $mail->getFile('contents.html');
+			//$body             = eregi_replace("[\]",'',$body);
+
+			$mail->IsSMTP();
+			$mail->CharSet = 'UTF-8';
+			$mail->SMTPDebug  = 1;
+			$mail->SMTPAuth   = true;                  // enable SMTP authentication
+			$mail->SMTPSecure = "ssl";                 // sets the prefix to the servier
+			$mail->Host       = "hp112.hostpapa.com";      // sets GMAIL as the SMTP server
+			$mail->Port       = 465;                   // set the SMTP port
+
+			$mail->Username   = "fssadmin+fsstoronto.com";  // GMAIL username
+			$mail->Password   = "Fsstoronto123";            // GMAIL password
+
+			$mail->From       = "fssadmin@fsstoronto.com";
+			$mail->FromName   = "FSS Toronto";
+			$mail->Subject    = $subject;
+			$mail->AltBody    = "This is the body when user views in plain text format"; //Text Body
+			$mail->WordWrap   = 50; // set word wrap
+
+			$mail->MsgHTML($body);
+
+			$mail->AddReplyTo("fsstoronto@gmail.com","FSS Toronto");
+			$mail->AddBCC("fssseminar@gmail.com", "FSS Seminar");
+
+			$mail->AddAddress($email);
+			
+			$mail->IsHTML(true); // send as HTML
+
+			if(!$mail->Send()) {
+  				echo "Mailer Error: " . $mail->ErrorInfo;
+			}			 
+
+		}
+	}
+
 
 
 	$query="INSERT INTO student_prev_school (studentId

@@ -82,24 +82,32 @@
 		<div class="span9" style="margin-top:10px;margin-left:0px">
 			<div class="span9 well-nobgcolor" style="margin-left:0px">
 				<h3>Send E-mail</h3>
+
 				<br>
+				<form action="bin/use_gmail.php" method="post" id="emailform" enctype="multipart/form-data">
+				<input type="hidden" name="opt" value="individual">
 				<table class="table">
 				<tr>
 					<td style="width:25%"> Send to </td>
-					<td> <input type="text" id="sendTo" class="span4"></td>
+					<td> <input type="text" id="sendTo" class="span4" name="recipient"></td>
 				</tr>
 				<tr>
 					<td> Subject </td>
-					<td> <input type="text" id="emailSubject" class="span6">
+					<td> <input type="text" id="emailSubject" class="span6" name="subject">
 				</tr>
 
 				<tr>
 					<td> Body </td>
-					<td> <textarea class="span6" rows="10" id="emailBody"> </textarea>
+					<td> <textarea class="span6" rows="10" id="emailBody" name="body"> </textarea>
 				</tr>
 				<tr>
-					<td colspan="2" style="text-align:right"> <button class="btn btn-primary btn-medium" id="sendEmail">Send e-mail</button>
-
+					<td> Attachments </td>
+					<td> <input type="file" id="attach" name="attach">
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align:right"> <input type="submit" value="Send e-mail" class="btn btn-primary btn-medium" id="sendEmail">
+				</tr>
+				</table>			
 
 			</div>
 	

@@ -5,10 +5,9 @@
 <link href="css/bootstrap.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/DT_bootstrap.css" rel="stylesheet">
-
+<link href="css/page-style.css" rel="stylesheet">
 <script src="http://code.jquery.com/jquery-1.8.0.js"></script>
 <script src="js/jquery.maskedinput-1.3.js"></script>
-<script src="js/bootstrap-dropdown.js"></script>
 <script src="js/jquery.json-2.3.js"></script>
 <script src="js/jquery.session.js"></script>
 <script src="js/bootstrap.js"></script>
@@ -119,6 +118,10 @@
 		 <select id="new_pointList" name="new_pointList"></select> 
 			
 		</tr>
+		<tr>
+		<td>Point value:
+		<td> <input id="edit_pointValField" style="width:100px">
+		</tr>
 	</table>
 	</div>
 	<div class="modal-footer">
@@ -189,6 +192,115 @@
 		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
 	</div>
 </div>
+
+
+<div class="modal hide fade" id="addPrevSchool" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-header">
+		 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+		    <h3 id="addPrevSchoolTitle">Add a new previous school</h3>
+		 </div>
+		<div class="modal-body" id="modal-body-prev-school">
+			<table class='table'>
+				<tr>
+				<td style='width:30%'>School Name * </td>
+				<td> <select id="schoolCategory" class="span3">
+					</select>
+					<select id="schoolList" class="span4">
+						<option value = 0>-----------------------------</option>
+					</select>
+					<div id="otherSchoolArea">
+						Please enter school name <input type="text" id="otherSchoolText" class="span3">
+					</div>
+				</tr>
+				<tr>
+				<td> School Progran Name</td>
+				<td> <input type="text" id='newPrevSchoolProgram'>
+				</tr>
+				<tr>
+				<td> School Start Date </td>
+				<td> <select class="span2" id="prevSchoolStartMonth" name="prevSchoolStartMonth"></select>
+					<select class="span2" id="prevSchoolStartDay" name="prevSchoolStartDay"></select>
+					<input style="width:85px" id="prevSchoolStartYear" placeholder="year (yyyy)" name="prevSchoolStartYear">
+					<label class="error" for="prevSchoolStartYear" id="prevSchoolStartYear_error"> Please enter proper year format (e.g. 2012) </label>
+					<label class="error" for="prevSchoolStartYear" id="prevSchoolStartYear_error2"> Please select month / day as well! </label>
+				</tr>
+				<tr>
+				<td> School End Date </td>
+				<td><select class="span2" id="prevSchoolEndMonth" name="prevSchoolEndMonth"></select>
+					<select class="span2" id="prevSchoolEndDay" name="prevSchoolEndDay"></select>
+					<input style="width:85px" id="prevSchoolEndYear" placeholder="year (yyyy)" name="prevSchoolEndYear">
+					<label class="error" for="prevSchoolEndYear" id="prevSchoolEndYear_error"> Please enter proper year format (e.g. 2012) </label>
+					<label class="error" for="prevSchoolEndYear" id="prevSchoolEndYear_error2"> Please select month / day as well! </label>
+				</tr>	
+			</table>
+		</div>
+		<div class="modal-footer">
+		  <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		  <button class="btn btn-primary" id="savePrevSchool">Save changes</button>
+		</div>
+</div>
+
+<div class="modal hide fade" id="delPrevSchoolModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel10" aria-hidden="true">
+	<div class="modal-header">
+		<h3 id="myModalLabel8">Delete Previous School Record</h3>
+	</div>
+	<div class="modal-body" id="modal-body10">
+		Delete this previous school record?
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-danger" id="delPrevSchoolConfirm">Delete</button>
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+</div>
+
+<div class="modal hide fade" id="editPrevSchoolModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-header">
+		 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+		    <h3 id="addPrevSchoolTitle">Edit existing previous school</h3>
+		 </div>
+		<div class="modal-body" id="modal-body-prev-school">
+			<table class='table'>
+				<tr>
+				<td style='width:30%'>Choose new school name * </td>
+				<td><div class="schoolNameNotList"> </div> 
+					<select id="editSchoolCategory" class="span3">
+					</select>
+					<select id="editSchoolList" class="span4">
+						<option value = 0>-----------------------------</option>
+					</select>
+					<div id="edit_otherSchoolArea" class="otherSchoolArea">
+						Please enter school name <input type="text" id="edit_otherSchoolText" class="span3">
+					</div>
+				</tr>
+				<tr>
+				<td> School Progran Name</td>
+				<td> <input type="text" id='editPrevSchoolProgram'>
+				</tr>
+				<tr>
+				<td> School Start Date </td>
+				<td> <select class="span2" id="edit_prevSchoolStartMonth" name="prevSchoolStartMonth"></select>
+					<select class="span2" id="edit_prevSchoolStartDay" name="prevSchoolStartDay"></select>
+					<input style="width:85px" id="edit_prevSchoolStartYear" placeholder="year (yyyy)" name="prevSchoolStartYear">
+					<label class="error" for="edit_prevSchoolStartYear" id="edit_prevSchoolStartYear_error"> Please enter proper year format (e.g. 2012) </label>
+					<label class="error" for="edit_prevSchoolStartYear" id="edit_prevSchoolStartYear_error2"> Please select month / day as well! </label>
+				</tr>
+				<tr>
+				<td> School End Date </td>
+				<td><select class="span2" id="edit_prevSchoolEndMonth" name="prevSchoolEndMonth"></select>
+					<select class="span2" id="edit_prevSchoolEndDay" name="prevSchoolEndDay"></select>
+					<input style="width:85px" id="edit_prevSchoolEndYear" placeholder="year (yyyy)" name="prevSchoolEndYear">
+					<label class="error" for="edit_prevSchoolEndYear" id="edit_prevSchoolEndYear_error"> Please enter proper year format (e.g. 2012) </label>
+					<label class="error" for="edit_prevSchoolEndYear" id="edit_prevSchoolEndYear_error2"> Please select month / day as well! </label>
+				</tr>	
+			</table>
+		</div>
+		<div class="modal-footer">
+		  <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		  <button class="btn btn-primary" id="editPrevSchoolConfirm">Update</button>
+		</div>
+</div>
+
+
 <div class="span12" style="margin-top:10px" id="top-header">
 		<div style="float:left">
 			<h3>FSS Toronto</h3>
@@ -265,6 +377,10 @@
 						<input  id="remindYear" placeholder="year (yyyy)" name="remindYear" style="width:100px">
 						<label class="error" for="remindYear" id="remindYear_error">This field is required </label>
 						<label class="error" for="remindYear" id="remind_error">Please select all month / day / year values </label>
+					</tr>
+					<tr>
+					<td>Reminder catetory
+					<td><select id="remindCategory" name="remindCategory" style="width:200px"></select>
 					</tr>
 					<tr>
 					<td>Reason 
@@ -369,45 +485,52 @@
 					</div>
 			</div>	
 
-			<div class="modal hide fade" id="addPrevSchool" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal hide fade" id="editReminderModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel6" aria-hidden="true">
 				  <div class="modal-header">
 					 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-					    <h3 id="addPrevSchoolTitle">Add a new previous school</h3>
+					    <h3 id="myModalLabel6">Edit an existing reminder</h3>
 					 </div>
-					<div class="modal-body" id="modal-body-prev-school">
-						<table class='table'>
-							<tr>
-							<td style='width:30%'>School Name * </td>
-							<td> <input type="text" id='newPrevSchoolName'>
-								<label class="error" for="newPrevSchoolName" id="namePrevSchool_error"> This field is required </label>
-							</tr>
-							<tr>
-							<td> School Progran Name</td>
-							<td> <input type="text" id='newPrevSchoolProgram'>
-							</tr>
-							<tr>
-							<td> School Start Date </td>
-							<td> <select class="span2" id="prevSchoolStartMonth" name="prevSchoolStartMonth"></select>
-								<select class="span2" id="prevSchoolStartDay" name="prevSchoolStartDay"></select>
-								<input style="width:85px" id="prevSchoolStartYear" placeholder="year (yyyy)" name="prevSchoolStartYear">
-								<label class="error" for="prevSchoolStartYear" id="prevSchoolStartYear_error"> Please enter proper year format (e.g. 2012) </label>
-								<label class="error" for="prevSchoolStartYear" id="prevSchoolStartYear_error2"> Please select month / day as well! </label>
-							</tr>
-							<tr>
-							<td> School End Date </td>
-							<td><select class="span2" id="prevSchoolEndMonth" name="prevSchoolEndMonth"></select>
-								<select class="span2" id="prevSchoolEndDay" name="prevSchoolEndDay"></select>
-								<input style="width:85px" id="prevSchoolEndYear" placeholder="year (yyyy)" name="prevSchoolEndYear">
-								<label class="error" for="prevSchoolEndYear" id="prevSchoolEndYear_error"> Please enter proper year format (e.g. 2012) </label>
-								<label class="error" for="prevSchoolEndYear" id="prevSchoolEndYear_error2"> Please select month / day as well! </label>
-							</tr>	
-						</table>
+					<div class="modal-body" id="modal-body6">
+					<table class="table">
+					<tr>
+					<td>Reminder date <br>(required)
+					<td>
+						<select id="edit_remindMonth" name="edit_remindMonth" style="width:100px"></select>
+						<select id="edit_remindDay" name="edit_remindDay" style="width:70px"></select>
+						<input  id="edit_remindYear" placeholder="year (yyyy)" name="edit_remindYear" style="width:100px">
+						<label class="error" for="edit_remindYear" id="edit_remindYear_error">This field is required </label>
+						<label class="error" for="edit_remindYear" id="edit_remindYear_error2">Please enter proper format for year! (e.g. YYYY) </label>
+						<label class="error" for="edit_remindYear" id="edit_remind_error">Please select all month / day / year values </label>
+					</tr>
+					<tr>
+					<td>Reminder catetory
+					<td><select id="edit_remindCategory" class='remindCategory' name="edit_remindCategory" style="width:200px"></select>
+					</tr>
+					<tr>
+					<td>Reason 
+					<td><textarea id="edit_remindreason" class="span3" rows="3"></textarea>
+					</tr>
+					</table>
 					</div>
 					<div class="modal-footer">
 					  <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-					  <button class="btn btn-primary" id="savePrevSchool">Save changes</button>
+					  <button class="btn btn-primary" id="editReminderConfirm">Save changes</button>
 					</div>
+			</div>	
+
+			<div class="modal hide fade" id="delReminderModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel9" aria-hidden="true">
+				<div class="modal-header">
+					<h3 id="myModalLabel9">Delete this reminder record</h3>
+				</div>
+				<div class="modal-body" id="modal-body7">
+					Delete this reminder record?
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-danger" id="delReminderConfirm">Delete</button>
+					<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+				</div>
 			</div>
+
 				
 
 		<div class="accordion span9" id="accordion2" style="margin-left:0px">
@@ -420,100 +543,103 @@
 				</div>
 				<div id="collapseOne" class="accordion-body collapse in">
 					<div class="accordion-inner" id="viewArea">
-						<table class='table'>
-							<tr>
-							<td style='width:25%'>FSS Student ID </td>
-							<td id="viewTable_FSS_ID" class="viewTable_elem"></td>
-							</tr>
-							<tr>
-								<td style='width:25%'>Name (Korean) </td>
-								<td id ="viewTable_korname" class="viewTable_elem"></td>
-							</tr> 
-							<tr>
-								<td> Name (English)</td>
-								<td id="viewTable_engname" class="viewTable_elem"></td>
-							</tr>
-							<tr>
-								<td> Gender </td>
-								<td id="viewTable_gender" class="viewTable_elem"></td>
-							</tr>
-							<tr>
-								<td> Date of birth</td>
-								<td id="viewTable_birthdate" class="viewTable_elem"></td>
-							</tr>
-							<tr>
-								<td> E-mail address</td>
-								<td id="viewTable_email" class="viewTable_elem"></td>
-							</tr>
-							<tr>
-								<td> Phone</td>
-								<td id="viewTable_phone" class="viewTable_elem"></td>
-							</tr>
-							<tr>
-								<td> Current Address</td>
-								<td id="viewTable_address" class="viewTable_elem"></td>
-							</tr>
-							<tr>
-								<td> Date of Arrival</td>
-								<td id="viewTable_arrival" class="viewTable_elem"></td>
-							</tr>
-							<tr>
-								<td> Visa Type</td>
-								<td id="viewTable_visa" class="viewTable_elem"></td>
-							</tr>
-							<tr>
-								<td> Visa Issue Date</td>
-								<td id="viewTable_visa_issue" class="viewTable_elem"></td>
-							</tr>
-							<tr>
-								<td> Visa Expiry Date</td>
-								<td id="viewTable_visa_exp" class="viewTable_elem"></td>
-							</tr>
-							<tr>
-								<td> How did you hear about us?</td>
-								<td id="viewTable_how_hear_us" class="viewTable_elem"></td>
-							</tr>
-							<tr>
-								<td> Referrer's name (if any) </td>
-								<td id="viewTable_referred_by" class="viewTable_elem"></td>
-							</tr>
-							<tr>
-								<td> Name of Agency in Korea</td>
-								<td id="viewTable_korea_agency" class="viewTable_elem"></td>
-							</tr>
-							<tr>
-								<td> Current School</td>
-								<td id="viewTable_current_school" class="viewTable_elem"></td>
-							</tr>
-							<tr>
-								<td> Current Program</td>
-								<td id="viewTable_current_program" class="viewTable_elem"></td>
-							</tr>
-							<tr>
-								<td> Current School Start Date</td>
-								<td id="viewTable_school_strt_dt" class="viewTable_elem"></td>
-							</tr>
-							<tr>
-								<td> Current School End Date</td>
-								<td id="viewTable_school_end_dt" class="viewTable_elem"></td>
-							</tr>
-							<tr>
-								<td> Active status</td>
-								<td id="viewTable_act_status" class="viewTable_elem"></td>
-							</tr>
-							<tr>
-								<td> Note</td>
-								<td id="viewTable_note" class="viewTable_elem"></td>
-							</tr>
-							<tr>
-								<td> Update reason </td>
-								<td id="viewTable_updt_reason" class="viewTable_elem"></td>
-							</tr>
-							<tr>
-								<td> Added / updated by </td>
-								<td id="viewTable_user_id" class="viewTable_elem"></td>
-							</tr>
-						</table>
+						<p style="text-align:right"><button  class="btn btn-primary btn-small" onclick="PrintElem('#tableDivArea')" />Print personal information</button></p>
+						<div id="tableDivArea">
+							<table class='table'>
+								<tr>
+								<td style='width:30%'>FSS Student ID </td>
+								<td id="viewTable_FSS_ID" class="viewTable_elem"></td>
+								</tr>
+								<tr>
+									<td>Name (Korean) </td>
+									<td id ="viewTable_korname" class="viewTable_elem"></td>
+								</tr> 
+								<tr>
+									<td> Name (English)</td>
+									<td id="viewTable_engname" class="viewTable_elem"></td>
+								</tr>
+								<tr>
+									<td> Gender </td>
+									<td id="viewTable_gender" class="viewTable_elem"></td>
+								</tr>
+								<tr>
+									<td> Date of birth</td>
+									<td id="viewTable_birthdate" class="viewTable_elem"></td>
+								</tr>
+								<tr>
+									<td> E-mail address</td>
+									<td id="viewTable_email" class="viewTable_elem"></td>
+								</tr>
+								<tr>
+									<td> Phone</td>
+									<td id="viewTable_phone" class="viewTable_elem"></td>
+								</tr>
+								<tr>
+									<td> Current Address</td>
+									<td id="viewTable_address" class="viewTable_elem"></td>
+								</tr>
+								<tr>
+									<td> Date of Arrival</td>
+									<td id="viewTable_arrival" class="viewTable_elem"></td>
+								</tr>
+								<tr>
+									<td> Visa Type</td>
+									<td id="viewTable_visa" class="viewTable_elem"></td>
+								</tr>
+								<tr>
+									<td> Visa Issue Date</td>
+									<td id="viewTable_visa_issue" class="viewTable_elem"></td>
+								</tr>
+								<tr>
+									<td> Visa Expiry Date</td>
+									<td id="viewTable_visa_exp" class="viewTable_elem"></td>
+								</tr>
+								<tr>
+									<td> How did you hear about us?</td>
+									<td id="viewTable_how_hear_us" class="viewTable_elem"></td>
+								</tr>
+								<tr>
+									<td> Referrer's name (if any) </td>
+									<td id="viewTable_referred_by" class="viewTable_elem"></td>
+								</tr>
+								<tr>
+									<td> Name of Agency in Korea</td>
+									<td id="viewTable_korea_agency" class="viewTable_elem"></td>
+								</tr>
+								<tr>
+									<td> Current School</td>
+									<td id="viewTable_current_school" class="viewTable_elem"></td>
+								</tr>
+								<tr>
+									<td> Current Program</td>
+									<td id="viewTable_current_program" class="viewTable_elem"></td>
+								</tr>
+								<tr>
+									<td> Current School Start Date</td>
+									<td id="viewTable_school_strt_dt" class="viewTable_elem"></td>
+								</tr>
+								<tr>
+									<td> Current School End Date</td>
+									<td id="viewTable_school_end_dt" class="viewTable_elem"></td>
+								</tr>
+								<tr>
+									<td> Active status</td>
+									<td id="viewTable_act_status" class="viewTable_elem"></td>
+								</tr>
+								<tr>
+									<td> Note</td>
+									<td id="viewTable_note" class="viewTable_elem"></td>
+								</tr>
+								<tr>
+									<td> Update reason </td>
+									<td id="viewTable_updt_reason" class="viewTable_elem"></td>
+								</tr>
+								<tr>
+									<td> Added / updated by </td>
+									<td id="viewTable_user_id" class="viewTable_elem"></td>
+								</tr>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -620,17 +746,19 @@
 				</div>
 				<div id="collapseSix" class="accordion-body collapse in">
 					<div class="accordion-inner" id="viewReminders">
-						<h4>Needs to follow up</h4>
+						<h4>Needs to follow up</h4><br>
+						Show by category <select class="remindCategory span2" id="outstandingReminderCategory"><option value='all'>ALL</option> </select>
 						<br>
 						<table class='table' id='remindTable'>
 						<thead>
 							<tr>
-							<th style="width:15%">Days left</th>
+							<th style="width:10%">Days left</th>
 							<th style="width:45%">Reason</th>
 							<th style="width:10%"> Added by </th>
 							<th style="width:10%"> By date </th> 
+							<th style="display:none"> 
 							<th style="width:10%"> <i class="icon-check"></i>&nbsp;Mark</th>
-							<th style="width:10%">Edit/Delete</th>
+							<th style="width:15%">Edit/Delete</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -639,6 +767,8 @@
 
 						<br>
 						<h4>Previous reminders</h4>
+						<Br>
+						Show by category <select class="remindCategory span2" id="previousReminderCategory"><option value='all'>ALL</option> </select>
 						<br>
 						<table class='table' id='remindTable_old'>
 						<thead>

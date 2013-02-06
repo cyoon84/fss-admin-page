@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <link href="css/bootstrap.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/page-style.css" rel="stylesheet">
 <script src="http://code.jquery.com/jquery-1.8.0.js"></script>
 <script src="js/jquery.session.js"></script>
 <script src="js/bootstrap.js"></script>
@@ -224,8 +225,18 @@
 		<tr>
 		<td> Current School Name</td>
 		<td >
-		<div id="newSchool" class="newValue"> Enter new school name<br>
-			<input id="newSchoolText" type="text"></div>
+			<div class="schoolNameNotList">
+			</div>
+			<div id="newSchool" class="newValue"> 
+			Choose new school name<br>
+			<select id="schoolCategory" class="span3">
+			</select>
+			<select id="schoolList" class="span4">
+				<option value = 0>-----------------------------</option>
+			</select>
+			<div id="otherSchoolArea" class="otherSchoolArea">
+			Please enter school name <input type="text" id="otherSchoolText" class="span3">
+			</div>
 		</td>
 		</tr>
 		<tr>

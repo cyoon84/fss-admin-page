@@ -4,22 +4,37 @@
 	
 	$name = $_GET['name'];
 	$lang = $_GET['language_name'];
-	$school = $_GET['school_name'];
+	$school_type = $_GET['school_type'];
+	$school_index = $_GET['school_index'];
 	$email = $_GET['email'];
 	$phone = $_GET['phone'];
 	$unique_id = $_GET['unique_id'];
+	$note = $_GET['note'];
 	$status = $_GET['status'];
 
-
 	if ($status == 'active') {
-		$query = "select * from studentinfo where active_indicator = 'Y'";
+		if ($school_type == '0') {
+			$query = "select * from studentinfo where active_indicator = 'Y'";
+		} else {
+			$query = "select * from studentinfo a inner join (select school_index as school_index2 from school_list where school_type = '$school_type') b on a.school_index = b.school_index2 where a.active_indicator = 'Y'";
+		}
 	}
+
 	if ($status == 'inactive') {
-		$query = "select * from studentinfo a inner join 
+		if ($school_type != 0 && $school_index == 0) {
+			$query = "select * from studentinfo a inner join 
+					(select distinct `studentId`, max(`version`) as max_version 
+					from studentinfo where `studentId` not in (
+						SELECT `studentId` FROM `studentinfo` WHERE `active_indicator`= 'Y' group by `studentId`) group by `studentId`) b 
+					on a.`studentId` = b.`studentId` and a.`version` = b.`max_version`
+					inner join (select school_index, school_name from school_list where school_type = '$school_type') c on a.`school_index` = c.`school_index`";
+		} else {
+			$query = "select * from studentinfo a inner join 
 					(select distinct `studentId`, max(`version`) as max_version 
 					from studentinfo where `studentId` not in (
 						SELECT `studentId` FROM `studentinfo` WHERE `active_indicator`= 'Y' group by `studentId`) group by `studentId`) b 
 					on a.`studentId` = b.`studentId` and a.`version` = b.`max_version` ";
+		}
 	}
 
 	if ($name != '') {
@@ -31,10 +46,9 @@
 		}
 	}
 
-	if ($school != '') {
-		$query = $query." and current_school like '%$school%'";
-	}
-
+	if ($school_type != '0' && $school_index != 0)
+	$query = $query." and school_index = '$school_index'";
+	
 	if ($email != '') {
 		$query = $query." and email like '%$email%'";
 	}
@@ -47,7 +61,11 @@
 		$query = $query." and unique_id like '%$unique_id%'";	
 	}
 
-	$query = $query.";";
+	if ($note != '') {
+		$query = $query." and note like '%$note%'";	
+	}
+
+	$query = $query." order by name_kor;";
 
 	$result = mysql_query($query, $con);
 

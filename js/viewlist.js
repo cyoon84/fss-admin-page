@@ -3,6 +3,7 @@
 *
 */
 var page_no = 0;
+var remind_category = '';
 
 	$(function() {
 		
@@ -20,7 +21,9 @@ var page_no = 0;
 		var show_by = $.urlParam('by');
 
 
-		page_no = $.urlParam('page');		
+		page_no = $.urlParam('page');	
+
+
 
 		var today_str = getTodayDateString(new Date());
 		var end_date_str = '';
@@ -52,9 +55,13 @@ var page_no = 0;
 
 			}
 
+			$('#reminderType').show();
+
+			loadReminderCat();
+
 			loadPagination(show_by, start_date_str,end_date_str,per_page);
 
-			
+			remind_category = $('#remindCategory').val();
 
 			loadPage(show_by, action_view_by, start_date_str, end_date_str, page_no, per_page);
 
@@ -152,9 +159,24 @@ var page_no = 0;
 		$('#numberPerPage').change(function() {
 			per_page = $('#numberPerPage').val();
 			$('#pageList').empty();
-			loadPagination(show_by, start_date_str, end_date_str, per_page);
+
+			if (show_by == 'remind' || show_by == 'remindPastDue') {
+				remind_category = $('#remindCategory').val();
+			}
+			loadPagination(show_by, start_date_str, end_date_str, per_page); 
 			loadPage(show_by,action_view_by, start_date_str, end_date_str, 1, per_page);
-		})
+			
+		});
+
+		$('#remindCategory').change(function() {
+			per_page = $('#numberPerPage').val();
+			$('#pageList').empty();
+
+			remind_category = $('#remindCategory').val();
+			loadPagination(show_by, start_date_str, end_date_str, per_page); 
+			loadPage(show_by,action_view_by, start_date_str, end_date_str, 1, per_page);
+		});
+
 
 	});
 
@@ -168,7 +190,7 @@ var page_no = 0;
 			urlPHP = "bin/get_reminder_record.php";
 		}
 
-		var data_range = {"start_date": start_date, "end_date": end_date, "action": "viewlist_pagination", "per_page": per_page, "show_by": show_by}; 
+		var data_range = {"start_date": start_date, "end_date": end_date, "action": "viewlist_pagination", "per_page": per_page, "show_by": show_by, "remind_category": remind_category}; 
 
 		$.ajax({
 			type:"GET",
@@ -204,7 +226,7 @@ var page_no = 0;
 
 	function loadPage(show_by, action, start_date, end_date, page_no, per_page) {
 
-		var date_range = {"start_date": start_date, "end_date": end_date, "action": action, "page": page_no, "per_page": per_page};
+		var date_range = {"start_date": start_date, "end_date": end_date, "action": action, "page": page_no, "per_page": per_page, "remind_category": remind_category};
 		var urlPHP = '';
 
 		if (show_by != 'remind' && show_by != 'remindPastDue') {
@@ -212,6 +234,8 @@ var page_no = 0;
 		} else {
 			urlPHP = "bin/get_reminder_record.php";
 		}
+
+		$('#result tbody').empty();
 
 		$.ajax({
 			type:"GET",
@@ -264,4 +288,22 @@ var page_no = 0;
 		}
 
 		});
+	}
+
+	function loadReminderCat() {
+		var dataAction = {"action" : "get_category"};
+		$('#remindCategory').empty();
+		$('#remindCategory').append('<option value="all">All</option>');
+		$.ajax({
+			type: "GET",
+			url: "bin/reminder_list.php",
+			data:dataAction,
+			dataType:"json",
+			cache: false,	
+			success: function(resp) {
+				for (var i = 0; i!= resp.length; i++) {
+					$('#remindCategory').append('<option value="'+resp[i].rem_list_index+'">'+resp[i].rem_list_name+'</option>');
+				}
+			}
+	});		
 	}

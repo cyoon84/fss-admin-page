@@ -2,7 +2,6 @@
 * addStudent.js - add a new student record
 *
 */
-
 	var countRec = 0;
 
 	$(function() {
@@ -719,10 +718,10 @@
 		$('#schoolCategory').change(function() {
 			var type = $(this).val();
 			otherSchoolType = $(this).val();
-			if (type != 0) {
-				schoolListLoad("#schoolList",type);
-			} else {
+			if (type == 0) {
 				$('#schoolList').empty();
+			} else {
+				schoolListLoad("#schoolList",type);
 			}
 			$('#otherSchoolArea').hide();
 		});
@@ -741,22 +740,6 @@
 
 	});
 
-	function schoolCatLoad(id) {
-		var dataAction = {"action" : "get_type"};
-		$(id).append('<option value = 0>-----------------------------</option>');
-		$.ajax({
-			type: "POST",
-			url: "bin/school_list.php",
-			data:dataAction,
-			dataType:"json",
-			cache: false,	
-			success: function(resp) {
-				for (var i = 1; i!= resp.length; i++) {
-					$(id).append('<option>'+resp[i].school_type+'</option>');
-				}
-			}
-		});	
-	}
 
 	function schoolListLoad(id, type) {
 		var dataAction = {"action": "get_list", "cond": type};
@@ -774,6 +757,24 @@
 					$(id).append("<option value='"+resp[i].school_index+"'>"+resp[i].school_name+'</option>');
 				}
 				$(id).append("<option value='Other'>Other (please specify)</option>");
+			}
+		});	
+	}
+
+
+	function schoolCatLoad(id) {
+		var dataAction = {"action" : "get_type"};
+		$(id).append('<option value = 0>-----------------------------</option>');
+		$.ajax({
+			type: "POST",
+			url: "bin/school_list.php",
+			data:dataAction,
+			dataType:"json",
+			cache: false,	
+			success: function(resp) {
+				for (var i = 1; i!= resp.length; i++) {
+					$(id).append('<option>'+resp[i].school_type+'</option>');
+				}
 			}
 		});	
 	}

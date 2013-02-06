@@ -7,7 +7,6 @@
 	<meta name="Author" content="">
 	<meta name="Keywords" content="">
 	<meta name="Description" content="">
-	<meta charset="UTF-8">
 	<link href="css/bootstrap.css" rel="stylesheet">
 	<link href="css/bootstrap-responsive.css" rel="stylesheet">
 	<link href="css/page-style.css" rel="stylesheet">
@@ -83,38 +82,42 @@
 			<div class="span9 well-nobgcolor" style="margin-left:0px">
 				<h3>Send Mass E-mail</h3>
 				<br>
-				<table class="table">
-				<tr>
-					<td style="width:25%"> Send to </td>
-					<td> 
-						<label class="radio">
-							<input type="radio" class="emailOpt" name="emailRecOpt" id="activeOnly" value="active" checked> Send to all active students
-						</label>
-						<label class="radio">
-							<input type="radio" class="emailOpt" name="emailRecOpt" id="selectOnly" value="select"> Choose from following lists (list of students w/email address)
-							<div id="emailSelectArea">
-								<br>
-								Hold down Ctrl key to select multiple email addresses
-								<br><br>
-								<select multiple="multiple" name="recipients" class="span6" id="selectRecipients" size="10"> </select></td>
-							</div>
-						</label>
+				<form action="bin/use_gmail.php" method="post" id="emailform" enctype="multipart/form-data">
+					<input type="hidden" name="opt" value="mass">
+					<table class="table">
+					<tr>
+						<td style="width:25%"> Send to </td>
+						<td> 
+							<label class="radio">
+								<input type="radio" class="emailOpt" name="emailRecOpt" id="activeOnly" value="allactive" checked> Send to all active students
+							</label>
+							<label class="radio">
+								<input type="radio" class="emailOpt" name="emailRecOpt" id="selectOnly" value="select"> Choose from following lists (list of students w/email address)
+								<div id="emailSelectArea">
+									<br>
+									Hold down Ctrl key to select multiple email addresses
+									<br><br>
+									<select multiple="multiple" name="recipients[]" class="span6" id="selectRecipients" size="10"> </select></td>
+								</div>
+							</label>
 
-						
-				</tr>
-				<tr>
-					<td> Subject </td>
-					<td> <input type="text" id="emailSubject" class="span6">
-				</tr>
+							
+					</tr>
+					<tr>
+						<td> Subject </td>
+						<td> <input type="text" id="emailSubject" class="span6" name="subject">
+					</tr>
 
-				<tr>
-					<td> Body </td>
-					<td> <textarea class="span6" rows="10" id="emailBody"> </textarea>
-				</tr>
-				<tr>
-					<td colspan="2" style="text-align:right"> <button class="btn btn-primary btn-medium" id="sendEmail">Send e-mail</button>
+					<tr>
+						<td> Body </td>
+						<td> <textarea class="span6" rows="10" id="emailBody" name="body"> </textarea>
+					</tr>
+					<tr>
+						<td colspan="2" style="text-align:right">  <input type="submit" value="Send e-mail" class="btn btn-primary btn-medium" id="sendEmail">
 
-
+					</tr>
+					</table>
+				</form>
 			</div>
 	
 		</div>

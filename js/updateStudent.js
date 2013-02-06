@@ -2,6 +2,8 @@
 * updateStudent.js - update existing student record
 *
 */
+	var schoolListSelected = null;
+	var schoolCatList = null;
 	
 	$(function() {
 		//function to get parameter (id #) from the url
@@ -45,12 +47,14 @@
 		initializeDateSelector('#new_schoolStartDay','#new_schoolStartMonth');
 		initializeDateSelector('#new_schoolEndDay','#new_schoolEndMonth');
 		initializeDateSelector('#new_visaIssueDay','#new_visaIssueMonth');
+		$('.schoolNameNotList').css('display','none');
 
+		schoolCatLoad('#schoolCategory');
 
 		var student_id = $.urlParam('id');
 		
 
-		var data_studentID = {"studentId": student_id};
+		var data_studentID = {"action": "latest", "studentId": student_id};
 		
 		var latestversion = 0;
 
@@ -67,6 +71,12 @@
 					var indexComma_eng_name = existing_eng_name.indexOf(",");
 					var existing_eng_last_name = existing_eng_name.substring(0,indexComma_eng_name).toUpperCase();
 					var existing_eng_first_name = existing_eng_name.substring(indexComma_eng_name+2).toUpperCase();
+
+					var existing_school_name = resp[0].school_name;
+					var existing_school_type = resp[0].school_type;
+
+					var existing_school_index = resp[0].school_index;
+
 
 					$('#fssStudentID').append(resp[0].unique_id);
 
@@ -183,8 +193,42 @@
 
 					$('#newPgmName').val(resp[0].current_program);
 
-					
+					var catIndex = 0;
+
+					while (catIndex != schoolCatList.length) {
+
+
+						if (existing_school_type == schoolCatList[catIndex].school_type) {
+							break;
+						}					
+						catIndex++;
+					}
+
+					$('#schoolCategory').prop('selectedIndex', catIndex);
+
+					schoolListLoad('#schoolList', existing_school_type);
+
+					var current_school_name = resp[0].current_school.trim();
+
+					if (existing_school_index == 0 && current_school_name != '') {
+						$('.schoolNameNotList').empty();
+						$('.schoolNameNotList').append(current_school_name+" (not in the school list) ");
+						$('.schoolNameNotList').show();
+					}
+
+					var schoolNameIndex = 0;
+
+					while (schoolNameIndex != schoolListSelected.length) {
+						if (existing_school_name == schoolListSelected[schoolNameIndex].school_name) {
+							break;
+						}
+						schoolNameIndex ++;
+					}
+
+
 					var existingSchoolStart = resp[0].current_school_strt_dt;
+
+					$('#schoolList').prop('selectedIndex', (schoolNameIndex+ 1));
 
 					if ( existingSchoolStart != '')
 					{
@@ -271,7 +315,12 @@
 			
 			var new_visa_exp_date = '';
 			var new_date_of_birth = '';
-			var new_school_name = $('#newSchoolText').val();
+			//var new_school_name = $('#newSchoolText').val();
+
+			var new_school_index = $('#schoolList').val();
+			var new_school_type =  $('#schoolCategory').val();
+			var other_school_name = $('#otherSchoolText').val();
+
 			var new_program_name = $('#newPgmName').val();
 			var new_school_start_date = '';
 			var new_school_end_date = '';
@@ -387,7 +436,9 @@
 								 "how_hear_us" : new_how_hear_us,
 								 "referred_by" : new_referrer_name,
 								 "korea_agency" : new_korea_agency,
-								 "school_name": new_school_name,
+								 "school_index": new_school_index,
+								 "school_type" : new_school_type,
+								 "other_school_name" : other_school_name,
 								 "current_program": new_program_name,
 								 "school_start_dt": new_school_start_date,
 								 "school_end_dt" : new_school_end_date,
@@ -431,7 +482,26 @@
 
 		});
 
-		
+		$('#schoolCategory').change(function() {
+			var type = $(this).val();
+			otherSchoolType = $(this).val();
+			if (type != 0) {
+				schoolListLoad("#schoolList",type);
+			} else {
+				$('#schoolList').empty();
+			}
+			$('#otherSchoolArea').hide();
+		});
+
+		$('#schoolList').change(function () {
+			var schoolname = $(this).val();
+			$('#otherSchoolText').val('');
+			if (schoolname == 'Other') {
+				$('#otherSchoolArea').show();
+			} else {
+				$('#otherSchoolArea').hide();
+			}
+		});
 
 
 	});
@@ -446,4 +516,48 @@ function selectBoxIndexFind(key,list) {
 		index++;
 	}	
 	return index;
+}
+
+function schoolCatLoad(id) {
+	var dataAction = {"action" : "get_type"};
+	$(id).append('<option value = 0>-----------------------------</option>');
+	$.ajax({
+		type: "POST",
+		url: "bin/school_list.php",
+		data:dataAction,
+		dataType:"json",
+		cache: false,	
+		async: false,
+		success: function(resp) {
+			schoolCatList = resp;
+		}
+	});	
+
+	for (var i = 1; i!= schoolCatList.length; i++) {
+		$(id).append('<option>'+schoolCatList[i].school_type+'</option>');
+	}
+}
+
+function schoolListLoad(id, type) {
+	var dataAction = {"action": "get_list", "cond": type};
+
+	$(id).empty();
+	$(id).append('<option value = 0>-----------------------------</option>');
+	$.ajax({
+		type: "GET",
+		url: "bin/school_list.php",
+		data:dataAction,
+		dataType:"json",
+		cache: false,
+		async: false,	
+		success: function(resp) {
+			schoolListSelected = resp;
+
+		}
+	});	
+
+	for (var i = 0; i!= schoolListSelected.length; i++) {
+		$(id).append("<option value='"+schoolListSelected[i].school_index+"'>"+schoolListSelected[i].school_name+'</option>');
+	}
+	$(id).append("<option value='Other'>Other (please specify)</option>");
 }

@@ -10,6 +10,12 @@
 
 	var visitList = new Array();
 
+	var prevSchoolList = null;
+
+	var schoolListSelected = null;
+	var schoolCatList = null;
+
+	var remindCategoryList = null;
 
 	$(function() {
 
@@ -19,12 +25,13 @@
 		var pointDateOpt = '';	
 		var fssPTopt = '';
 
-
+		var previousSchoolClickedId = 0;
 
 		$('.error').hide();
 		$('#chooseDate').hide();
 		$('#chooseDatePoint').hide();
 		$('#saveVisitSuccess').hide();
+		$('#otherSchoolArea').hide();
 
 		$('#addPTcat').hide();
 		$('#redeemPTcat').hide();
@@ -83,6 +90,8 @@
 
 		var point_id = 0;
 
+		var reminder_id = 0;
+
 		
 		var data_studentID = {"action": "latest", "studentId": student_id, "is_hidden": is_hidden};
 		var new_reminder_date ='';
@@ -94,6 +103,14 @@
 		initializeDateSelector("#redDay", "#redMonth");
 		initializeDateSelector("#new_transDay", "#new_transMonth");
 		initializeDateSelector("#new_visitDay", "#new_visitMonth");
+
+		schoolCatLoad('#schoolCategory');
+		schoolCatLoad('#editSchoolCategory');
+		createRemindCategoryList();
+		remindCategoryLoad('.remindCategory');
+		initializeDateSelector("#edit_prevSchoolStartDay", "#edit_prevSchoolStartMonth");
+		initializeDateSelector("#edit_prevSchoolEndDay", "#edit_prevSchoolEndMonth");
+		initializeDateSelector("#edit_remindDay", "#edit_remindMonth");
 		
 		if (is_hidden == 'Y')
 		{
@@ -137,8 +154,8 @@
 		//gets list of visit records from the database
 		visitLoad(data_studentID);
 
-		reminderLoad(student_id);
-		reminder_old_Load(student_id);
+		reminderLoad(student_id, 'all', 0);
+		reminder_old_Load(student_id, 'all', 0);
 
 		pointValList = 	pointList_load();
 
@@ -149,6 +166,8 @@
 		prevSchoolLoad(student_id);
 
 		prevVisaLoad(student_id);
+
+		remindCategoryLoad('#remindCategory');
 		
 		$('.follow_up').live('click',function() {
 			var remindId = this.id;
@@ -160,9 +179,9 @@
 				data:{"reminderIndex": remindId, "follow_up_date": today_str,"updated_by": current_userid},
 				success:function(resp) {												
 						
-						reminderLoad(student_id);
+						reminderLoad(student_id,'all',0);
 
-						reminder_old_Load(student_id);
+						reminder_old_Load(student_id, 'all',0);
 						
 						
 				}
@@ -179,7 +198,7 @@
 				data:{"reminderIndex": remindId, "student_id": student_id},
 				success:function(resp) {
 					
-						reminder_old_Load(student_id);
+						reminder_old_Load(student_id, 'all');
 						
 
 						
@@ -201,8 +220,8 @@
 				data:{"reminderIndex": remindId, "student_id": student_id},
 				success:function(resp) {
 					
-						reminder_old_Load(student_id);
-						reminderLoad(student_id);
+						reminder_old_Load(student_id, 'all',0);
+						reminderLoad(student_id, 'all',0);
 						
 
 						
@@ -303,10 +322,12 @@
  					 return false;
 				}
 
+				var remind_category = $('#remindCategory').val();
+
 			}
 
 
-			var data_reminder = {"studentId": student_id, "reminder_date": new_reminder_date, "reason": reason_replaced,"added_by": current_userid};
+			var data_reminder = {"studentId": student_id, "reminder_date": new_reminder_date, "rem_list_index": remind_category, "reason": reason_replaced,"added_by": current_userid};
 
 			$.ajax({
 				type: "POST",
@@ -325,7 +346,7 @@
 		//it enables user to view previous record (detailed information only, not visit / reminder) for that student
 		$('#prev_ver').change(function() {
 			var select_ver = $('#prev_ver').val();
-			var data_studentID = {"action":prev, "studentId": student_id,
+			var data_studentID = {"action":'prev', "studentId": student_id,
 								  "version": select_ver
 								};
 			$.ajax({
@@ -529,12 +550,28 @@
 
 
 		$('#addMorePrevSchool').click(function() {
+			$('#newPrevSchoolProgram').val('');	
+			$('#schoolCategory').prop('selectedIndex',0);
+			$('#schoolList').empty();				
+			$('#newPrevSchoolProgram').val();
+			$('#prevSchoolStartYear').val('');
+			$('#prevSchoolStartMonth').prop('selectedIndex',0);
+			$('#prevSchoolStartDay').prop('selectedIndex',0);
+			$('#prevSchoolEndYear').val('');
+			$('#prevSchoolEndMonth').prop('selectedIndex',0);
+			$('#prevSchoolEndDay').prop('selectedIndex',0);
 			$('#addPrevSchool').modal('toggle');
 
 		});
 
 		$('#savePrevSchool').click(function() {
-			var schoolName = $('#newPrevSchoolName').val();
+			var school_index = $('#schoolList').val();
+
+			var other_school_name = $('#otherSchoolText').val();
+
+			var school_type = $('#schoolCategory').val();
+
+
 			var schoolProgram = $('#newPrevSchoolProgram').val();
 			var schoolStartYear = $('#prevSchoolStartYear').val();
 			var schoolStartMonth = $('#prevSchoolStartMonth').val();
@@ -546,13 +583,6 @@
 
 			var schoolStartDate = '';
 			var schoolEndDate = '';
-
-			if (schoolName == "") {
-				$('label#namePrevSchool_error').show();
-				$('input#newPrevSchoolNamee').focus();
-				return false;				
-			}
-
 
 			if (schoolStartYear != '') {
 
@@ -591,7 +621,7 @@
 			}
 
 
-			var prevSchoolData = {"action": "add", "student_id": student_id, "prev_school_name": schoolName, "prev_school_program": schoolProgram, "prev_school_strt_dt" : schoolStartDate, "prev_school_end_dt" : schoolEndDate, "user_id": current_userid};
+			var prevSchoolData = {"action": "add", "student_id": student_id, "school_index": school_index, "school_type": school_type, "other_school_name": other_school_name, "prev_school_program": schoolProgram, "prev_school_strt_dt" : schoolStartDate, "prev_school_end_dt" : schoolEndDate, "user_id": current_userid};
 
 			$.ajax({
 				type:"POST",
@@ -600,8 +630,8 @@
 				cache:false,
 				success:function(resp) {
 					if (resp == 'insert success') {
-						var url = "viewStudent.html?id="+student_id+"&hidden=N";
-						window.location = url;						
+						$('#addPrevSchool').modal('hide');
+						prevSchoolLoad(student_id);	
 					} else {
 						alert(resp);
 					}
@@ -691,9 +721,12 @@
 				cache:false,
 				data:point_trans,
 				success:function(resp) {
-					$('#fssPT').modal('hide');
-					point_load(student_id);
-
+					if (!isNaN(resp)) {
+						$('#fssPT').modal('hide');
+						point_load(student_id);
+					} else {
+						alert(resp);
+					}
 				}
 			});
 
@@ -704,8 +737,9 @@
 			var trans_date_day = $('#new_transDay').val();
 			var trans_date_year = $('#new_transYear').val();
 
-			var new_trans_val = $('#new_pointList').val();
+			var new_point_val = $('#edit_pointValField').val();
 
+			var new_pointList_index = $('#new_pointList').val();
 
 			if (trans_date_year == '')
 			{
@@ -734,7 +768,8 @@
 
 			}
 
-			var new_point_trans = {"action" : "update_pt", "index": point_id, "trans_date": new_trans_date, "trans_val": new_trans_val, "user_id": current_userid};
+
+			var new_point_trans = {"action" : "update_pt", "student_id": student_id, "pointList_index": new_pointList_index, "index": point_id, "trans_date": new_trans_date, "trans_val": new_point_val, "user_id": current_userid};
 			
 			$.ajax({
 				type:"POST",
@@ -759,7 +794,7 @@
 				type:"POST",
 				url:"bin/point_history.php",
 				cache:false,
-				data:{"action": "delete_pt", "index": point_id},
+				data:{"action": "delete_pt", "index": point_id, "student_id": student_id},
 				success:function(resp) {
 					if (resp == 'delete success') {
 						$('#delFssPT').modal('hide');
@@ -910,17 +945,398 @@
 
 			var trans_name = $(this).parent().parent().find("td").eq(2).attr('id');
 
-			var trans_name = parseInt(trans_name,10) - 1;
+			var point_value = $(this).parent().parent().find("td").eq(3).html(); 
+
+			var pointList_pos = 0;
 
 
-			$('#new_pointList').prop('selectedIndex', trans_name);	
+			while (pointList_pos != pointValList.length) {
+				if (trans_name == pointValList[pointList_pos].pointList_index) {
+					break;
+				} 
+				pointList_pos++;
+			}
+
+			$('#new_pointList').prop('selectedIndex', pointList_pos);	
+
+			$('#edit_pointValField').val(point_value);
 
 
 			$('#editFssPT').modal('toggle');
 
 		});
 
+		$('#new_pointList').change(function() {
+			var selected_id = $('#new_pointList').val();
 
+			var index = 0;
+
+			while (index != pointValList.length) {
+				if (selected_id == pointValList[index].pointList_index) {
+					break;
+				}
+				index++;
+			}
+
+			var point_value = pointValList[index].point_value;
+
+			$('#edit_pointValField').val(point_value);
+		});
+
+		$('#schoolCategory').change(function() {
+			var type = $(this).val();
+			otherSchoolType = $(this).val();
+			if (type != 0) {
+				schoolListLoad("#schoolList",type);
+			} else {
+				$('#schoolList').empty();
+			}
+			$('#otherSchoolArea').hide();
+		});
+
+
+		$('#schoolList').change(function () {
+			var schoolname = $(this).val();
+			$('#otherSchoolText').val('');
+			if (schoolname == 'Other') {
+				$('#otherSchoolArea').show();
+			} else {
+				$('#otherSchoolArea').hide();
+			}
+		});
+
+		$('#editSchoolCategory').change(function() {
+			var type = $(this).val();
+			otherSchoolType = $(this).val();
+			if (type != 0) {
+				schoolListLoad("#editSchoolList",type);
+			} else {
+				$('#editSchoolList').empty();
+			}
+			$('#edit_otherSchoolArea').hide();
+		});
+
+
+		$('#editSchoolList').change(function () {
+			var schoolname = $(this).val();
+			$('#edit_otherSchoolText').val('');
+			if (schoolname == 'Other') {
+				$('#edit_otherSchoolArea').show();
+			} else {
+				$('#edit_otherSchoolArea').hide();
+			}
+		});
+
+		$('#prevSchoolList tbody').on('click','.editPrevSchool', function () {
+			previousSchoolClickedId = this.id;
+			
+			$('.error').hide();
+			$('.schoolNameNotList').css('display','none');
+
+			var data_getPrev_school_Parm = {"prevSchoolIndex":previousSchoolClickedId, "action": "get_one"};
+
+			var index = 0;
+
+			while  (index != prevSchoolList.length) {
+				if (previousSchoolClickedId == prevSchoolList[index].prevSchoolIndex) {
+					break;
+				}
+				index++;
+			}
+
+
+			var start_date = prevSchoolList[index].prev_school_strt_dt;
+			var end_date = prevSchoolList[index].prev_school_end_dt;
+			var program = prevSchoolList[index].prev_school_program;
+			var school_index = prevSchoolList[index].school_index;
+
+			var school_name_not_list = prevSchoolList[index].prev_school_name;
+
+
+			if (school_index == 0) {
+				$('.schoolNameNotList').empty();
+				$('.schoolNameNotList').append(school_name_not_list+" (not in the school list) ");
+				$('.schoolNameNotList').show();
+			}
+
+			$('#editPrevSchoolProgram').val(program);
+
+			var start_year = start_date.substring(0,4);
+
+			var start_month = start_date.substring(5,7);
+
+			var start_day = start_date.substring(8);
+
+			$('#edit_prevSchoolStartYear').val(start_year);
+			$('#edit_prevSchoolStartMonth').prop('selectedIndex',start_month);
+			$('#edit_prevSchoolStartDay').prop('selectedIndex',start_day);
+
+			var end_year = end_date.substring(0,4);
+
+			var end_month = end_date.substring(5,7);
+
+			var end_day = end_date.substring(8);
+
+			var existing_school_type = prevSchoolList[index].school_type;
+
+			$('#edit_prevSchoolEndYear').val(end_year);
+			$('#edit_prevSchoolEndMonth').prop('selectedIndex',end_month);
+			$('#edit_prevSchoolEndDay').prop('selectedIndex',end_day);
+
+			var catIndex = 0;
+
+			while (catIndex != schoolCatList.length) {
+
+
+				if (existing_school_type == schoolCatList[catIndex].school_type) {
+					break;
+				}					
+				catIndex++;
+			}
+
+			$('#editSchoolCategory').prop('selectedIndex', catIndex);
+
+			schoolListLoad('#editSchoolList', existing_school_type);
+
+			var schoolNameIndex = 0;
+
+			var existing_school_name = prevSchoolList[index].school_name;
+
+			while (schoolNameIndex != schoolListSelected.length) {
+				if (existing_school_name == schoolListSelected[schoolNameIndex].school_name) {
+					break;
+				}
+				schoolNameIndex ++;
+			}
+
+			$('#editSchoolList').prop('selectedIndex', (schoolNameIndex));
+
+			$('#editPrevSchoolModal').modal('toggle');
+		});
+
+
+		$('#prevSchoolList tbody').on('click','.delPrevSchool', function () {
+			previousSchoolClickedId = this.id;
+			
+			$('#delPrevSchoolModal').modal('toggle');
+		});
+
+		$('#editPrevSchoolConfirm').click(function() {
+			var school_type = $('#editSchoolCategory').val();
+			var school_name = $('#editSchoolList').val();
+
+			var start_month = $('#edit_prevSchoolStartMonth').val();
+			var start_year = $('#edit_prevSchoolStartYear').val();
+			var start_day = $('#edit_prevSchoolStartDay').val();
+
+			var end_month = $('#edit_prevSchoolEndMonth').val();
+			var end_year = $('#edit_prevSchoolEndYear').val();
+			var end_day = $('#edit_prevSchoolEndDay').val();
+
+			var start_date = '';
+			var end_date = '';
+
+			if (start_year != '') {
+				if (isNaN(start_year) || start_year.length != 4) {
+					$('label#edit_prevSchoolStartYear_error').show();
+					$('#edit_prevSchoolStartYear').focus();
+					return false;
+				} 
+
+				start_date = start_year+"-"+start_month+"-"+start_day;
+
+				if (start_date.length != 10) {
+					$('label#edit_prevSchoolStartYear_error2').show();
+					$('#edit_prevSchoolStartMonth').focus();
+					return false;	
+				}
+			}
+
+			if (end_year != '') {
+				if (isNaN(end_year) || end_year.length != 4) {
+					$('label#edit_prevSchoolEndYear_error').show();
+					$('#edit_prevSchoolEndYear').focus();
+					return false;
+				} 
+
+				end_date = end_year+"-"+end_month+"-"+end_day;
+
+				if (end_date.length != 10) {
+					$('label#edit_prevSchoolEndYear_error2').show();
+					$('#edit_prevSchoolEndMonth').focus();
+					return false;	
+				}
+			}
+			var school_type = $('#editSchoolCategory').val();
+			var school_name = $('#editSchoolList').val();
+			var other_school_name = $('#edit_otherSchoolText').val();
+			var newPrevPrgmName = $('#editPrevSchoolProgram').val();
+
+
+			var prev_school_updt = {"action": "update", "prevSchoolIndex":previousSchoolClickedId, "studentId": student_id, 
+							"student_info_ver": version_latest, "school_index": school_name, 
+							"school_type" : school_type, "other_school_name" : other_school_name,
+							"prev_school_program": newPrevPrgmName, "prev_school_strt_dt":start_date,
+							"prev_school_end_dt": end_date, "user_id":current_userid};
+			$.ajax({
+				type: "POST",
+				url: "bin/prev_school.php",
+				cache: false,
+				data:prev_school_updt,
+				success: function(resp) {
+					if (resp == 'Update success') {
+						$('#editPrevSchoolModal').modal('hide');
+						prevSchoolLoad(student_id);						
+					}
+					
+				}
+			});
+		});
+
+		$('#delPrevSchoolConfirm').click(function() {
+			var dataPrevSchoolDel = {"action" : "del", "studentId": student_id, "prev_school_index": previousSchoolClickedId, "student_info_ver": version_latest, "user_id": current_userid};
+
+			$.ajax({
+				type: "POST",
+				url: "bin/prev_school.php",
+				cache: false,
+				data:dataPrevSchoolDel,
+				success: function(resp) {
+					if (resp == "Record deleted successfully") {
+						$('#delPrevSchoolModal').modal('hide');
+						prevSchoolLoad(student_id);	
+					} else {
+						alert(resp);
+					}
+				}
+			});
+		});
+
+		$('.remindCategory').change(function() {
+			var id = this.id;
+			if (id == 'outstandingReminderCategory') {
+				var selected = $('#outstandingReminderCategory').val();
+				reminderLoad(student_id, 'all', selected);
+			} else {
+				if (id == 'previousReminderCategory') {
+					var selected = $('#previousReminderCategory').val();
+					reminderLoad(student_id, 'all', selected)
+				}
+			}
+		});
+
+		$('#remindTable tbody').on('click','.delReminder', function() {
+			reminder_id = this.id;
+
+			$('#delReminderModal').modal('toggle');
+		});
+
+		$('#delReminderConfirm').click(function() {
+			var reminder_del = {"reminderIndex": reminder_id, "action":"delete"};
+			$.ajax( {
+				type: "POST",
+				url: "bin/edit_reminder.php",
+				cache: false,
+				data: reminder_del,
+				success: function(resp) {
+					if (resp == 'Delete success') {
+						$('#delReminderModal').modal('hide');
+						var selected = $('#outstandingReminderCategory').val();
+						reminderLoad(student_id, 'all', selected);					
+					} else {
+						alert(resp);
+					}			
+				}
+			});
+		});
+
+		$('#remindTable tbody').on('click','.editReminder', function() {
+			$('.error').hide();
+			reminder_id = this.id;
+
+			var reason = $(this).parent().parent().find("td").eq(1).html().replace(/<br\s*[\/]?>/gi, "\n");
+			var rem_list_index = $(this).parent().parent().find("td").eq(4).html();
+
+			var index = 0;
+
+			while (index != remindCategoryList.length) {
+				if (rem_list_index == remindCategoryList[index].rem_list_index) {
+					break;
+				}
+				index++;
+			}
+
+			var reminder_date = $(this).parent().parent().find("td").eq(3).html();
+
+			var reminder_year = reminder_date.substring(0,4);
+
+			var reminder_month = parseInt(reminder_date.substring(5,7),10);
+
+			var reminder_day = parseInt(reminder_date.substring(8),10);
+
+			$('#edit_remindYear').val(reminder_year);
+			$('#edit_remindMonth').prop('selectedIndex',reminder_month);
+			$('#edit_remindDay').prop('selectedIndex',reminder_day);
+
+			$('#edit_remindCategory').prop('selectedIndex',index);
+
+			$('#edit_remindreason').val(reason);
+			$('#editReminderModal').modal('toggle');
+		});
+
+		$('#editReminderConfirm').click(function() {
+			var remind_reason = $('#edit_remindreason').val();
+			var remind_category = $('#edit_remindCategory').val();
+
+			var remind_year = $('#edit_remindYear').val();
+			var remind_month = $('#edit_remindMonth').val();
+			var remind_day = $('#edit_remindDay').val();
+
+			var remind_date = '';
+
+			if (remind_year.trim() == '') {
+				$('label#edit_remindYear_error').show();
+				$('#edit_remindYear').focus();
+				return false;
+			} else {
+				if (remind_year.length != 4) {
+					$('label#edit_remindYear_error2').show();
+					$('#edit_remindYear').focus();
+					return false;				
+				}
+				remind_date = remind_year+"-"+remind_month+"-"+remind_day;
+
+				if (remind_date.length != 10) {
+					$('label#edit_remind_error').show();
+					if (remind_month == 0) {
+						$('#edit_remindMonth').focus();
+					}
+					if (remind_day == 0) {
+						$('#edit_remindDay').focus();
+					}
+					return false;					
+				}
+			}
+
+			var reminder_updt = {"reminderIndex": reminder_id, "remindDate": remind_date, "remindReason": remind_reason, "rem_list_index": remind_category, "user_id":current_userid, "action":"update"};
+		
+			$.ajax({
+				type: "POST",
+				url: "bin/edit_reminder.php",
+				cache: false,
+				data:reminder_updt,
+				success: function(resp) {
+					if (resp == 'Update success') {
+						$('#editReminderModal').modal('hide');
+						var selected = $('#outstandingReminderCategory').val();
+						reminderLoad(student_id, 'all', selected);					
+					} else {
+						alert(resp);
+					}
+				}
+			});
+
+		});
 
 	});
 
@@ -995,11 +1411,11 @@
 	}
 
 
-	function reminderLoad(student_id) {
+	function reminderLoad(student_id, action, reminder_index) {
 
 		$('#remindTable tbody').empty();
 
-		var data_follow_up = {"student_id": student_id, "follow_up": 'N', "action": "all"};
+		var data_follow_up = {"student_id": student_id, "follow_up": 'N', "action": action, "rem_list_index": reminder_index};
 		$.ajax({
 				type:"GET",
 				url:"bin/get_reminder_record.php",
@@ -1025,23 +1441,23 @@
 							var user_id = $.evalJSON(encode_row).user_id.toUpperCase();
 							var follow_up_date =  $.evalJSON(encode_row).follow_up_date;
 
-								
+							var remind_list_index = $.evalJSON(encode_row).rem_list_index;
 
-								var remind_year = remindDate_str.substring(0,4);
+							var remind_year = remindDate_str.substring(0,4);
 
-								var remind_month = parseInt(remindDate_str.substring(5,7),10) - 1;
-								var remind_day = parseInt(remindDate_str.substring(8),10);
-														
-								var remind_date_obj=new Date(remind_year, remind_month, remind_day);
-							
-								var diff_days = Math.ceil((remind_date_obj - today_date) / (1000*60*60*24));
+							var remind_month = parseInt(remindDate_str.substring(5,7),10) - 1;
+							var remind_day = parseInt(remindDate_str.substring(8),10);
+													
+							var remind_date_obj=new Date(remind_year, remind_month, remind_day);
+						
+							var diff_days = Math.ceil((remind_date_obj - today_date) / (1000*60*60*24));
 
-								if (diff_days < 0)
-								{
-									$('#remindTable tbody').append("<tr><td><p style='color:red'>"+ (-1* diff_days) + " days passed</p></td><td>" + remindReason+ "</td><td>"+ user_id+"</td><td>" +remindDate+ "</td><td><input type='button' value='followed up' class='follow_up' id='"+resp[i].reminderIndex+"'></td><td><a class='btn btn-small' href='editReminder.html?id="+resp[i].reminderIndex+"'>Edit/Delete</a></td></tr>"); 
-								} else {
-									$('#remindTable tbody').append("<tr'><td>"+ diff_days + "</td><td>" + remindReason+ "</td><td>"+user_id+"</td><td>" +remindDate+ "</td><td><input type='button' value='followed up' class='follow_up' id='"+resp[i].reminderIndex+"'></td><td><a class='btn btn-primary btn-small' href='editReminder.html?id="+resp[i].reminderIndex+"'>Edit/Delete</td></tr>"); 
-								}
+							if (diff_days < 0)
+							{
+								$('#remindTable tbody').append("<tr><td><p style='color:red'>"+ (-1* diff_days) + " days passed</p></td><td>" + remindReason+ "</td><td>"+ user_id+"</td><td>" +remindDate+ "</td><td style='display:none'>"+remind_list_index+"</td><td><input type='button' value='followed up' class='follow_up' id='"+resp[i].reminderIndex+"'></td><td><input type='button' class='editReminder btn-primary btn btn-small' id='"+resp[i].reminderIndex+"' value='Edit'>&nbsp;<input type='button' class='delReminder btn-danger btn btn-small' id='"+resp[i].reminderIndex+"' value='Delete'></td></tr>"); 
+							} else {
+								$('#remindTable tbody').append("<tr'><td>"+ diff_days + "</td><td>" + remindReason+ "</td><td>"+user_id+"</td><td>" +remindDate+ "</td><td style='display:none'>"+remind_list_index+"</td><td><input type='button' value='followed up' class='follow_up' id='"+resp[i].reminderIndex+"'></td><td><input type='button' class='editReminder btn-primary btn btn-small' id='"+resp[i].reminderIndex+"' value='Edit'>&nbsp;<input type='button' class='delReminder btn-danger btn btn-small' id='"+resp[i].reminderIndex+"' value='Delete'></td></tr>"); 
+							}
 								
 							
 						}
@@ -1116,11 +1532,11 @@
 		});
 	}
 
-	function reminder_old_Load(student_id) {
+	function reminder_old_Load(student_id, action,reminder_index) {
 
 		$('#remindTable_old tbody').empty();
 
-		var data_follow_up = {"student_id": student_id, "follow_up": 'Y', "action": "all"};
+		var data_follow_up = {"student_id": student_id, "follow_up": 'Y', "action": action, "rem_list_index": reminder_index};
 		$.ajax({
 				type:"GET",
 				url:"bin/get_reminder_record.php",
@@ -1169,27 +1585,33 @@
 				url:"bin/get_prev_schools.php",
 				dataType: "json",
 				cache: false,
+				async: false,
 				data:input, 				
-				success:function(resp) { 					
-					if (resp.length > 0)
-					{
-						for (i=0; i!=resp.length ;i++ )
-						{
-							var school_name = resp[i].prev_school_name;
-							var school_program = resp[i].prev_school_program;
-							var school_start = resp[i].prev_school_strt_dt;
-							var school_end = resp[i].prev_school_end_dt;
-							var prev_school_id = resp[i].prevSchoolIndex;
-
-							$('#prevSchoolList tbody').append("<tr><td>"+school_name+"</td><td>"+school_program+"</td><td>"+school_start+"</td><td>"+school_end+"</td><td><a class='btn btn-primary btn-small' href='editPrevSchool.html?id="+prev_school_id+"'>Edit / Delete </a></td> </tr>");
-						}
-					} else {
-						$('#prevSchoolList tbody').append("<tr><td colspan='5'><h3 style='text-align:center'> No previous school found for this student</h3></td></tr>");
-					}
+				success:function(resp) { 
+					prevSchoolList = resp;					
 				}
 			});
 				
+		if (prevSchoolList.length > 0)
+		{
+			for (i=0; i!=prevSchoolList.length ;i++ )
+			{
+				var school_name = '';
+				if (prevSchoolList[i].school_index != 0) {
+					school_name = prevSchoolList[i].school_name;
+				} else {
+					school_name = prevSchoolList[i].prev_school_name;
+				}
+				var school_program = prevSchoolList[i].prev_school_program;
+				var school_start = prevSchoolList[i].prev_school_strt_dt;
+				var school_end = prevSchoolList[i].prev_school_end_dt;
+				var prev_school_id = prevSchoolList[i].prevSchoolIndex;
 
+				$('#prevSchoolList tbody').append("<tr><td>"+school_name+"</td><td>"+school_program+"</td><td>"+school_start+"</td><td>"+school_end+"</td><td><button class='editPrevSchool btn btn-primary btn-small' id='"+prev_school_id+"'>Edit</button>&nbsp;<button class='delPrevSchool btn btn-primary btn-small btn-danger' id='"+prev_school_id+"'>Delete</button></td> </tr>");
+			}
+		} else {
+			$('#prevSchoolList tbody').append("<tr><td colspan='5'><h3 style='text-align:center'> No previous school found for this student</h3></td></tr>");
+		}
 
 	}
 
@@ -1243,3 +1665,92 @@
 		}
 	}
 
+	function schoolCatLoad(id) {
+		var dataAction = {"action" : "get_type"};
+		$(id).append('<option value = 0>-----------------------------</option>');
+		$.ajax({
+			type: "POST",
+			url: "bin/school_list.php",
+			data:dataAction,
+			dataType:"json",
+			cache: false,	
+			async: false,
+			success: function(resp) {
+				schoolCatList = resp;
+			}
+		});	
+
+		for (var i = 1; i!= schoolCatList.length; i++) {
+			$(id).append('<option>'+schoolCatList[i].school_type+'</option>');
+		}
+	}
+
+	function schoolListLoad(id, type) {
+		var dataAction = {"action": "get_list", "cond": type};
+
+		$(id).empty();
+		$.ajax({
+			type: "GET",
+			url: "bin/school_list.php",
+			data:dataAction,
+			dataType:"json",
+			cache: false,
+			async: false,	
+			success: function(resp) {
+				schoolListSelected = resp;
+
+			}
+		});	
+
+		for (var i = 0; i!= schoolListSelected.length; i++) {
+			$(id).append("<option value='"+schoolListSelected[i].school_index+"'>"+schoolListSelected[i].school_name+'</option>');
+		}
+		$(id).append("<option value='Other'>Other (please specify)</option>");
+	}
+
+	function PrintElem(elem)
+    {
+        Popup($(elem).html());
+    }
+
+    function Popup(data) 
+    {
+        var mywindow = window.open('', 'my div', 'height=800,width=1000');
+        mywindow.document.write('<!DOCTYPE html><html><head><title>Print personal information</title>');
+        mywindow.document.write('<link rel="stylesheet" href="css/page-style.css">');
+        mywindow.document.write('<link href="css/bootstrap.css" rel="stylesheet">');
+        mywindow.document.write('<link href="css/page-style.css" rel="stylesheet">');
+		mywindow.document.write('<link href="css/bootstrap-responsive.css" rel="stylesheet">');
+		mywindow.document.write('<script src="js/bootstrap.js"></script>');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write('<h3>Personal Information</h3>');
+        mywindow.document.write('<br>');
+        mywindow.document.write(data);
+        mywindow.document.write('</body></html>');
+
+        mywindow.print();
+        mywindow.close();
+
+        return true;
+    }
+
+    function createRemindCategoryList() {
+		var dataAction = {"action" : "get_category"};
+		$.ajax({
+			type: "GET",
+			url: "bin/reminder_list.php",
+			data:dataAction,
+			dataType:"json",
+			cache: false,
+			async: false,	
+			success: function(resp) {
+				remindCategoryList = resp;
+			}
+		});	    	
+    }
+
+    function remindCategoryLoad(id) {
+		for (var i = 0; i!= remindCategoryList.length; i++) {
+			$(id).append('<option value="'+remindCategoryList[i].rem_list_index+'">'+remindCategoryList[i].rem_list_name+'</option>');
+		}    	
+    }
